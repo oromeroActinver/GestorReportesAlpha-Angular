@@ -1,0 +1,165 @@
+/* Estilo general para el formulario */
+.form-container {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  padding: 15px;
+  border-radius: 15px;
+}
+
+/* Estilo general para los grupos del formulario */
+.form-group {
+  display: flex;
+  align-items: center;
+  gap: 5px; /* Espacio entre label y select */
+}
+
+.form-group label {
+  font-size: 1em;
+  color: #041e42;
+}
+
+.form-group select {
+  font-size: 1em;
+  padding: 8px;
+  border-radius: 15px;
+  border: 1px solid #041e42;
+  width: 150px;
+  text-align: center;
+  background-color: #f1f1f1;
+  color: #041e42;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  position: relative;
+  padding-right: 30px; /* Espacio para la flecha personalizada */
+}
+
+.form-group select::after {
+  content: '▼';
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.form-group select:focus {
+  border-color: #b4a46c;
+  outline: none;
+}
+
+.form-group:nth-child(3) select {
+  width: 300px; /* Haz que el select de "Estrategia" sea más largo */
+}
+
+/* Estilo específico para los select */
+.custom-select {
+  padding: 8px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  width: 150px; /* Ajusta el ancho según sea necesario */
+}
+
+.search-button, .send-button {
+  padding: 8px 14px;
+  border-radius: 15px;
+  color: white;
+  border: 1px solid #ccc;
+  background-color: #041e42;
+  cursor: pointer;
+}
+
+
+/* Estilo para el botón de la columna Visualizador */
+
+.view-button {
+  padding: 5px 10px;
+  border-radius: 15px;
+  color: white;
+  border: 1px solid #ccc;
+  background-color: #041e42;
+  cursor: pointer;
+}
+
+/* Botón buscar */
+.button-container {
+  display: flex;
+  justify-content: flex-end;
+  padding: 15px;
+  width: 100%;
+}
+
+/* Botón enviar */
+.send-button {
+  position: absolute;
+  bottom: -50px; /* Ajusta según sea necesario */
+  right: 20;
+  padding: 8px 14px;
+  border-radius: 15px;
+  color: white;
+  border: 1px solid #ccc;
+  background-color: #041e42;
+  cursor: pointer;
+}
+
+/* Estilo para el botón al pasar el cursor */
+.search-button:hover, .send-button:hover, .view-button:hover {
+  background-color: #b4a46c;
+}
+
+/* Estilo para el botón enviar cuando está deshabilitado */
+.send-button:disabled {
+  background-color: #999; /* Color de fondo más tenue */
+  border-color: #999; /* Borde más tenue */
+  cursor: not-allowed; /* Cambia el cursor a not-allowed */
+  opacity: 0.5; /* Reduce la opacidad para hacerlo más tenue */
+}
+
+/* Estilo para el botón enviar deshabilitado al pasar el cursor */
+.send-button:disabled:hover {
+  background-color: #999; /* Mantén el color más tenue al pasar el cursor */
+}
+
+/* Estilo para la tabla */
+.table-container {
+  position: relative; /* Asegúrate de que el contenedor de la tabla tenga posición relativa */
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  border: 1px solid #b4a46c;
+  padding: 8px;
+  text-align: center; /* Ajusta el texto al centro si es necesario */
+}
+
+th {
+  background-color: #041e42;
+  color: #edf0f3;
+}
+
+.upload-title {
+  font-size: 1.1em;
+  margin-bottom: 20px;
+}
+
+th.select-all {
+  width: 100px; /* Ajusta columna select según sea necesario */
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 10px 0;
+}
+
+li {
+  margin: 5px 0;
+  padding: 8px;
+  background-color: #eee;
+  border-radius: 3px;
+}

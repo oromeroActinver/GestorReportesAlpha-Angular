@@ -1,0 +1,54 @@
+<h2>{{ section }}</h2>
+<div class="main-container">
+    <div class="form-container">
+        <div class="form-group">
+            <label for="year">Año:</label>
+            <select id="year" [(ngModel)]="selectedYear">
+                <option *ngFor="let year of years" [value]="year">{{ year }}</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="month">Mes:</label>
+            <select id="month" [(ngModel)]="selectedMonth">
+                <option *ngFor="let month of months" [value]="month">{{ month }}</option>
+            </select>
+        </div>
+
+        <div class="toggle-buttons">
+          <button class="type-button" [ngClass]="{'active': uploadMethod === 'file'}" (click)="setUploadMethod('file')">Subir por Archivos</button>
+          <button class="type-button" [ngClass]="{'active': uploadMethod === 'folder'}" (click)="setUploadMethod('folder')">Subir por Carpeta</button>
+      </div>
+
+    </div>
+
+    <div class="file-upload-container" *ngIf="uploadMethod === 'file'">
+        <h2 class="upload-title">{{ inputSelestPath }}</h2>
+        <input type="file" id="fileInput" (change)="onFilesSelected($event)" multiple hidden>
+        <label for="fileInput" class="file-upload-button">{{ uploadButton }}</label>
+        <ul>
+            <li *ngFor="let file of files">{{ file.name }}</li>
+        </ul>
+        <div class="button-container">
+            <button class="upload-button" (click)="uploadFiles()">{{ saveFiles }}</button>
+        </div>
+    </div>
+
+    <div class="file-upload-container" *ngIf="uploadMethod === 'folder'">
+        <h2 class="upload-title">Path reportes Alpha</h2>
+        <div class="input-container">
+          <input type="text" placeholder="Ejemplo C:/Users/user/CarpetaDestino" class="custom-input" [(ngModel)]="folderPath">
+          <button class="select-button" (click)="uploadFolderPath()">{{ saveFiles }}</button>
+        </div>
+    </div>
+
+    <div class="loading-spinner" *ngIf="isLoading">
+        <div class="spinner"></div>
+    </div>
+</div>
+
+
+
+
+
+
+  

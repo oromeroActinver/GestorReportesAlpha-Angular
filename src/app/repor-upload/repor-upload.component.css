@@ -1,0 +1,195 @@
+.main-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+}
+
+.form-container {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    margin-bottom: 20px;
+    width: 100%;
+}
+
+.form-group {
+    display: flex;
+    align-items: center;
+    gap: 5px; /* Space between label and select */
+}
+
+.form-group label {
+    font-size: 1.5em;
+    color: #041e42;
+}
+
+.form-group select {
+    font-size: 1.1em;
+    padding: 8px;
+    border-radius: 10px;
+    border: 1px solid #041e42;
+    width: 200px; 
+    text-align: center;
+    background-color: #f1f1f1;
+    color: #041e42;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    /*appearance: none;  
+    -webkit-appearance: none;
+    -moz-appearance: none;*/
+    position: relative;
+    padding-right: 30px; /* Space for custom arrow */
+}
+
+.form-group select::after {
+    content: '▼';
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    pointer-events: none;
+}
+
+.form-group select:focus {
+    border-color: #b4a46c;
+    outline: none;
+}
+
+.form-group:nth-child(3) select {
+    width: 300px; /* Make the "Estrategia" select longer */
+}
+
+.file-upload-container {
+    border: 1px solid #ccc;
+    padding: 20px;
+    border-radius: 5px;
+    width: 100%;
+    max-width: 1200px; /* Ensure max-width for large screens */
+    margin: 0 auto; /* Center the container */
+    background-color: #f9f9f9;
+}
+
+.upload-title {
+    font-size: 1.5em;
+    color: #041e42;
+    margin-bottom: 20px;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+    margin: 10px 0;
+}
+
+li {
+    margin: 5px 0;
+    padding: 8px;
+    background-color: #eee;
+    border-radius: 3px;
+}
+
+.upload-button, .file-upload-button, .select-button {
+    background-color: #041e42;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 15px;
+    cursor: pointer;
+    font-size: 1em;
+    text-align: center;
+    display: inline-block;
+    margin-left: 10px;
+}
+
+.upload-button:hover, .file-upload-button:hover, .select-button:hover, .type-button:hover {
+    background-color: #b4a46c;
+}
+
+.file-upload-button {
+    margin-bottom: 20px;
+    display: block;
+}
+
+.button-container {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px; /* Add some margin to separate it from the list */
+}
+
+/*Circulo ]cijardo*/
+.loading-spinner {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 9999;
+}
+
+.spinner {
+    border: 12px solid #b4a46c; /* Light grey */
+    border-top: 12px solid #041e42; /* Blue */
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.custom-input {
+    flex: 1; /* El input toma el espacio restante */
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 80px;
+    font-size: 16px;
+    margin-top: 10px;
+  }
+
+.select-button {
+    padding: 10px 20px;
+    background-color: #041e42;
+    color: white;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+    margin-left: 10px; /* Espacio entre el input y el botón */
+  }
+
+  .input-container {
+    display: flex; /* Usar flexbox para alinear elementos */
+    align-items: center; /* Alinear elementos verticalmente */
+    width: 100%; /* Hacer que el contenedor ocupe todo el ancho */
+  }
+
+  .disabled {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+
+  /**/
+  .toggle-buttons {
+    display: flex;
+    justify-content: center;
+   /* margin-bottom: 20px;*/
+}
+
+.type-button {
+    border: 2px solid #007bff;
+    transition: background-color 0.3s, color 0.3s;
+
+    padding: 10px 20px;
+    background-color: #041e42;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+.type-button.active {
+    background-color: #b4a46c;
+    color: #fff;
+}

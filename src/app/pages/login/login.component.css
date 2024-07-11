@@ -1,0 +1,81 @@
+body {
+  background: #041e42;
+}
+
+.login-container {
+  max-width: 400px;
+  margin: 100px auto;
+  padding: 20px;
+  background: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  font-family: Arial, sans-serif;
+  position: relative; /* Para posicionar correctamente la imagen de fondo */
+}
+
+/* Header style */
+.login-header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* Estilo para la imagen superior */
+.login-header-image {
+  max-width: 100%; /* Ajustar el tamaño de la imagen */
+  height: auto;
+}
+
+/* Header style */
+.login-header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.login-header h2 {
+  margin: 0;
+  color: #333;
+}
+
+/* Form group style */
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  color: #555;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 10px;
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+/* Button style */
+.btn {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  background-color: #041e42;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.btn:hover {
+  background-color: #b4a46c;
+}
+
+/* Error message style */
+.error-message {
+  color: red;
+  text-align: center;
+  margin-top: 10px;
+}

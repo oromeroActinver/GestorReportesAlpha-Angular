@@ -1,0 +1,14 @@
+<nav>
+  <ul>
+    <li><button (click)="navigate('/home')"><i class="fas fa-home"></i> {{homeButton}}</button></li>
+    <li><button (click)="navigate('/reporUpload')"><i class="fas fa-envelope"></i>{{ reportsButton }}</button></li>
+    <li><button (click)="navigate('/dispercion')"><i class="fas fa-info-circle"></i>{{dispersionButton}}</button></li>
+    <li><button (click)="navigate('/labs')"><i class="fas fa-flask"></i> Labs</button></li>
+  </ul>
+  <ul>
+    <li>
+      <button class="logout-button" (click)="logout()"><i class="fas fa-sign-out-alt"></i> {{ logoutButton }} </button>
+    </li>
+  </ul>
+</nav>
+
