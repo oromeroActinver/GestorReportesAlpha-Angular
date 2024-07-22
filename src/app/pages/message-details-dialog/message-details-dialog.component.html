@@ -1,0 +1,19 @@
+<div [ngClass]="dialogClass">
+  <h2 class="dialog-title">{{data.messageTitle}}</h2>
+  <div class="dialog-content">
+    {{data.messageContent}}
+  </div>
+  <div *ngIf="hasDetails" class="dialog-details-toggle">
+    <button class="details-button" (click)="toggleDetails()">
+      {{ showDetails ? 'Ocultar detalles' : 'Ver detalles' }}
+    </button>
+  </div>
+  <div *ngIf="showDetails" class="dialog-details">
+    <ul class="details-list">
+      <li *ngFor="let detail of data.details">{{ detail }}</li>
+    </ul>
+  </div>
+  <div class="dialog-actions">
+    <button class="upload-button" (click)="onAccept()">Aceptar</button>
+  </div>
+</div>

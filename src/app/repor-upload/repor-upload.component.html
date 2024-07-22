@@ -1,4 +1,3 @@
-<h2>{{ section }}</h2>
 <div class="main-container">
     <div class="form-container">
         <div class="form-group">
@@ -15,9 +14,13 @@
         </div>
 
         <div class="toggle-buttons">
-          <button class="type-button" [ngClass]="{'active': uploadMethod === 'file'}" (click)="setUploadMethod('file')">Subir por Archivos</button>
-          <button class="type-button" [ngClass]="{'active': uploadMethod === 'folder'}" (click)="setUploadMethod('folder')">Subir por Carpeta</button>
-      </div>
+            <button class="type-button" [ngClass]="{'active': uploadMethod === 'file'}"
+            matTooltip="Se recomienda para subir no mas de 200 archivos" 
+            (click)="setUploadMethod('file')">Subir por Archivos</button>
+            <button class="type-button" [ngClass]="{'active': uploadMethod === 'folder'}"
+            matTooltip="Se recomienda para subir mas de 200 archivos" 
+                (click)="setUploadMethod('folder')">Subir por Carpeta</button>
+        </div>
 
     </div>
 
@@ -36,8 +39,9 @@
     <div class="file-upload-container" *ngIf="uploadMethod === 'folder'">
         <h2 class="upload-title">Path reportes Alpha</h2>
         <div class="input-container">
-          <input type="text" placeholder="Ejemplo C:/Users/user/CarpetaDestino" class="custom-input" [(ngModel)]="folderPath">
-          <button class="select-button" (click)="uploadFolderPath()">{{ saveFiles }}</button>
+            <input type="text" placeholder="Ejemplo C:/Users/user/CarpetaReportesAlpha" class="custom-input"
+                [(ngModel)]="folderPath">
+            <button class="select-button" (click)="uploadFolderPath()">{{ saveFiles }}</button>
         </div>
     </div>
 
@@ -45,10 +49,3 @@
         <div class="spinner"></div>
     </div>
 </div>
-
-
-
-
-
-
-  
