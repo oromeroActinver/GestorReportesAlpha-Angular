@@ -1,14 +1,16 @@
 <nav>
-  <ul>
-    <li><button (click)="navigate('/home')"><i class="fas fa-home"></i> {{homeButton}}</button></li>
+  <ul class="navbar-left">
+    <li class="icon-container">
+      <mat-icon matTooltip="Inicio" (click)="navigate('/home')" aria-hidden="false" aria-label="Example home icon" fontIcon="home"></mat-icon>
+    </li>
+  </ul>
+  <ul class="navbar-center">
     <li><button (click)="navigate('/reporUpload')"><i class="fas fa-envelope"></i>{{ reportsButton }}</button></li>
     <li><button (click)="navigate('/dispercion')"><i class="fas fa-info-circle"></i>{{dispersionButton}}</button></li>
-    <li><button (click)="navigate('/labs')"><i class="fas fa-flask"></i> Labs</button></li>
   </ul>
-  <ul>
-    <li>
-      <button class="logout-button" (click)="logout()"><i class="fas fa-sign-out-alt"></i> {{ logoutButton }} </button>
+  <ul class="navbar-right">
+    <li class="icon-container">
+      <mat-icon matTooltip="Cerrar sesión" matTooltipPosition="above" (click)="logout()" aria-hidden="false" aria-label="Logout icon" fontIcon="logout"></mat-icon>
     </li>
   </ul>
 </nav>
-

@@ -4,11 +4,16 @@ import { FormsModule } from '@angular/forms';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { EstrategiasService } from './EstrategiasService';
+import { MatIconModule } from '@angular/material/icon';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { Utilities } from '../../services/tempUtilities';
+import { MatDialog } from '@angular/material/dialog';
+import { MessageDetailsDialogComponent } from '../message-details-dialog/message-details-dialog.component';
 
 @Component({
   selector: 'app-dispercion',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, MatIconModule, MatTooltipModule],
   templateUrl: './dispercion.component.html',
   styleUrls: ['./dispercion.component.css']
 })
@@ -23,17 +28,21 @@ export class DispercionComponent {
   contrato: number | null = null;
   mes: number | null = null;
   ano: number | null = null;
-  verPDF: string = 'Ver PDF';
+  lengRegister: number | null = null;
+  isLoading: boolean = false;
 
 
   token = localStorage.getItem('token');
 
   years: number[] = [];
-  months: string[] = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+  months: string[] = [];
   strategies: string[] = [];
 
-  constructor(private http: HttpClient, private estrategiasService: EstrategiasService) {
+  constructor(private http: HttpClient, private estrategiasService: EstrategiasService, private utilities: Utilities,
+    private dialog: MatDialog
+  ) {
     const currentYear = new Date().getFullYear();
+    this.months = utilities.getMonthNames();
     const pastYears = currentYear - 10;
     for (let year = currentYear; year >= pastYears; year--) {
       this.years.push(year);
@@ -49,7 +58,8 @@ export class DispercionComponent {
           this.strategies = data;
         },
         error => {
-          console.error('Error al obtener estrategias', error);
+          console.error('', error);
+          this.showDialog('FAILED', 'Error al obtener estrategias');
         }
       );
     } else {
@@ -59,9 +69,6 @@ export class DispercionComponent {
    }
 
   datos: any[] = [];
-  currentPage = 1; // Página actual inicial
-  itemsPerPage = 10; // Número de elementos por página
-
   allSelected: boolean = false;
 
   toggleSelectAll(event: any) {
@@ -78,6 +85,7 @@ clearSelections() {
 
 searchFiles() {
   if (this.selectedYear && this.selectedMonth && this.selectedStrategy) {
+    this.isLoading = true;
     const monthIndex = this.months.indexOf(this.selectedMonth) + 1; // Convertir mes a índice (1-based)
     const url = '/api/files/filesByCriteria';
     const params = {
@@ -90,6 +98,8 @@ searchFiles() {
       const headers = new HttpHeaders().set('Authorization', `Bearer ${this.token}`);
       this.http.post<any[]>(url, null, { headers, params })
         .subscribe(data => {
+          this.isLoading = false;
+          this.lengRegister = data.length;
           if (data && data.length > 0) {
             this.datos = data.map(item => ({
               selected: false,
@@ -99,20 +109,20 @@ searchFiles() {
               mes: this.months[item.archivoAlphaPDFId.mes - 1],
               ano: item.archivoAlphaPDFId.ano,
               nombrePdf: item.nombrePdf,
-              visualizador: this.verPDF,
+              visualizador: 'description',
             }));
           } else {
-            alert('No existen registros.');
+            this.showDialog('MESSAGE', 'No existen registros.' );
           }
         }, error => {
           console.error('Error fetching files:', error);
-          alert('Ocurrió un error al buscar los archivos.');
+          this.showDialog('FAILED', 'Ocurrió un error al buscar los archivos.' );
         });
     } else {
-      alert('Ususario No se autentifico.');
+      this.showDialog('FAILED', 'Ususario No se autentifico.' );
     }
   } else {
-    alert('Por favor, seleccione Año, Mes y Estrategia.');
+    this.showDialog('MESSAGE', 'Por favor, seleccione Año, Mes y Estrategia.' );
   }
 }
 
@@ -123,6 +133,7 @@ searchFiles() {
 }
 
 sendFiles() {
+  this.isLoading = true;
   const selectedFiles = this.datos
     .filter(dato => dato.selected)
     .map(dato => ({
@@ -136,27 +147,30 @@ sendFiles() {
     const headers = new HttpHeaders().set('Authorization', `Bearer ${this.token}`);
     this.http.post(url, selectedFiles, { headers })
       .subscribe((response: any) => {
+        this.anySelected = false;
+        this.isLoading = false;
         switch (response.status) {
           case 'SUCCESS':
-            alert(response.message + '\n' + response.details.join('\n'));
+            this.showDialog('SUCCESS', response.message, response.details);
             this.clearSelections(); 
             break;
           case 'FAILED':
-            alert(response.message + '\n' + response.details.join('\n'));
+            this.showDialog('FAILED', response.message, response.details);
             this.clearSelections();
             break;
           case 'PARTIAL_SUCCESS':
-            alert(response.message + '\n' + response.details.join('\n'));
+            this.showDialog('PARTIAL SUCCESS', response.message, response.details);
             this.clearSelections();
             break;
           default:
-            alert('Estado de respuesta desconocido');
+            this.showDialog('MESSAGE', 'Estado de respuesta desconocido');
         }
       }, error => {
-        alert('Error al enviar archivos: ' + error.message);
+        this.showDialog('MESSAGE', 'Error al enviar archivos.', error.message);
+        console.log(error.message);
       });
   } else {
-    alert('No hay archivos seleccionados para enviar.');
+    this.showDialog('MESSAGE', 'No hay archivos seleccionados para enviar.');
   }
 }
 
@@ -179,33 +193,12 @@ sendFiles() {
     }
   }
 
-  onPageChange(event: any): void {
-    this.currentPage = event;
+  showDialog(title: string, content: string, details?: string[]): void {
+    this.dialog.open(MessageDetailsDialogComponent, {
+      width: '300px',
+      data: { messageTitle: title, messageContent: content, details: details }
+    });
   }
-
   
-
-  /* ----------- Para implemetar el Paguinador 
-  ////Terminal
-  npm install ngx-pagination --save
-
-  /////app.module.ts
-  import { NgxPaginationModule } from 'ngx-pagination'; // Asegúrate de importar correctamente ngx-pagination
-  import { DispercionComponent } from './dispercion/dispercion.component';
-
-  @NgModule({
-  declarations: [
-    DispercionComponent // Añade tu componente aquí
-    // Otros componentes
-  ],
-  imports: [
-    BrowserModule,
-    NgxPaginationModule // Añade el módulo de paginación aquí
-  ],
-  providers: [],
-  bootstrap: [DispercionComponent] // Asegúrate de incluir tu componente como bootstrap si es necesario
-})
-export class AppModule { }
-  */
   
 }

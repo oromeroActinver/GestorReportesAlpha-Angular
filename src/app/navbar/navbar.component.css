@@ -1,76 +1,100 @@
 nav {
-    background-color: #041e42;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    z-index: 1000;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    display: flex;
-   justify-content: space-between;
-   align-items: center;
-   padding: 0 16px;
-  }
+  background-color: #041e42;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 16px;
+}
 
-  .content {
-    padding-top: 50px; /* Ajusta según la altura de tu navbar */
-  }
-  
-  
-  ul {
-    list-style-type: none;
-    padding: 5;
-  }
-  
-  li {
-    display: inline;
-    margin-right: 50px;
-  }
-  
-  a {
-    color: white;
-    text-decoration: none;
-  }
-  
-  a:hover {
-    text-decoration: underline;
-  }
-  
-  nav ul {
-    list-style-type: none;
-    padding: 10;
-  }
-  
-  nav ul li {
-    display: inline;
-    margin-right: 20px;
-  }
-  
-  nav ul li button {
-    background-color: #041e42;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-  }
-  
-  nav ul li button:hover {
-    background-color: #b4a46c;
-  }
+.content {
+  padding-top: 50px; /* Ajusta según la altura de tu navbar */
+}
 
-  button {
-    background: none;
-    border: none;
-    cursor: pointer;
-    font-size: 16px;
-  }
+ul {
+  list-style-type: none;
+  padding: 5;
+  margin: 0;
+}
 
-  .logout-button {
-    margin-left: auto;
-    font-size: 16px;
-    cursor: pointer;
-    background: none;
-    color: aliceblue;
-    border: none;
-  }
-  
+li {
+  display: inline;
+  margin-right: 20px;
+}
+
+a {
+  color: white;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+nav ul li button {
+  background-color: #041e42;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+}
+
+nav ul li button:hover {
+  background-color: #b4a46c;
+}
+
+button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.logout-button {
+  font-size: 16px;
+  cursor: pointer;
+  background: none;
+  color: aliceblue;
+  border: none;
+}
+
+/* Configuración de icono */
+.icon-container mat-icon {
+  color: white; /* Color inicial */
+  transition: color 0.3s; /* Transición suave */
+}
+
+.icon-container mat-icon:hover {
+  color: #b4a46c; /* Color al pasar el cursor, puedes cambiarlo según tus necesidades */
+}
+
+.navbar-left, .navbar-right {
+  flex: 0;
+}
+
+.navbar-center {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.navbar-center li {
+  margin-right: 20px;
+}
+
+.navbar-center li button {
+  background-color: #041e42;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+}
+
+.navbar-center li button:hover {
+  background-color: #b4a46c;
+}

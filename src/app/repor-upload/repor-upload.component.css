@@ -34,9 +34,6 @@
     background-color: #f1f1f1;
     color: #041e42;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    /*appearance: none;  
-    -webkit-appearance: none;
-    -moz-appearance: none;*/
     position: relative;
     padding-right: 30px; /* Space for custom arrow */
 }
@@ -70,7 +67,7 @@
 }
 
 .upload-title {
-    font-size: 1.5em;
+    font-size: 1.2em;
     color: #041e42;
     margin-bottom: 20px;
 }

@@ -1,4 +1,4 @@
-<h2 class="section-title">Dispercion</h2>
+
 <div class="form-container">
     <div class="form-group">
         <label for="year">Año:</label>
@@ -20,15 +20,20 @@
     </div>
     <div class="form-group">
         <div class="button-container">
-            <button class="search-button" (click)="searchFiles()">{{searchFilesButton}}</button>
+            <button mat-raised-button color="primary" class="search-button" (click)="searchFiles()" matTooltip="Buscar">
+                <mat-icon>search</mat-icon>
+            </button>
         </div>
     </div>
 </div>
 
 <div class="table-container">
+    <div *ngIf="lengRegister !== null" class="record-count">
+        Mostrando {{ lengRegister }} registros
+    </div>
     <table>
         <thead>
-            <tr >
+            <tr>
                 <th class="upload-title select-all">
                     SelectAll
                     <input type="checkbox" (change)="toggleSelectAll($event)" [checked]="allSelected" />
@@ -52,15 +57,22 @@
                 <td>{{ dato.estrategia }}</td>
                 <td>{{ dato.mes }}</td>
                 <td>{{ dato.ano }}</td>
-                <td>{{ dato.nombrePdf }}</td>
-                <td><button class="view-button" (click)="viewPDF(dato.contrato, dato.estrategia)">{{ dato.visualizador }}</button></td>
+                <td>
+                    <mat-icon>{{ dato.visualizador }}</mat-icon>
+                    {{ dato.nombrePdf }}
+                </td>
+                <td>
+                    
+                    <button class="view-button" (click)="viewPDF(dato.contrato, dato.estrategia)" matTooltip="Ver PDF">
+                        <mat-icon class="pdf-icon">{{ dato.visualizador }}</mat-icon>
+                    </button>
+                </td>
             </tr>
         </tbody>
     </table>
-<!-- Para El paginador nececitamos instalara npm install ngx-pagination --save 
- <tr *ngFor="let dato of datos | paginate: { itemsPerPage: itemsPerPage, currentPage: currentPage }">
-    <pagination-controls (pageChange)="onPageChange($event)"></pagination-controls> -->
     <button class="send-button" (click)="sendFiles()" [disabled]="!anySelected">{{sendfiles}}</button>
+
+    <div class="loading-spinner" *ngIf="isLoading">
+        <div class="spinner"></div>
+    </div>
 </div>
-
-

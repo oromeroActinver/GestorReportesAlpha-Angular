@@ -33,3 +33,12 @@ body {
 :focus {
   outline: 0;
 }
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+::ng-deep .mat-dialog-container {
+  max-width: 80vw; /* Máximo 80% del ancho de la ventana */
+  max-height: 80vh; /* Máximo 80% de la altura de la ventana */
+  padding: 20px;
+}

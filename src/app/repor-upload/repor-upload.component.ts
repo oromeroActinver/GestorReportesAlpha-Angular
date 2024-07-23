@@ -4,12 +4,17 @@ import { environment } from '../../environments/environment';
 import { FormsModule } from '@angular/forms'; 
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { Utilities } from '../services/tempUtilities';
+import { MatDialog } from '@angular/material/dialog';
+import { MessageDetailsDialogComponent } from '../pages/message-details-dialog/message-details-dialog.component';
 
 @Component({
   selector: 'app-repor-upload',
   standalone: true,
   imports: [
-    CommonModule,
+    CommonModule, 
+    MatTooltipModule,
     FormsModule ],
   templateUrl: './repor-upload.component.html',
   styleUrl: './repor-upload.component.css'
@@ -23,18 +28,21 @@ export class ReporUploadComponent {
   selectedFiles: FileList | null = null;
   isLoading: boolean = false; 
   folderPath: string | null = null;
-  uploadMethod: string = 'file'; // 'file' por defecto
-
+  uploadMethod: string = 'file';
 
   files: File[] = [];
   years: number[] = [];
-  months: string[] = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+  months: string[] = [];
 
   selectedYear: number | null = null;
   selectedMonth: string | null = null;
 
-  constructor(private http: HttpClient, private router: Router) {
+  constructor(private http: HttpClient, private router: Router, 
+    private utilities: Utilities,
+    private dialog: MatDialog) {
+
     const currentYear = new Date().getFullYear();
+    this.months = utilities.getMonthNames();
     const pastYears = currentYear - 10;
     for (let year = currentYear; year >= pastYears; year--) {
       this.years.push(year);
@@ -42,7 +50,7 @@ export class ReporUploadComponent {
   }
 
   ngOnInit(): void {
-    const token = localStorage.getItem('token');
+   /* const token = localStorage.getItem('token');
         if (token) {
             const decodedToken: any = token; //= jwt_decode(token);
             const currentTime = Math.floor(Date.now() / 1000); // Current time in seconds
@@ -54,7 +62,7 @@ export class ReporUploadComponent {
         } else {
             alert('No se encontró un token de autenticación.');
             this.router.navigate(['/login']); // Redirigir al usuario a la página de inicio de sesión
-        } 
+        } */
    }
 
   setUploadMethod(method: string): void {
@@ -63,6 +71,12 @@ export class ReporUploadComponent {
 
   uploadFiles(): void {
     if (this.selectedYear && this.selectedMonth) {
+
+      if (!this.files || this.files.length === 0) {
+        this.showDialog('MESSAGE', 'Por favor, seleccione al menos un archivo para subir.');
+        return;
+    }
+
       this.isLoading = true; 
         const formData: FormData = new FormData();
         const monthIndex = this.months.indexOf(this.selectedMonth) + 1; 
@@ -83,36 +97,41 @@ export class ReporUploadComponent {
                   this.isLoading = false;
                     switch (response.status) {
                         case 'SUCCESS':
-                          alert(response.message + '\n' + response.details.join('\n'));
+                          this.showDialog('SUCCESS', response.message, response.details );
                             break;
                         case 'FAILED':
-                            alert(response.message + '\n' + response.details.join('\n'));
+                          this.showDialog('FAILED', response.message, response.details );
                             break;
-                        case 'PARTIAL_SUCCESS':
-                            alert(response.message + '\n' + response.details.join('\n'));
+                        case 'PARTIALSUCCESS':
+                          this.showDialog('PARTIAL SUCCESS', response.message, response.details );
                             break;   
                         default:
-                            alert('Estado de respuesta desconocido');
+                          this.showDialog('Error', 'Estado de respuesta desconocido');
                     }
                     this.clearSelectedFiles();
                 },
                 error => {
                   this.isLoading = false;
-                    alert('Error al subir los archivos: ' + error.message);
+                    this.showDialog('FAILED', 'Error al subir los archivos: ' + error.message);
                     this.clearSelectedFiles();
                 }
             );
         } else {
           this.isLoading = false;
-            alert('No se encontró un token de autenticación.');
+            this.showDialog('FAILED', 'No se encontró un token de autenticación.');
         }
     } else {
-        alert('Por favor, seleccione Año y Mes.');
+        this.showDialog('MESSAGE', 'Por favor, seleccione Año y Mes.');
     }
 }
 
 uploadFolderPath(): void {
-  if (this.selectedYear && this.selectedMonth && this.folderPath) {
+  if (this.selectedYear && this.selectedMonth) {
+    if (!this.folderPath) { // Cambié la condición a `!this.folderPath` para verificar si está vacío
+      this.showDialog('MESSAGE', 'Ingrese el path de donde se tomarán los archivos.');
+      return;
+    }
+
     this.isLoading = true;
     const url = `/api/files/pathfiles`;
     const token = localStorage.getItem('token');
@@ -124,36 +143,44 @@ uploadFolderPath(): void {
     const body = {
       folderPath: this.folderPath,
       year: this.selectedYear,
-      month: this.selectedMonth.indexOf(this.selectedMonth) + 1
+      month: this.months.indexOf(this.selectedMonth) + 1
     };
 
     this.http.post(url, body, { headers }).subscribe(
       (response: any) => {
         this.isLoading = false;
-          switch (response.status) {
-              case 'SUCCESS':
-                alert(response.message + '\n' + response.details.join('\n'));
-                  break;
-              case 'FAILED':
-                  alert(response.message + '\n' + response.details.join('\n'));
-                  break;
-              case 'PARTIAL_SUCCESS':
-                  alert(response.message + '\n' + response.details.join('\n'));
-                  break;
-              default:
-                  alert('Estado de respuesta desconocido');
-          }
-          this.clearSelectedFiles();
+        switch (response.status) {
+          case 'SUCCESS':
+            this.showDialog('SUCCESS', response.message, response.details);
+            break;
+          case 'FAILED':
+            this.showDialog('FAILED', response.message, response.details);
+            break;
+          case 'PARTIALSUCCESS':
+            this.showDialog('PARTIAL SUCCESS', response.message, response.details);
+            break;
+          default:
+            this.showDialog('FAILED', 'Estado de respuesta desconocido');
+        }
+        this.clearSelectedFiles();
       },
       error => {
         this.isLoading = false;
-          alert('Error al subir los archivos: ' + error.message);
-          this.clearSelectedFiles();
+        this.showDialog('FAILED', 'Error al subir los archivos: ');
+        console.log(error.message)
+        this.clearSelectedFiles();
       }
-  );
+    );
   } else {
-    alert('Por favor, seleccione Año, Mes y ingrese el path de donde se tomarán los archivos.');
+    this.showDialog('MESSAGE', 'Por favor, seleccione Año, Mes.');
   }
+}
+
+showDialog(title: string, content: string, details?: string[]): void {
+  this.dialog.open(MessageDetailsDialogComponent, {
+    width: '300px',
+    data: { messageTitle: title, messageContent: content, details: details }
+  });
 }
 
 onFileChanged(event: any): void {
