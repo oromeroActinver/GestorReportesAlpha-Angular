@@ -7,11 +7,9 @@ import { catchError } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class EstrategiasService {
-  private apiUrl = '/api/estrategias';
+  private apiUrl = '/api/files/estrategias';
 
   constructor(private http: HttpClient) { }
-
-  //token = localStorage.getItem('token');
 
   getEstrategias(token: string | null): Observable<string[]> {
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
@@ -20,13 +18,14 @@ export class EstrategiasService {
       catchError(error => {
         let errorMessage = 'Error desconocido al obtener estrategias';
         if (error.error instanceof ErrorEvent) {
-          errorMessage = `Error: ${error.error.message}`;
+          errorMessage = `Error: ${error.error.token}`;
         } else {
-          errorMessage = `Error ${error.status}: ${error.error.message}`;
+          errorMessage = `Error ${error.status}: ${error.error.token}`;
         }
         console.error(errorMessage);
-        return throwError(errorMessage);
+        return throwError(error);
       })
     );
   }
+
 }

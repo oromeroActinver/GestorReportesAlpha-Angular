@@ -23,7 +23,6 @@ export class AppComponent implements OnInit {
         this.checkRoute(event.url);
       }
     });
-    // Check the initial route
     this.checkRoute(this.router.url);
   }
 

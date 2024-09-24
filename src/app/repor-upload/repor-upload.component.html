@@ -28,13 +28,15 @@
         <h2 class="upload-title">{{ inputSelestPath }}</h2>
         <input type="file" id="fileInput" (change)="onFilesSelected($event)" multiple hidden>
         <label for="fileInput" class="file-upload-button">{{ uploadButton }}</label>
-        <ul>
-            <li *ngFor="let file of files">{{ file.name }}</li>
-        </ul>
+  
+        <p *ngIf="files.length > 0">{{ files.length }} archivos seleccionados</p>
+        <p *ngIf="files.length === 0">No se han seleccionado archivos</p>
+      
         <div class="button-container">
-            <button class="upload-button" (click)="uploadFiles()">{{ saveFiles }}</button>
+          <button class="upload-button" (click)="uploadFiles()">{{ saveFiles }}</button>
         </div>
-    </div>
+      </div>
+      
 
     <div class="file-upload-container" *ngIf="uploadMethod === 'folder'">
         <h2 class="upload-title">Path reportes Alpha</h2>

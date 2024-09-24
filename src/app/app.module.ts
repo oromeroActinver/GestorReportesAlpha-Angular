@@ -8,29 +8,30 @@ import { AuthGuard } from './auth.guard';
 import { AuthService } from './pages/login/AuthService';
 import { AuthInterceptor } from './services/AuthInterceptor';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { MatDialogModule } from '@angular/material/dialog'; // Importa MatDialogModule
+import { MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { AppComponent } from './app.component';
 import { DispercionComponent } from './pages/dispercion/dispercion.component';
-import { MessageDialogComponent } from './message-dialog/message-dialog.component';
+import { MatPaginatorModule } from '@angular/material/paginator';
+
 
 @NgModule({
   declarations: [
     AppComponent,
-    DispercionComponent,
-    MessageDialogComponent
+    DispercionComponent
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
     BrowserAnimationsModule,
     MatSnackBarModule,
-    MatDialogModule, // Asegúrate de tener MatDialogModule aquí
+    MatDialogModule,
     MatButtonModule,
     MatIconModule,
     MatTooltipModule,
+    MatPaginatorModule,
     RouterModule.forRoot(routes)
   ],
   providers: [

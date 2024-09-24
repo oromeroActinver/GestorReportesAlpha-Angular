@@ -3,10 +3,10 @@
   }
   
   main {
-    margin-top: 60px; /* Ajusta según la altura de tu navbar */
-    padding: 16px; /* Opcional: añade un padding para el contenido */
+    margin-top: 60px; 
+    padding: 16px; 
   }
 
   .content {
-    padding-top: 20px; /* Espacio adicional para separar la tabla del contenido superior */
+    padding-top: 20px; 
   }

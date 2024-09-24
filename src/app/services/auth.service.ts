@@ -15,6 +15,5 @@ export class AuthService {
   login(username: string, password: String){
     const url = `${this.apiUrl}/Login/loginAntiDirectory`;
     return this.http.post(url, {username, password});
-    //return this.http.post(this.apiUrl);
   }
 }
