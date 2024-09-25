@@ -13,7 +13,7 @@ nav {
 }
 
 .content {
-  padding-top: 50px; /* Ajusta según la altura de tu navbar */
+  padding-top: 50px;
 }
 
 ul {
@@ -63,14 +63,14 @@ button {
   border: none;
 }
 
-/* Configuración de icono */
+
 .icon-container mat-icon {
-  color: white; /* Color inicial */
-  transition: color 0.3s; /* Transición suave */
+  color: white; 
+  transition: color 0.3s;
 }
 
 .icon-container mat-icon:hover {
-  color: #b4a46c; /* Color al pasar el cursor, puedes cambiarlo según tus necesidades */
+  color: #b4a46c;
 }
 
 .navbar-left, .navbar-right {

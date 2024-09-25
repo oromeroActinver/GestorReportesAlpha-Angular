@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { catchError, map } from 'rxjs/operators';
 import { Observable, throwError } from 'rxjs';
@@ -12,6 +12,7 @@ import { Router } from '@angular/router';
 export class AuthService {
   private isAuthenticated = false;
   apiUrl = environment.API_URL;
+  private apiUrlValid = '/api/Login/valido';
 
   constructor(private http: HttpClient, private router: Router) { }
 
@@ -41,6 +42,25 @@ export class AuthService {
     );
   }
 
+  /*Token Valido*/
+  validateToken(token: string | null): Observable<any> {
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+
+    return this.http.get<any>(this.apiUrlValid, { headers }).pipe(
+      catchError(error => {
+        let errorMessage = 'Error desconocido al validar el token';
+        if (error.error instanceof ErrorEvent) {
+          errorMessage = `Error: ${error.error.token}`;
+        } else {
+          errorMessage = `Error ${error.status}: ${error.error.token}`;
+        }
+        console.error(errorMessage);
+        return throwError(error);
+      })
+    );
+  }
+
+
   logout(): void {
     this.setAuthStatus(false);
     localStorage.removeItem('token');
@@ -58,4 +78,6 @@ export class AuthService {
   getAuthStatus(): boolean {
     return this.isAuthenticated;
   }
+
+  
 }

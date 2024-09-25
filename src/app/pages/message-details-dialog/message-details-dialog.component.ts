@@ -36,7 +36,7 @@ export class MessageDetailsDialogComponent {
   
   toggleDetails(): void {
     this.showDetails = !this.showDetails;
-    this.dialogRef.updateSize(this.showDetails ? '600px' : '400px'); // Ajusta el tamaño del diálogo
+    this.dialogRef.updateSize(this.showDetails ? '600px' : '400px');
   }
   
   onAccept(): void {

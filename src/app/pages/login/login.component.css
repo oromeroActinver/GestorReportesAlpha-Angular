@@ -10,22 +10,20 @@ body {
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   font-family: Arial, sans-serif;
-  position: relative; /* Para posicionar correctamente la imagen de fondo */
+  position: relative;
 }
 
-/* Header style */
 .login-header {
   text-align: center;
   margin-bottom: 20px;
 }
 
-/* Estilo para la imagen superior */
+
 .login-header-image {
-  max-width: 100%; /* Ajustar el tamaño de la imagen */
+  max-width: 100%;
   height: auto;
 }
 
-/* Header style */
 .login-header {
   text-align: center;
   margin-bottom: 20px;
@@ -36,7 +34,6 @@ body {
   color: #333;
 }
 
-/* Form group style */
 .form-group {
   margin-bottom: 15px;
 }
@@ -55,7 +52,6 @@ body {
   border-radius: 5px;
 }
 
-/* Button style */
 .btn {
   display: block;
   width: 100%;
@@ -73,14 +69,12 @@ body {
   background-color: #b4a46c;
 }
 
-/* Error message style */
 .error-message {
   color: red;
   text-align: center;
   margin-top: 10px;
 }
 
-/*Circulo cijardo*/
 .loading-spinner {
   position: fixed;
   top: 50%;
@@ -90,8 +84,8 @@ body {
 }
 
 .spinner {
-  border: 12px solid #b4a46c; /* Light grey */
-  border-top: 12px solid #041e42; /* Blue */
+  border: 12px solid #b4a46c; 
+  border-top: 12px solid #041e42;
   border-radius: 50%;
   width: 60px;
   height: 60px;

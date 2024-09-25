@@ -11,7 +11,7 @@
 .form-group {
   display: flex;
   align-items: center;
-  gap: 5px; /* Espacio entre label y select */
+  gap: 5px;
 }
 
 .form-group label {
@@ -30,7 +30,7 @@
   color: #041e42;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   position: relative;
-  padding-right: 30px; /* Space for custom arrow */
+  padding-right: 30px;
 }
 
 .form-group select::after {
@@ -48,15 +48,14 @@
 }
 
 .form-group:nth-child(3) select {
-  width: 300px; /* Haz que el select de "Estrategia" sea más largo */
+  width: 300px;
 }
 
-/* Estilo específico para los select */
 .custom-select {
   padding: 8px;
   border-radius: 5px;
   border: 1px solid #ccc;
-  width: 150px; /* Ajusta el ancho según sea necesario */
+  width: 150px; 
 }
 
 .search-button, .send-button {
@@ -69,8 +68,6 @@
 }
 
 
-/* Estilo para el botón de la columna Visualizador */
-
 .view-button {
   padding: 5px 10px;
   border-radius: 15px;
@@ -80,7 +77,6 @@
   cursor: pointer;
 }
 
-/* Botón buscar */
 .button-container {
   display: flex;
   justify-content: flex-end;
@@ -88,10 +84,10 @@
   width: 100%;
 }
 
-/* Botón enviar */
+
 .send-button {
   position: absolute;
-  bottom: -50px; /* Ajusta según sea necesario */
+  bottom: -50px;
   right: 20;
   padding: 8px 14px;
   border-radius: 15px;
@@ -101,27 +97,25 @@
   cursor: pointer;
 }
 
-/* Estilo para el botón al pasar el cursor */
+
 .search-button:hover, .send-button:hover, .view-button:hover {
   background-color: #b4a46c;
 }
 
-/* Estilo para el botón enviar cuando está deshabilitado */
+
 .send-button:disabled {
-  background-color: #999; /* Color de fondo más tenue */
-  border-color: #999; /* Borde más tenue */
-  cursor: not-allowed; /* Cambia el cursor a not-allowed */
-  opacity: 0.5; /* Reduce la opacidad para hacerlo más tenue */
+  background-color: #999; 
+  border-color: #999;
+  cursor: not-allowed; 
+  opacity: 0.5;
 }
 
-/* Estilo para el botón enviar deshabilitado al pasar el cursor */
 .send-button:disabled:hover {
-  background-color: #999; /* Mantén el color más tenue al pasar el cursor */
+  background-color: #999;
 }
 
-/* Estilo para la tabla */
 .table-container {
-  position: relative; /* Asegúrate de que el contenedor de la tabla tenga posición relativa */
+  position: relative;
 }
 
 table {
@@ -132,7 +126,7 @@ table {
 th, td {
   border: 1px solid #b4a46c;
   padding: 8px;
-  text-align: center; /* Ajusta el texto al centro si es necesario */
+  text-align: center;
 }
 
 th {
@@ -146,7 +140,7 @@ th {
 }
 
 th.select-all {
-  width: 100px; /* Ajusta columna select según sea necesario */
+  width: 100px;
 }
 
 ul {
@@ -162,7 +156,7 @@ li {
   border-radius: 3px;
 }
 
-/*Circulo cijardo*/
+
 .loading-spinner {
   position: fixed;
   top: 50%;
@@ -173,9 +167,7 @@ li {
 
 .spinner {
   border: 12px solid #b4a46c;
-  /* Light grey */
   border-top: 12px solid #041e42;
-  /* Blue */
   border-radius: 50%;
   width: 60px;
   height: 60px;
@@ -189,4 +181,26 @@ li {
   100% {
     transform: rotate(360deg);
   }
+}
+
+::ng-deep .mat-paginator {
+  background-color: #f1f1f1;
+  color: #041e42;
+}
+
+/* Estilo para el input de filtro de contrato */
+.contract-filter {
+  font-size: 1em;
+  padding: 0px;
+  border-radius: 8px;
+  border: 1px solid #041e42;
+  width: 100px;
+  text-align: center;
+  background-color: #f1f1f1;
+  color: #041e42;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.contract-filter::placeholder {
+  opacity: 50;
 }
