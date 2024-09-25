@@ -33,6 +33,7 @@ export class DispercionComponent implements AfterViewInit {
   ano: number | null = null;
   lengRegister: number | null = null;
   isLoading: boolean = false;
+
   token = localStorage.getItem('token');
   years: number[] = [];
   months: string[] = [];
@@ -43,8 +44,12 @@ export class DispercionComponent implements AfterViewInit {
   dataSource = new MatTableDataSource<any>();
   allSelected: boolean = false;
 
-  constructor(private http: HttpClient, private estrategiasService: EstrategiasService, private utilities: Utilities,
-    private router: Router, private dialog: MatDialog
+  constructor(
+    private http: HttpClient, 
+    private estrategiasService: EstrategiasService, 
+    private utilities: Utilities,
+    private router: Router, 
+    private dialog: MatDialog
   ) {
     const currentYear = new Date().getFullYear();
     this.months = utilities.getMonthNames();
@@ -78,13 +83,11 @@ export class DispercionComponent implements AfterViewInit {
     }
   }
 
-  
-
   ngAfterViewInit() {
     this.paginator.pageSize = this.paginator.pageSize || 5;
     this.dataSource.paginator = this.paginator;
     this.paginatedDatos = this.datos.slice(0, this.paginator.pageSize);
-}
+  }
 
   toggleSelectAll(event: any) {
     const checked = event.target.checked;
@@ -107,7 +110,7 @@ export class DispercionComponent implements AfterViewInit {
         month: monthIndex.toString(),
         strategy: this.selectedStrategy
       };
-  
+
       if (this.token) {
         const headers = new HttpHeaders().set('Authorization', `Bearer ${this.token}`);
         this.http.post<any[]>(url, null, { headers, params })
@@ -145,8 +148,6 @@ export class DispercionComponent implements AfterViewInit {
       this.showDialog('MESSAGE', 'Por favor, seleccione Año, Mes y Estrategia.');
     }
   }
-  
-
 
   updateAnySelected() {
     this.anySelected = this.datos.some(dato => dato.selected);
@@ -216,12 +217,12 @@ export class DispercionComponent implements AfterViewInit {
     }
   }
 
-onPageChange(event: PageEvent): void {
-  this.paginator.pageSize = event.pageSize;
-  const startIndex = event.pageIndex * event.pageSize;
-  const endIndex = startIndex + event.pageSize;
-  this.paginatedDatos = this.datos.slice(startIndex, endIndex);
-}
+  onPageChange(event: PageEvent): void {
+    this.paginator.pageSize = event.pageSize;
+    const startIndex = event.pageIndex * event.pageSize;
+    const endIndex = startIndex + event.pageSize;
+    this.paginatedDatos = this.datos.slice(startIndex, endIndex);
+  }
 
   showDialog(title: string, content: string, details?: string[]): void {
     this.dialog.open(MessageDetailsDialogComponent, {
@@ -244,6 +245,4 @@ onPageChange(event: PageEvent): void {
     const startIndex = this.paginator.pageIndex * this.paginator.pageSize;
     this.paginatedDatos = this.paginatedDatos.slice(startIndex, startIndex + this.paginator.pageSize);
   }
-  
-
 }

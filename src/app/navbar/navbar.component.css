@@ -63,14 +63,14 @@ button {
   border: none;
 }
 
-
+/* Configuración de icono */
 .icon-container mat-icon {
-  color: white; 
-  transition: color 0.3s;
+  color: white; /* Color inicial */
+  transition: color 0.3s; /* Transición suave */
 }
 
 .icon-container mat-icon:hover {
-  color: #b4a46c;
+  color: #b4a46c; /* Color al pasar el cursor, puedes cambiarlo según tus necesidades */
 }
 
 .navbar-left, .navbar-right {

@@ -17,7 +17,8 @@ import { MessageDetailsDialogComponent } from '../pages/message-details-dialog/m
   imports: [
     CommonModule,
     MatTooltipModule,
-    FormsModule],
+    FormsModule
+  ],
   templateUrl: './repor-upload.component.html',
   styleUrl: './repor-upload.component.css'
 })
@@ -39,10 +40,14 @@ export class ReporUploadComponent {
   selectedYear: number | null = null;
   selectedMonth: string | null = null;
 
-  constructor(private http: HttpClient, private router: Router, private authService: AuthService,
-    private estrategiasService: EstrategiasService, private utilities: Utilities,
-    private dialog: MatDialog) {
-
+  constructor(
+    private http: HttpClient, 
+    private router: Router, 
+    private authService: AuthService,
+    private estrategiasService: EstrategiasService, 
+    private utilities: Utilities,
+    private dialog: MatDialog
+  ) {
     const currentYear = new Date().getFullYear();
     this.months = utilities.getMonthNames();
     const pastYears = currentYear - 10;
@@ -57,7 +62,7 @@ export class ReporUploadComponent {
     if (token) {
       this.authService.validateToken(token).subscribe(
         response => {
-          console.info("Token vallido");
+          console.info("Token válido");
         },
         error => {
           if (error.error.token === "El token de autenticación ha expirado." || error.error.token === "El token de autenticación es inválido.") {
@@ -75,7 +80,6 @@ export class ReporUploadComponent {
       this.router.navigate(['/']);
     }
   }
-
 
   setUploadMethod(method: string): void {
     this.uploadMethod = method;
@@ -139,7 +143,7 @@ export class ReporUploadComponent {
 
   uploadFolderPath(): void {
     if (this.selectedYear && this.selectedMonth) {
-      if (!this.folderPath) { 
+      if (!this.folderPath) {
         this.showDialog('MESSAGE', 'Ingrese el path de donde se tomarán los archivos.');
         return;
       }
@@ -178,8 +182,7 @@ export class ReporUploadComponent {
         },
         error => {
           this.isLoading = false;
-          this.showDialog('FAILED', 'Error al subir los archivos: ');
-          console.log(error.message)
+          this.showDialog('FAILED', 'Error al subir los archivos: ' + error.message);
           this.clearSelectedFiles();
         }
       );

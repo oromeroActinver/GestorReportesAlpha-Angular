@@ -30,7 +30,7 @@
   color: #041e42;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   position: relative;
-  padding-right: 30px;
+  padding-right: 30px; /* Space for custom arrow */
 }
 
 .form-group select::after {
@@ -67,7 +67,6 @@
   cursor: pointer;
 }
 
-
 .view-button {
   padding: 5px 10px;
   border-radius: 15px;
@@ -84,7 +83,6 @@
   width: 100%;
 }
 
-
 .send-button {
   position: absolute;
   bottom: -50px;
@@ -97,11 +95,9 @@
   cursor: pointer;
 }
 
-
 .search-button:hover, .send-button:hover, .view-button:hover {
   background-color: #b4a46c;
 }
-
 
 .send-button:disabled {
   background-color: #999; 
@@ -156,7 +152,7 @@ li {
   border-radius: 3px;
 }
 
-
+/*Circulo cijardo*/
 .loading-spinner {
   position: fixed;
   top: 50%;
@@ -167,7 +163,9 @@ li {
 
 .spinner {
   border: 12px solid #b4a46c;
+  /* Light grey */
   border-top: 12px solid #041e42;
+  /* Blue */
   border-radius: 50%;
   width: 60px;
   height: 60px;
@@ -181,26 +179,4 @@ li {
   100% {
     transform: rotate(360deg);
   }
-}
-
-::ng-deep .mat-paginator {
-  background-color: #f1f1f1;
-  color: #041e42;
-}
-
-/* Estilo para el input de filtro de contrato */
-.contract-filter {
-  font-size: 1em;
-  padding: 0px;
-  border-radius: 8px;
-  border: 1px solid #041e42;
-  width: 100px;
-  text-align: center;
-  background-color: #f1f1f1;
-  color: #041e42;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
-
-.contract-filter::placeholder {
-  opacity: 50;
 }

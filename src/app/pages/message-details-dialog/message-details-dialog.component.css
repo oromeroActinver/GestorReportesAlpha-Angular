@@ -24,17 +24,18 @@
 }
 
 .dialog-details {
-  margin-top: 10px;
-  font-size: 0.9em;
-  text-align: left;
   max-height: 150px;
   overflow-y: auto;
   overflow-x: auto;
 }
 
 .details-list {
-  padding-left: 20px;
+  padding-left: 20px; /* Añade sangría a la lista */
+  max-height: 150px; /* Ajusta la altura según sea necesario */
+  overflow-y: auto;  /* Añade el desplazamiento vertical */
+  overflow-x: auto;  /* Añade el desplazamiento horizontal */
 }
+
 
 .dialog-actions {
   display: flex;

@@ -75,6 +75,7 @@ body {
   margin-top: 10px;
 }
 
+/*Circulo cijardo*/
 .loading-spinner {
   position: fixed;
   top: 50%;
@@ -84,8 +85,8 @@ body {
 }
 
 .spinner {
-  border: 12px solid #b4a46c; 
-  border-top: 12px solid #041e42;
+  border: 12px solid #b4a46c; /* Light grey */
+  border-top: 12px solid #041e42; /* Blue */
   border-radius: 50%;
   width: 60px;
   height: 60px;

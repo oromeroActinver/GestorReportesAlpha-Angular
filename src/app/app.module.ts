@@ -8,30 +8,29 @@ import { AuthGuard } from './auth.guard';
 import { AuthService } from './pages/login/AuthService';
 import { AuthInterceptor } from './services/AuthInterceptor';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { MatDialogModule } from '@angular/material/dialog';
+import { MatDialogModule } from '@angular/material/dialog'; // Importa MatDialogModule
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { AppComponent } from './app.component';
 import { DispercionComponent } from './pages/dispercion/dispercion.component';
-import { MatPaginatorModule } from '@angular/material/paginator';
-
+import { MessageDialogComponent } from './message-dialog/message-dialog.component'; // Conservando este componente
 
 @NgModule({
   declarations: [
     AppComponent,
-    DispercionComponent
+    DispercionComponent,
+    MessageDialogComponent // Componente del branch remoto
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
     BrowserAnimationsModule,
     MatSnackBarModule,
-    MatDialogModule,
+    MatDialogModule, // Asegúrate de tener MatDialogModule aquí
     MatButtonModule,
     MatIconModule,
     MatTooltipModule,
-    MatPaginatorModule,
     RouterModule.forRoot(routes)
   ],
   providers: [
@@ -42,5 +41,3 @@ import { MatPaginatorModule } from '@angular/material/paginator';
   bootstrap: [AppComponent]
 })
 export class AppModule { }
-
-
