@@ -15,11 +15,37 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { AppComponent } from './app.component';
 import { DispercionComponent } from './pages/dispercion/dispercion.component';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatNativeDateModule } from '@angular/material/core';
+import { FormsModule } from '@angular/forms';
+import { RendimientosComponent } from './pages/rendimientos/rendimientos.component';
+import { MAT_DATE_LOCALE, MAT_DATE_FORMATS } from '@angular/material/core';
+import { LOCALE_ID } from '@angular/core';
+import { registerLocaleData } from '@angular/common';
+import localeEs from '@angular/common/locales/es';
+
+registerLocaleData(localeEs, 'es');
+
+// Definir los formatos de fecha en español
+export const MY_DATE_FORMATS = {
+  parse: {
+    dateInput: 'LL',
+  },
+  display: {
+    dateInput: 'LL',
+    monthYearLabel: 'MMMM YYYY',
+    dateA11yLabel: 'LL',
+    monthYearA11yLabel: 'MMMM YYYY',
+  },
+};
 
 
 @NgModule({
   declarations: [
     AppComponent,
+    RendimientosComponent,
     DispercionComponent
   ],
   imports: [
@@ -32,11 +58,20 @@ import { MatPaginatorModule } from '@angular/material/paginator';
     MatIconModule,
     MatTooltipModule,
     MatPaginatorModule,
+    MatDatepickerModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatNativeDateModule,
+    FormsModule,
     RouterModule.forRoot(routes)
   ],
   providers: [
     AuthGuard,
+    MatDatepickerModule,
     AuthService,
+    { provide: MAT_DATE_LOCALE, useValue: 'es' },
+    { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS },
+    { provide: LOCALE_ID, useValue: 'es' },
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
   ],
   bootstrap: [AppComponent]

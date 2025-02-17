@@ -1,0 +1,48 @@
+<h3>Calcular Rendimiento</h3>
+
+<button mat-icon-button (click)="closeDialog()" style="position: absolute; top: 10px; right: 10px;">
+  <mat-icon>close</mat-icon>
+</button>
+
+<form [formGroup]="rendimientosForm">
+  <div style="display: flex; justify-content: space-between; gap: 16px;">
+    <mat-form-field appearance="fill" style="flex: 1;">
+      <mat-label>Fecha Inicio Mensual</mat-label>
+      <input matInput [matDatepicker]="picker1" formControlName="fechaInicioMensual">
+      <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+      <mat-datepicker #picker1></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" style="flex: 1;">
+      <mat-label>Fecha Fin Mensual</mat-label>
+      <input matInput [matDatepicker]="picker2" formControlName="fechaFinMensual">
+      <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+      <mat-datepicker #picker2></mat-datepicker>
+    </mat-form-field>
+  </div>
+
+  <div style="display: flex; justify-content: space-between; gap: 16px; margin-top: 10px;">
+    <mat-form-field appearance="fill" style="flex: 1;">
+      <mat-label>Fecha Inicio Anual</mat-label>
+      <input matInput [matDatepicker]="picker3" formControlName="fechaInicioAnual">
+      <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
+      <mat-datepicker #picker3></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" style="flex: 1;">
+      <mat-label>Fecha Fin Anual</mat-label>
+      <input matInput [matDatepicker]="picker4" formControlName="fechaFinAnual">
+      <mat-datepicker-toggle matSuffix [for]="picker4"></mat-datepicker-toggle>
+      <mat-datepicker #picker4></mat-datepicker>
+    </mat-form-field>
+  </div>
+
+  <div style="display: flex; justify-content: flex-end; margin-top: 20px;">
+    <button class="calcular-button" mat-raised-button color="primary" (click)="onSubmit()">Calcular</button>
+  </div>
+
+</form>
+
+<div class="loading-spinner" *ngIf="isLoading">
+  <div class="spinner"></div>
+</div>

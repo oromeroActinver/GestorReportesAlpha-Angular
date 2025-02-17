@@ -1,0 +1,109 @@
+<!-- TABLA-->
+ 
+<div class="form-container">
+
+  <div class="form-group">
+      <label for="year">Año:</label>
+      <select id="year" class="custom-select" [(ngModel)]="selectedYear">
+          <option *ngFor="let year of years" [value]="year">{{ year }}</option>
+      </select>
+  </div>
+
+  <div class="form-group">
+    <label for="strategy">Estrategia:</label>
+    <select id="strategy" class="custom-select" [(ngModel)]="selectedStrategy">
+        <option *ngFor="let strategy of strategies" [value]="strategy">{{ strategy }}</option>
+    </select>
+</div>
+  
+  <div class="form-group">
+      <div class="button-container">
+          <button mat-raised-button color="primary" class="search-button" (click)="searchRendimientos()" matTooltip="Buscar">
+               <mat-icon>search</mat-icon>
+          </button>
+      </div>
+  </div>
+  <div class="form-group">
+    <div class="button-container">
+        <button mat-raised-button color="primary" class="search-button" (click)="openRendimientosDialog()" matTooltip="Buscar Rendimientos">
+             Calcular Rendimientos
+        </button>
+    </div>
+</div>
+<div class="form-group">
+  <div class="button-container">
+      <button mat-raised-button color="primary" class="search-button" (click)="generateReportAlpha()" matTooltip="Buscar">
+           Genera Reporte Alpha
+      </button>
+  </div>
+</div>
+</div>
+
+<div class="table-container">
+  <table>
+      <thead>
+          <tr>
+              <!--<th class="upload-title">PORTAFOLIO</th>-->
+              <th class="upload-title">PORTAFOLIO
+                <input type="text" class="contract-filter" [(ngModel)]="filters.portafolio" (input)="applyFilters()" />
+              </th>
+              <th class="upload-title">INICIO ALPHA
+                <button (click)="sortBy('inicioAlpha')">↕</button>
+                <input type="text" class="contract-filter" [(ngModel)]="filters.inicioAlpha" (input)="applyFilters()" />
+              </th>
+              <th class="upload-title">AÑO ANTERIOR</th>
+              <th class="upload-title">DESDE INICIO</th>
+              <th class="upload-title">ENERO</th>
+              <th class="upload-title">FEBRERO</th>
+              <th class="upload-title">MARZO</th>
+              <th class="upload-title">ABRIL</th>
+              <th class="upload-title">MAYO</th>
+              <th class="upload-title">JUNIO</th>
+              <th class="upload-title">JULIO</th>
+              <th class="upload-title">AGOSTO</th>
+              <th class="upload-title">SEPTIEMBRE</th>
+              <th class="upload-title">OCTUBRE</th>
+              <th class="upload-title">NOVIEMBRE</th>
+              <th class="upload-title">DICIEMBRE</th>
+              <th class="upload-title">EN EL AÑO</th>
+              <th class="upload-title">ACTIVO INICIO</th>
+              <th class="upload-title">ACTIVO FIN</th>
+              <th class="upload-title">ESTRATEGIA</th>
+          </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let dato of paginatedDatos">
+          <td>{{ dato.portafolio }}</td>
+          <td>{{ dato.inicioAlpha }}</td>
+          <td [ngClass]="{ 'red-text': dato.anioAnterior < 0 }">{{ dato.anioAnterior }}</td>
+          <td [ngClass]="{ 'red-text': dato.desdeInicio < 0 }">{{ dato.desdeInicio }}</td>
+          <td [ngClass]="{ 'red-text': dato.enero < 0 }">{{ dato.enero }}</td>
+          <td [ngClass]="{ 'red-text': dato.febrero < 0 }">{{ dato.febrero }}</td>
+          <td [ngClass]="{ 'red-text': dato.marzo < 0 }">{{ dato.marzo }}</td>
+          <td [ngClass]="{ 'red-text': dato.abril < 0 }">{{ dato.abril }}</td>
+          <td [ngClass]="{ 'red-text': dato.mayo < 0 }">{{ dato.mayo }}</td>
+          <td [ngClass]="{ 'red-text': dato.junio < 0 }">{{ dato.junio }}</td>
+          <td [ngClass]="{ 'red-text': dato.julio < 0 }">{{ dato.julio }}</td>
+          <td [ngClass]="{ 'red-text': dato.agosto < 0 }">{{ dato.agosto }}</td>
+          <td [ngClass]="{ 'red-text': dato.septiembre < 0 }">{{ dato.septiembre }}</td>
+          <td [ngClass]="{ 'red-text': dato.octubre < 0 }">{{ dato.octubre }}</td>
+          <td [ngClass]="{ 'red-text': dato.noviembre < 0 }">{{ dato.noviembre }}</td>
+          <td [ngClass]="{ 'red-text': dato.diciembre < 0 }">{{ dato.diciembre }}</td>
+          <td [ngClass]="{ 'red-text': dato.enelAnio < 0 }">{{ dato.enelAnio }}</td>
+          <td [ngClass]="{ 'red-text': dato.activoInicio < 0 }">{{ dato.activoInicio | currency:'USD':'symbol':'1.2-2' }}</td>
+          <td [ngClass]="{ 'red-text': dato.activoFin < 0 }">{{ dato.activoFin | currency:'USD':'symbol':'1.2-2' }}</td>
+          <td>{{ dato.estrategia }}</td>
+        </tr>
+      </tbody>
+  </table>
+  
+   <mat-paginator [length]="dataSource.data.length" [pageSize]="10" [pageSizeOptions]="[5, 10, 20, 50, 100, 200]"
+      (page)="onPageChange($event)">
+   </mat-paginator>
+<!--
+  <button class="send-button" (click)="sendFiles()" [disabled]="!anySelected">{{sendfiles}}</button>
+-->
+  <div class="loading-spinner" *ngIf="isLoading">
+      <div class="spinner"></div>
+  </div>
+</div>

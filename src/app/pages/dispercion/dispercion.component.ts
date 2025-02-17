@@ -132,6 +132,7 @@ export class DispercionComponent implements AfterViewInit {
             } else {
               this.datos = [];
               this.dataSource.data = [];
+              this.paginatedDatos = this.datos.slice(0, this.paginator.pageSize);
               this.showDialog('MESSAGE', 'No existen registros.');
             }
           }, error => {

@@ -85,7 +85,7 @@ export class ReporUploadComponent {
     if (this.selectedYear && this.selectedMonth) {
 
       if (!this.files || this.files.length === 0) {
-        this.showDialog('MESSAGE', 'Por favor, seleccione al menos un archivo para subir.');
+        this.showDialog('MESSAGE', 'Seleccione al menos un archivo.');
         return;
       }
 
@@ -114,7 +114,7 @@ export class ReporUploadComponent {
               case 'FAILED':
                 this.showDialog('FAILED', response.message, response.details);
                 break;
-              case 'PARTIALSUCCESS':
+              case 'PARTIAL_SUCCESS':
                 this.showDialog('PARTIAL SUCCESS', response.message, response.details);
                 break;
               default:
@@ -133,14 +133,14 @@ export class ReporUploadComponent {
         this.showDialog('FAILED', 'No se encontró un token de autenticación.');
       }
     } else {
-      this.showDialog('MESSAGE', 'Por favor, seleccione Año y Mes.');
+      this.showDialog('MESSAGE', 'Seleccione Año y Mes.');
     }
   }
 
   uploadFolderPath(): void {
     if (this.selectedYear && this.selectedMonth) {
       if (!this.folderPath) { 
-        this.showDialog('MESSAGE', 'Ingrese el path de donde se tomarán los archivos.');
+        this.showDialog('MESSAGE', 'Ingresa la ruta donde se tomarán los archivos ALPHA.');
         return;
       }
 
@@ -168,7 +168,7 @@ export class ReporUploadComponent {
             case 'FAILED':
               this.showDialog('FAILED', response.message, response.details);
               break;
-            case 'PARTIALSUCCESS':
+            case 'PARTIAL_SUCCESS':
               this.showDialog('PARTIAL SUCCESS', response.message, response.details);
               break;
             default:

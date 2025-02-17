@@ -5,6 +5,7 @@ import { LoginComponent } from './pages/login/login.component';
 import { ReporUploadComponent } from './repor-upload/repor-upload.component';
 import { DispercionComponent } from './pages/dispercion/dispercion.component';
 import { AuthGuard } from './auth.guard';
+import { RendimientosComponent } from './pages/rendimientos/rendimientos.component';
 
 export const routes: Routes = [
   {
@@ -24,6 +25,11 @@ export const routes: Routes = [
   {
     path: 'dispercion',
     component: DispercionComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'rendimientos',
+    component: RendimientosComponent,
     canActivate: [AuthGuard]
   },
   {
