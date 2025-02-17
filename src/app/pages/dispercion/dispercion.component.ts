@@ -1,4 +1,4 @@
-import { Component, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, ViewChild, AfterViewInit, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -20,19 +20,19 @@ import { MatTableDataSource } from '@angular/material/table';
   templateUrl: './dispercion.component.html',
   styleUrls: ['./dispercion.component.css']
 })
-export class DispercionComponent implements AfterViewInit {
-  searchFilesButton: string = 'Buscar';
-  sendfiles: string = 'Enviar';
+export class DispercionComponent implements AfterViewInit, OnInit {
+  searchFilesButton = 'Buscar';
+  sendfiles = 'Enviar';
   selectedYear: number | null = null;
   selectedMonth: string | null = null;
   selectedStrategy: string | null = null;
   pdfSrc: string | null = null;
-  anySelected: boolean = false;
+  anySelected = false;
   contrato: number | null = null;
   mes: number | null = null;
   ano: number | null = null;
   lengRegister: number | null = null;
-  isLoading: boolean = false;
+  isLoading = false;
 
   token = localStorage.getItem('token');
   years: number[] = [];
@@ -42,7 +42,7 @@ export class DispercionComponent implements AfterViewInit {
   datos: any[] = [];
   paginatedDatos: any[] = [];
   dataSource = new MatTableDataSource<any>();
-  allSelected: boolean = false;
+  allSelected = false;
 
   constructor(
     private http: HttpClient, 
@@ -137,7 +137,7 @@ export class DispercionComponent implements AfterViewInit {
               this.dataSource.data = [];
               this.showDialog('MESSAGE', 'No existen registros.');
             }
-          }, error => {
+          }, () => {
             this.isLoading = false;
             this.showDialog('FAILED', 'Ocurrió un error al buscar los archivos.');
           });

@@ -12,7 +12,7 @@ export class AuthService {
     private http: HttpClient
   ) { }
 
-  login(username: string, password: String){
+  login(username: string, password: string){
     const url = `${this.apiUrl}/Login/loginAntiDirectory`;
     return this.http.post(url, {username, password});
   }

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { FormsModule } from '@angular/forms';
@@ -22,16 +22,16 @@ import { MessageDetailsDialogComponent } from '../pages/message-details-dialog/m
   templateUrl: './repor-upload.component.html',
   styleUrl: './repor-upload.component.css'
 })
-export class ReporUploadComponent {
-  section: string = 'Carga de Reportes';
-  inputSelestPath: string = 'Seleccionar Archivos';
+export class ReporUploadComponent implements OnInit {
+  section = 'Carga de Reportes';
+  inputSelestPath = 'Seleccionar Archivos';
   apiUrl = environment.API_URL;
-  uploadButton: string = 'Cargar Reportes';
-  saveFiles: string = 'Guardar';
+  uploadButton = 'Cargar Reportes';
+  saveFiles = 'Guardar';
   selectedFiles: FileList | null = null;
-  isLoading: boolean = false;
+  isLoading = false;
   folderPath: string | null = null;
-  uploadMethod: string = 'file';
+  uploadMethod = 'file';
 
   files: File[] = [];
   years: number[] = [];

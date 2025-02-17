@@ -12,9 +12,9 @@ import { MatTooltipModule } from '@angular/material/tooltip';
   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent {
-  dispersionButton: string = 'Dispercion';
-  reportsButton: string = 'Carga de Reportes';
-  logoutButton: string = 'cerrar cesión ';
+  dispersionButton = 'Dispercion';
+  reportsButton = 'Carga de Reportes';
+  logoutButton = 'cerrar cesión ';
 
   constructor(private router: Router, private authService: AuthService) {}
 
