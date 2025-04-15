@@ -19,6 +19,8 @@ export class NavbarComponent {
   reportsButton: string = 'Carga de Reportes';
   logoutButton: string = 'cerrar cesión ';
   rendiButton: string = 'Rendimientos';
+  fechas: string = 'Test';
+  
 
   constructor(private router: Router, private authService: AuthService, private dialog: MatDialog) {}
 
@@ -26,13 +28,13 @@ export class NavbarComponent {
     this.router.navigate([path]);
   }
 
- /* openRendimientosDialog() {
+  openRendimientosDialog() {
     this.dialog.open(RendimientosDialogComponent, {
       width: '900px',  // Ajusta el ancho
       height: '300px',  // Ajusta la altura
       panelClass: 'custom-dialog',  // Clase CSS personalizada
     });
-  }*/
+  }
   
 
   logout(): void {

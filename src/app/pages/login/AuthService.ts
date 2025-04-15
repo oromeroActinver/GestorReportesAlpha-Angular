@@ -22,13 +22,15 @@ export class AuthService {
     return this.http.post<LoginResponse>(url, body).pipe(
       map(response => {
         if (response.exist) {
-          let userTokens = JSON.parse(localStorage.getItem('user_tokens') || '{}');
+
+          localStorage.setItem('token', response.token);
+          /*let userTokens = JSON.parse(localStorage.getItem('user_tokens') || '{}');
         
             // Almacena el token con el nombre de usuario como clave
            userTokens[username] = response.token;
 
             // Vuelve a guardar el objeto userTokens actualizado en localStorage
-           localStorage.setItem('user_tokens', JSON.stringify(userTokens));
+           localStorage.setItem('user_tokens', JSON.stringify(userTokens));*/
          // localStorage.setItem('token', response.token);
           this.setAuthStatus(true);
         } else {

@@ -20,7 +20,7 @@
   }
   
   .form-group select {
-    font-size: 1.1em;
+    font-size: 1em;
     padding: 8px;
     border-radius: 10px;
     border: 1px solid #041e42;
@@ -124,18 +124,20 @@
   }
   
   th, td {
-    border: 1px solid #b4a46c;
+    font-size: 0.8em;
+    border: 0.5px solid #b4a46c;
     padding: 8px;
     text-align: center;
   }
   
   th {
+    font-size: 0.5em;
     background-color: #041e42;
     color: #edf0f3;
   }
   
   .upload-title {
-    font-size: 0.9em;
+    font-size: 0.7em;
     margin-bottom: 30px;
   }
   

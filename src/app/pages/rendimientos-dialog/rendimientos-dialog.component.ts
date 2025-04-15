@@ -69,19 +69,19 @@ export class RendimientosDialogComponent {
   }
 
   onSubmit() {
-    const username = localStorage.getItem('username');
-    let token = null;
+    /*const username = localStorage.getItem('username');
+   // let token = null;
 if (username) {
-  const userTokens = JSON.parse(localStorage.getItem('user_tokens') || '{}');
-  token = userTokens[username];
+ // const userTokens = JSON.parse(localStorage.getItem('user_tokens') || '{}');
+ // token = userTokens[username];
   // Aquí puedes continuar con la lógica para utilizar el token
 } else {
   // Manejar el caso donde 'username' es null o no existe en localStorage
   console.error('No se encontró el nombre de usuario en localStorage.');
-}
+}*/
 
 
-    //const token = localStorage.getItem('token');
+    const token = localStorage.getItem('token');
     this.isLoading = true;
 
     const formData = this.rendimientosForm.value;
