@@ -1,0 +1,20 @@
+card {
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    min-height: 280px;
+    flex-shrink: 0;
+  }
+   
+  .card:hover {
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    transform: translateY(-5px);
+  }
+   
+  @media (max-width: 208px) {
+    .card {
+      width: 100%;
+      max-width: 200px;
+      min-height: 240px;
+    }
+  }

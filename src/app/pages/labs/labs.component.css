@@ -6,7 +6,7 @@ table {
 th, td {
   border: 1px solid #ddd;
   padding: 8px;
-  text-align: center; /* Ajusta el texto al centro si es necesario */
+  text-align: center;
 }
 
 th {

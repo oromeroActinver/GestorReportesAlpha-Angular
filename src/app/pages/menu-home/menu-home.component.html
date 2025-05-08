@@ -1,0 +1,26 @@
+<p>menu-home works!</p>
+<!--
+<div class="flex flex-wrap justify-center items-center p-4">
+    <app-card title="Rendimientos" link="/rendimientos"></app-card>
+    <app-card title="Otra Aplicación" link="/otra-aplicacion"></app-card>
+</div>-->
+
+<div class="flex flex-col items-center py-8">
+    <h2 class="text-2xl font-bold mb-8 text-gray-800">Nuestras Ventajas</h2>
+    
+    <div class="flex flex-wrap justify-center gap-6 max-w-4xl px-4">
+      <div *ngFor="let card of cards"
+           class="card hover:scale-105 transition-transform duration-300 w-64">
+        <div class="p-6 h-full flex flex-col items-center text-center"
+             [class]="card.color + ' ' + card.textColor">
+          <div class="text-4xl mb-4">{{card.icon}}</div>
+          <h3 class="text-xl font-semibold mb-2">{{card.title}}</h3>
+          <p class="mb-4 text-sm">{{card.description}}</p>
+          <button class="mt-auto px-4 py-2 rounded-lg font-medium transition-colors text-sm"
+                  [class]="'hover:' + card.textColor + '/80 ' + card.textColor">
+            Ver más
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>

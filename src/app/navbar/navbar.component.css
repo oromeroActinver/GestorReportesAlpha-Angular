@@ -1,76 +1,162 @@
 nav {
-    background-color: #041e42;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    z-index: 1000;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  background-color: #041e42;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 16px;
+}
+
+.content {
+  padding-top: 50px;
+}
+
+ul {
+  list-style-type: none;
+  padding: 5;
+  margin: 0;
+}
+
+li {
+  display: inline;
+  margin-right: 20px;
+}
+
+a {
+  color: white;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+nav ul li button {
+  background-color: #041e42;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+}
+
+nav ul li button:hover {
+  background-color: #b4a46c;
+}
+
+button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.logout-button {
+  font-size: 16px;
+  cursor: pointer;
+  background: none;
+  color: aliceblue;
+  border: none;
+}
+
+
+.icon-container mat-icon {
+  color: white; 
+  transition: color 0.3s;
+}
+
+.icon-container mat-icon:hover {
+  color: #b4a46c;
+}
+
+.navbar-left, .navbar-right {
+  flex: 0;
+}
+
+.navbar-center {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.navbar-center li {
+  margin-right: 20px;
+}
+
+.navbar-center li button {
+  background-color: #041e42;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+}
+
+.navbar-center li button:hover {
+  background-color: #b4a46c;
+}
+
+.navbar-left button {
+  background-color: transparent;
+  color: white;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+}
+ 
+.navbar-left button:hover {
+  color: #b4a46c;
+}
+
+
+/* Estilos para el contenedor del menú */
+.menu-container {
+  margin-left: 20px;
+}
+ 
+/* Estilo del botón que activa el menú */
+.menu-trigger {
+  display: flex;
+  align-items: center;
+  color: white;
+  font-size: 14px;
+  mat-icon {
+    margin-left: 5px;
+    font-size: 18px;
+  }
+}
+ 
+/* Estilos personalizados para el menú desplegable */
+.custom-menu {
+  margin-top: 5px;
+  min-width: 200px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  
+  .mat-menu-item {
     display: flex;
-   justify-content: space-between;
-   align-items: center;
-   padding: 0 16px;
-  }
-
-  .content {
-    padding-top: 50px; /* Ajusta según la altura de tu navbar */
-  }
-  
-  
-  ul {
-    list-style-type: none;
-    padding: 5;
+    align-items: center;
+    gap: 10px;
+    height: 40px;
+    line-height: 40px;
+    
+    mat-icon {
+      color: #041e42;
+      font-size: 20px;
+    }
   }
   
-  li {
-    display: inline;
-    margin-right: 50px;
+  .mat-divider {
+    margin: 5px 0;
   }
-  
-  a {
-    color: white;
-    text-decoration: none;
+}
+ 
+/* Efecto hover para los items del menú */
+.custom-menu .mat-menu-item:hover {
+  background-color: #f5f5f5;
+  mat-icon {
+    color: #b4a46c;
   }
-  
-  a:hover {
-    text-decoration: underline;
-  }
-  
-  nav ul {
-    list-style-type: none;
-    padding: 10;
-  }
-  
-  nav ul li {
-    display: inline;
-    margin-right: 20px;
-  }
-  
-  nav ul li button {
-    background-color: #041e42;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-  }
-  
-  nav ul li button:hover {
-    background-color: #b4a46c;
-  }
-
-  button {
-    background: none;
-    border: none;
-    cursor: pointer;
-    font-size: 16px;
-  }
-
-  .logout-button {
-    margin-left: auto;
-    font-size: 16px;
-    cursor: pointer;
-    background: none;
-    color: aliceblue;
-    border: none;
-  }
-  
+}

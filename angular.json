@@ -27,6 +27,7 @@
               }
             ],
             "styles": [
+              "@angular/material/prebuilt-themes/azure-blue.css",
               "src/styles.css"
             ],
             "scripts": []
@@ -88,15 +89,28 @@
               }
             ],
             "styles": [
+              "@angular/material/prebuilt-themes/azure-blue.css",
               "src/styles.css"
             ],
             "scripts": []
+          }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "src/**/*.ts",
+              "src/**/*.html"
+            ]
           }
         }
       }
     }
   },
   "cli": {
-    "analytics": "db8da701-fab0-40a7-902d-b87de9ea3797"
+    "analytics": "db8da701-fab0-40a7-902d-b87de9ea3797",
+    "schematicCollections": [
+      "@angular-eslint/schematics"
+    ]
   }
 }

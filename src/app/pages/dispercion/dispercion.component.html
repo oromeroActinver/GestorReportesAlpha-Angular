@@ -1,4 +1,4 @@
-<h2 class="section-title">Dispercion</h2>
+
 <div class="form-container">
     <div class="form-group">
         <label for="year">Año:</label>
@@ -20,20 +20,29 @@
     </div>
     <div class="form-group">
         <div class="button-container">
-            <button class="search-button" (click)="searchFiles()">{{searchFilesButton}}</button>
+            <button mat-raised-button color="primary" class="search-button" (click)="searchFiles()" matTooltip="Buscar">
+                <mat-icon>search</mat-icon>
+            </button>
         </div>
     </div>
 </div>
 
 <div class="table-container">
+    <div *ngIf="lengRegister !== null" class="record-count">
+        {{ lengRegister }} registros
+    </div>
     <table>
         <thead>
-            <tr >
+            <tr>
                 <th class="upload-title select-all">
                     SelectAll
                     <input type="checkbox" (change)="toggleSelectAll($event)" [checked]="allSelected" />
+                    
                 </th>
-                <th class="upload-title">Contrato</th>
+                <th class="upload-title">
+                    Contrato
+                    <input type="text" class="contract-filter" [(ngModel)]="filters.contrato" (input)="applyFilters()" />
+                </th>
                 <th class="upload-title">Cliente</th>
                 <th class="upload-title">Estrategia</th>
                 <th class="upload-title">Mes</th>
@@ -43,7 +52,7 @@
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let dato of datos">
+            <tr *ngFor="let dato of paginatedDatos">
                 <td>
                     <input type="checkbox" [(ngModel)]="dato.selected" (change)="updateAnySelected()" />
                 </td>
@@ -52,15 +61,27 @@
                 <td>{{ dato.estrategia }}</td>
                 <td>{{ dato.mes }}</td>
                 <td>{{ dato.ano }}</td>
-                <td>{{ dato.nombrePdf }}</td>
-                <td><button class="view-button" (click)="viewPDF(dato.contrato, dato.estrategia)">{{ dato.visualizador }}</button></td>
+                <td>
+                    <mat-icon>{{ dato.visualizador }}</mat-icon>
+                    {{ dato.nombrePdf }}
+                </td>
+                <td>
+                    
+                    <button class="view-button" (click)="viewPDF(dato.contrato, dato.estrategia)" matTooltip="Ver PDF">
+                        <mat-icon class="pdf-icon">{{ dato.visualizador }}</mat-icon>
+                    </button>
+                </td>
             </tr>
         </tbody>
     </table>
-<!-- Para El paginador nececitamos instalara npm install ngx-pagination --save 
- <tr *ngFor="let dato of datos | paginate: { itemsPerPage: itemsPerPage, currentPage: currentPage }">
-    <pagination-controls (pageChange)="onPageChange($event)"></pagination-controls> -->
+    
+     <mat-paginator [length]="dataSource.data.length" [pageSize]="10" [pageSizeOptions]="[5, 10, 20]"
+        (page)="onPageChange($event)">
+     </mat-paginator>
+
     <button class="send-button" (click)="sendFiles()" [disabled]="!anySelected">{{sendfiles}}</button>
+
+    <div class="loading-spinner" *ngIf="isLoading">
+        <div class="spinner"></div>
+    </div>
 </div>
-
-

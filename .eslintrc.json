@@ -1,0 +1,25 @@
+{
+  "root": true,
+  "overrides": [
+    {
+      "files": ["*.ts"],
+      "parserOptions": {
+        "project": ["tsconfig.json"]
+      },
+      "extends": [
+        "plugin:@angular-eslint/recommended",
+        "plugin:@typescript-eslint/recommended"
+      ],
+      "rules": {
+        "@typescript-eslint/no-unused-vars": "error",
+        "quotes": ["error", "single"],
+        "semi": ["error", "always"]
+      }
+    },
+    {
+      "files": ["*.html"],
+      "extends": ["plugin:@angular-eslint/template/recommended"],
+      "rules": {}
+    }
+  ]
+}
