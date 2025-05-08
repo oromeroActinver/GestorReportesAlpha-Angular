@@ -4,12 +4,50 @@
       <mat-icon matTooltip="Inicio" (click)="navigate('/home')" aria-hidden="false" aria-label="Example home icon" fontIcon="home"></mat-icon>
     </li>
   </ul>
+
+  <li class="menu-container">
+    <button mat-button [matMenuTriggerFor]="mainMenu" class="menu-trigger">
+      <span>Contratos ALPHA</span>
+      <mat-icon>expand_more</mat-icon>
+    </button>
+    <mat-menu #mainMenu="matMenu" class="custom-menu">
+      <button mat-menu-item (click)="navigate('/rendimientos')">
+        <mat-icon>dashboard</mat-icon>
+        <span>{{rendiAlphaButton}}</span>
+      </button>
+      <button mat-menu-item (click)="navigate('/contratos')">
+        <mat-icon>description</mat-icon>
+        <span>Reportes Alpha</span>
+      </button>
+      <button mat-menu-item (click)="navigate('/DispercionAlpha')">
+        <mat-icon>send</mat-icon>
+        <span>{{dispersionAlphaButton}}</span>
+      </button>
+      <button mat-menu-item (click)="navigate('/genReporAlpha')">
+        <mat-icon>description</mat-icon>
+        <span>Cargar PDF Alpha</span>
+      </button>
+      <button mat-menu-item (click)="navigate('/CalculaRend')">
+        <mat-icon>settings</mat-icon>
+        <span>Calcula Rendimientos Alpha</span>
+      </button>
+      <mat-divider></mat-divider>
+      <button mat-menu-item (click)="navigate('/newHome')">
+        <mat-icon>home</mat-icon>
+        <span>{{newMenu}}</span>
+      </button>
+    </mat-menu>
+  </li>
+ 
   <ul class="navbar-center">
-    <li><button (click)="openRendimientosDialog()"><i class="fas fa-chart-line"></i> {{fechas}}</button></li>
-    <li><button (click)="navigate('/rendimientos')"><i class="fas fa-chart-line"></i> {{rendiButton}} </button></li>
+    <!--<li><button (click)="openRendimientosDialog()"><i class="fas fa-chart-line"></i> {{fechas}}</button></li>-->
+    <!--<li><button (click)="navigate('/newHome')"><i class="fas fa-chart-line"></i> {{newMenu}} </button></li>-->
+    <!--<li><button (click)="navigate('/rendimientos')"><i class="fas fa-chart-line"></i> {{rendiAlphaButton}} </button></li>-->
     <li><button (click)="navigate('/reporUpload')"><i class="fas fa-envelope"></i>{{ reportsButton }}</button></li>
     <li><button (click)="navigate('/dispercion')"><i class="fas fa-info-circle"></i>{{dispersionButton}}</button></li>
+    <!--<li><button (click)="navigate('/DispercionAlpha')"><i class="fas fa-info-circle"></i>{{dispersionAlphaButton}}</button></li>-->
   </ul>
+ 
   <ul class="navbar-right">
     <li class="icon-container">
       <mat-icon matTooltip="Cerrar sesión" matTooltipPosition="above" (click)="logout()" aria-hidden="false" aria-label="Logout icon" fontIcon="logout"></mat-icon>

@@ -25,6 +25,9 @@ import { MAT_DATE_LOCALE, MAT_DATE_FORMATS } from '@angular/material/core';
 import { LOCALE_ID } from '@angular/core';
 import { registerLocaleData } from '@angular/common';
 import localeEs from '@angular/common/locales/es';
+import { MatMenuModule } from '@angular/material/menu';
+//import { CardComponent } from './card.component';
+
 
 registerLocaleData(localeEs, 'es');
 
@@ -61,6 +64,7 @@ export const MY_DATE_FORMATS = {
     MatDatepickerModule,
     MatFormFieldModule,
     MatInputModule,
+    MatMenuModule,
     MatNativeDateModule,
     FormsModule,
     RouterModule.forRoot(routes)

@@ -6,20 +6,25 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatDialog } from '@angular/material/dialog';
 //import { RendimientosComponent } from '../pages/rendimientos/rendimientos.component';
 import { RendimientosDialogComponent } from '../pages/rendimientos-dialog/rendimientos-dialog.component';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatDividerModule } from '@angular/material/divider';
+//import { MatMenuModule } from '@angular/material/menu';
+//import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
   templateUrl: './navbar.component.html',
-  imports: [MatIconModule, MatTooltipModule],
+  imports: [MatIconModule, MatTooltipModule, MatMenuModule, MatDividerModule],
   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent {
   dispersionButton: string = 'Dispercion';
+  dispersionAlphaButton: string = 'Dispercion Alpha';
   reportsButton: string = 'Carga de Reportes';
   logoutButton: string = 'cerrar cesión ';
-  rendiButton: string = 'Rendimientos';
-  fechas: string = 'Test';
+  rendiAlphaButton: string = 'Rendimientos Alpha';
+  newMenu: string = 'Nuevo Home';
   
 
   constructor(private router: Router, private authService: AuthService, private dialog: MatDialog) {}

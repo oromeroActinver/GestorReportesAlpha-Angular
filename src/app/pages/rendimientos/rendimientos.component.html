@@ -41,7 +41,7 @@
 
 
 </div>
-
+<!--
 <div class="table-container">
   <table>
       <thead>
@@ -58,7 +58,7 @@
                 <input type="text" class="contract-filter" [(ngModel)]="filters.inicioAlpha" (input)="applyFilters()" />
               </th>
               <th class="upload-title">AÑO ANTERIOR</th>
-              <!--<th class="upload-title">DESDE INICIO</th>-->
+              <!--<th class="upload-title">DESDE INICIO</th>
               <th class="upload-title">ENERO</th>
               <th class="upload-title">FEBRERO</th>
               <th class="upload-title">MARZO</th>
@@ -78,13 +78,18 @@
           </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let dato of paginatedDatos">
-          <td>{{ dato.portafolio }}</td>
+        <tr *ngFor="let grupo of paginatedDatos" [ngClass]="{ 'portfolio-group': true, 'expanded': grupo.isExpanded }">
+          <td (click)="togglePortfolio(grupo.portafolio)" class="portfolio-toggle">
+            {{ grupo.portafolio }}
+            <mat-icon class="toggle-icon">
+              {{ grupo.isExpanded ? 'expand_less' : 'expand_more' }}
+            </mat-icon>
+          </td>
           <td>{{ dato.concepto }}</td>
           <td>{{ dato.estrategia }}</td>
           <td>{{ dato.inicioAlpha }}</td>
           <td [ngClass]="{ 'red-text': dato.anioAnterior < 0 }">{{ dato.anioAnterior }}</td>
-          <!--<td [ngClass]="{ 'red-text': dato.desdeInicio < 0 }">{{ dato.desdeInicio }}</td>-->
+          <td [ngClass]="{ 'red-text': dato.desdeInicio < 0 }">{{ dato.desdeInicio }}</td>
           <td [ngClass]="{ 'red-text': dato.enero < 0 }">{{ dato.enero }}</td>
           <td [ngClass]="{ 'red-text': dato.febrero < 0 }">{{ dato.febrero }}</td>
           <td [ngClass]="{ 'red-text': dato.marzo < 0 }">{{ dato.marzo }}</td>
@@ -104,14 +109,123 @@
         </tr>
       </tbody>
   </table>
-  
+
    <mat-paginator [length]="dataSource.data.length" [pageSize]="10" [pageSizeOptions]="[5, 10, 20, 50, 100, 200]"
       (page)="onPageChange($event)">
    </mat-paginator>
-<!--
+
   <button class="send-button" (click)="sendFiles()" [disabled]="!anySelected">{{sendfiles}}</button>
--->
+
   <div class="loading-spinner" *ngIf="isLoading">
       <div class="spinner"></div>
   </div>
+</div>-->
+
+<div class="table-container">
+  <table>
+    <thead>
+      <tr>
+        <th class="upload-title">INICIO ALPHA 
+          <button (click)="sortBy('inicioAlpha')">↕</button>
+          <input type="text" class="contract-filter" [(ngModel)]="filters.inicioAlpha" (input)="applyFilters()" />
+        </th>
+        <th class="upload-title">PORTAFOLIO 
+          <button (click)="sortBy('portafolio')">↕</button>
+          <input type="text" class="contract-filter" [(ngModel)]="filters.portafolio" (input)="applyFilters()" />
+        </th>
+        <th class="upload-title">CONCEPTO</th>
+        <th class="upload-title">AÑO ANTERIOR</th>
+        <!-- Columnas de meses -->
+        <th class="upload-title">ENERO</th>
+        <th class="upload-title">FEBRERO</th>
+        <th class="upload-title">MARZO</th>
+        <th class="upload-title">ABRIL</th>
+        <th class="upload-title">MAYO</th>
+        <th class="upload-title">JUNIO</th>
+        <th class="upload-title">JULIO</th>
+        <th class="upload-title">AGOSTO</th>
+        <th class="upload-title">SEPTIEMBRE</th>
+        <th class="upload-title">OCTUBRE</th>
+        <th class="upload-title">NOVIEMBRE</th>
+        <th class="upload-title">DICIEMBRE</th>
+        <th class="upload-title">EN EL AÑO</th>
+        <th class="upload-title">ACTIVO INICIO</th>
+        <th class="upload-title">ACTIVO FIN</th>
+        <th class="upload-title">ESTRATEGIA</th>
+      </tr>
+    </thead>
+    <tbody>
+      <ng-container *ngFor="let grupo of displayedGroupedData">
+        <!-- Fila de Rendimiento -->
+        <tr [ngClass]="{ 'portfolio-group': true, 'expanded': grupo.isExpanded }">
+          <td>{{ grupo.inicioAlpha }}</td>
+          <td (click)="togglePortfolio(grupo.portafolio)" class="portfolio-toggle">
+            {{ grupo.portafolio }}
+            <mat-icon class="toggle-icon" *ngIf="grupo.benchmark">
+              {{ grupo.isExpanded ? 'expand_less' : 'expand_more' }}
+            </mat-icon>
+          </td>
+          <td>Rendimiento</td>
+          <td [ngClass]="{ 'red-text': grupo.rendimiento?.anioAnterior < 0 }">
+            {{ grupo.rendimiento?.anioAnterior }}
+          </td>
+          <!-- Columnas de meses para Rendimiento -->
+          <td [ngClass]="{ 'red-text': grupo.rendimiento?.enero < 0 }">{{ grupo.rendimiento?.enero }}</td>
+          <td [ngClass]="{ 'red-text': grupo.rendimiento?.febrero < 0 }">{{ grupo.rendimiento?.febrero }}</td>
+          <td [ngClass]="{ 'red-text': grupo.rendimiento?.marzo < 0 }">{{ grupo.rendimiento?.marzo }}</td>
+          <td [ngClass]="{ 'red-text': grupo.rendimiento?.abril < 0 }">{{ grupo.rendimiento?.abril }}</td>
+          <td [ngClass]="{ 'red-text': grupo.rendimiento?.mayo < 0 }">{{ grupo.rendimiento?.mayo }}</td>
+          <td [ngClass]="{ 'red-text': grupo.rendimiento?.junio < 0 }">{{ grupo.rendimiento?.junio }}</td>
+          <td [ngClass]="{ 'red-text': grupo.rendimiento?.julio < 0 }">{{ grupo.rendimiento?.julio }}</td>
+          <td [ngClass]="{ 'red-text': grupo.rendimiento?.agosto < 0 }">{{ grupo.rendimiento?.agosto }}</td>
+          <td [ngClass]="{ 'red-text': grupo.rendimiento?.septiembre < 0 }">{{ grupo.rendimiento?.septiembre }}</td>
+          <td [ngClass]="{ 'red-text': grupo.rendimiento?.octubre < 0 }">{{ grupo.rendimiento?.octubre }}</td>
+          <td [ngClass]="{ 'red-text': grupo.rendimiento?.noviembre < 0 }">{{ grupo.rendimiento?.noviembre }}</td>
+          <td [ngClass]="{ 'red-text': grupo.rendimiento?.diciembre < 0 }">{{ grupo.rendimiento?.diciembre }}</td>
+
+          <td [ngClass]="{ 'red-text': grupo.rendimiento?.enelAnio < 0 }">{{ grupo.rendimiento?.enelAnio }}</td>
+
+          <td [ngClass]="{ 'red-text': grupo.rendimiento?.activoInicio < 0 }">
+            {{ grupo.rendimiento?.activoInicio | currency:'USD':'symbol':'1.2-2' }}
+          </td>
+          <td [ngClass]="{ 'red-text': grupo.rendimiento?.activoFin < 0 }">
+            {{ grupo.rendimiento?.activoFin | currency:'USD':'symbol':'1.2-2' }}
+          </td>
+          <td>{{ grupo.estrategia }}</td>
+        </tr>
+ 
+        <!-- Fila de Benchmark (solo visible cuando está expandido) -->
+        <tr *ngIf="grupo.isExpanded && grupo.benchmark" class="benchmark-row">
+          <td></td>
+          <td></td>
+          <td>Benchmark</td>
+          <td [ngClass]="{ 'red-text': grupo.benchmark.anioAnterior < 0 }">
+            {{ grupo.benchmark.anioAnterior }}
+          </td>
+          <!-- Columnas de meses para Benchmark -->
+          <td [ngClass]="{ 'red-text': grupo.benchmark.enero < 0 }">{{ grupo.benchmark.enero }}</td>
+          <td [ngClass]="{ 'red-text': grupo.benchmark.febrero < 0 }">{{ grupo.benchmark.febrero }}</td>
+          <td [ngClass]="{ 'red-text': grupo.benchmark.marzo < 0 }">{{ grupo.benchmark.marzo }}</td>
+          <td [ngClass]="{ 'red-text': grupo.benchmark.abril < 0 }">{{ grupo.benchmark.abril }}</td>
+          <td [ngClass]="{ 'red-text': grupo.benchmark.mayo < 0 }">{{ grupo.benchmark.mayo }}</td>
+          <td [ngClass]="{ 'red-text': grupo.benchmark.junio < 0 }">{{ grupo.benchmark.junio }}</td>
+          <td [ngClass]="{ 'red-text': grupo.benchmark.julio < 0 }">{{ grupo.benchmark.julio }}</td>
+          <td [ngClass]="{ 'red-text': grupo.benchmark.agosto < 0 }">{{ grupo.benchmark.agosto }}</td>
+          <td [ngClass]="{ 'red-text': grupo.benchmark.septiembre < 0 }">{{ grupo.benchmark.septiembre }}</td>
+          <td [ngClass]="{ 'red-text': grupo.benchmark.octubre < 0 }">{{ grupo.benchmark.octubre }}</td>
+          <td [ngClass]="{ 'red-text': grupo.benchmark.noviembre < 0 }">{{ grupo.benchmark.noviembre }}</td>
+          <td [ngClass]="{ 'red-text': grupo.benchmark.diciembre < 0 }">{{ grupo.benchmark.diciembre }}</td>
+          <td [ngClass]="{ 'red-text': grupo.benchmark.enelAnio < 0 }">{{ grupo.benchmark.enelAnio }}</td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+      </ng-container>
+    </tbody>
+  </table>
+  <mat-paginator [length]="filteredGroupedData.length" 
+                 [pageSize]="10" 
+                 [pageSizeOptions]="[5, 10, 20, 50, 100, 200]"
+                 (page)="onPageChange($event)">
+  </mat-paginator>
 </div>

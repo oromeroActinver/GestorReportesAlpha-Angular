@@ -6,6 +6,9 @@ import { ReporUploadComponent } from './repor-upload/repor-upload.component';
 import { DispercionComponent } from './pages/dispercion/dispercion.component';
 import { AuthGuard } from './auth.guard';
 import { RendimientosComponent } from './pages/rendimientos/rendimientos.component';
+import { MenuHomeComponent } from './pages/menu-home/menu-home.component';
+import { DispercionAlphaComponent } from './pages/dispercion-alpha/dispercion-alpha.component';
+import { CalculaRendimientosComponent } from './pages/calcula-rendimientos/calcula-rendimientos.component';
 
 export const routes: Routes = [
   {
@@ -33,8 +36,24 @@ export const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
+    path: 'newHome',
+    component: MenuHomeComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'DispercionAlpha',
+    component: DispercionAlphaComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'CalculaRend',
+    component: CalculaRendimientosComponent,
+    canActivate: [AuthGuard]
+  },
+  {
     path: 'labs',
     component: LabsComponent,
     canActivate: [AuthGuard]
   }
+  //CalculaRendimientosComponent
 ];
