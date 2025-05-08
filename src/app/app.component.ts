@@ -13,7 +13,7 @@ import { RouterOutlet } from '@angular/router';
 })
 export class AppComponent implements OnInit {
   title = 'grAlfaFront';
-  showNavbar: boolean = true;
+  showNavbar = true;
 
   constructor(private router: Router) { }
 

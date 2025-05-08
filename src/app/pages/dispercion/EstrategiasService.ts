@@ -10,6 +10,7 @@ export class EstrategiasService {
   private apiUrl = '/api/files/estrategias';
   private apiUrl2 = '/api/estrategias/getAll';
 
+
   constructor(private http: HttpClient) { }
 
   getEstrategias(token: string | null): Observable<string[]> {
@@ -45,5 +46,6 @@ export class EstrategiasService {
       })
     );
   }
+
 
 }

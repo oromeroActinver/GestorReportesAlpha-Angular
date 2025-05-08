@@ -17,7 +17,7 @@ export class LabsComponent {
     { selected: false, contrato: '51251256', cliente: 'Alonso@email.com', estrategia: 'Deuda', mes: 'Abril', ano: '2022', visualizador: 'Ir'}
   ];
 
-  allSelected: boolean = false;
+  allSelected = false;
 
   toggleSelectAll(event: any) {
     const checked = event.target.checked;

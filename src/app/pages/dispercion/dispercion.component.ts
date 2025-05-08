@@ -1,3 +1,4 @@
+
 import { Component, ViewChild, AfterViewInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -20,6 +21,7 @@ import { MatTableDataSource } from '@angular/material/table';
   templateUrl: './dispercion.component.html',
   styleUrls: ['./dispercion.component.css']
 })
+
 export class DispercionComponent implements AfterViewInit {
   searchFilesButton: string = 'Buscar';
   sendfiles: string = 'Enviar';
@@ -27,12 +29,13 @@ export class DispercionComponent implements AfterViewInit {
   selectedMonth: string | null = null;
   selectedStrategy: string | null = null;
   pdfSrc: string | null = null;
-  anySelected: boolean = false;
+  anySelected = false;
   contrato: number | null = null;
   mes: number | null = null;
   ano: number | null = null;
   lengRegister: number | null = null;
   isLoading: boolean = false;
+
   token = localStorage.getItem('token');
   years: number[] = [];
   months: string[] = [];
@@ -78,13 +81,12 @@ export class DispercionComponent implements AfterViewInit {
     }
   }
 
-  
-
   ngAfterViewInit() {
     this.paginator.pageSize = this.paginator.pageSize || 5;
     this.dataSource.paginator = this.paginator;
     this.paginatedDatos = this.datos.slice(0, this.paginator.pageSize);
 }
+
 
   toggleSelectAll(event: any) {
     const checked = event.target.checked;
@@ -107,7 +109,7 @@ export class DispercionComponent implements AfterViewInit {
         month: monthIndex.toString(),
         strategy: this.selectedStrategy
       };
-  
+
       if (this.token) {
         const headers = new HttpHeaders().set('Authorization', `Bearer ${this.token}`);
         this.http.post<any[]>(url, null, { headers, params })
@@ -136,6 +138,7 @@ export class DispercionComponent implements AfterViewInit {
               this.showDialog('MESSAGE', 'No existen registros.');
             }
           }, error => {
+
             this.isLoading = false;
             this.showDialog('FAILED', 'Ocurrió un error al buscar los archivos.');
           });
@@ -146,8 +149,6 @@ export class DispercionComponent implements AfterViewInit {
       this.showDialog('MESSAGE', 'Por favor, seleccione Año, Mes y Estrategia.');
     }
   }
-  
-
 
   updateAnySelected() {
     this.anySelected = this.datos.some(dato => dato.selected);
@@ -224,6 +225,7 @@ onPageChange(event: PageEvent): void {
   this.paginatedDatos = this.datos.slice(startIndex, endIndex);
 }
 
+
   showDialog(title: string, content: string, details?: string[]): void {
     this.dialog.open(MessageDetailsDialogComponent, {
       width: '300px',
@@ -248,3 +250,4 @@ onPageChange(event: PageEvent): void {
   
 
 }
+

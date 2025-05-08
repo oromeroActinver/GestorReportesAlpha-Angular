@@ -27,6 +27,7 @@ export class NavbarComponent {
   newMenu: string = 'Nuevo Home';
   
 
+
   constructor(private router: Router, private authService: AuthService, private dialog: MatDialog) {}
 
   navigate(path: string): void {

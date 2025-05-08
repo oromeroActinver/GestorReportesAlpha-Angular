@@ -16,9 +16,9 @@ import { MessageDetailsDialogComponent } from '../message-details-dialog/message
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent {
-  username: string = '';
-  password: string = '';
-  isLoading: boolean = false;
+  username = '';
+  password = '';
+  isLoading = false;
 
   constructor(private authService: AuthService, private router: Router,
     private dialog: MatDialog

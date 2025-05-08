@@ -11,8 +11,8 @@ import { CommonModule } from '@angular/common';
 })
 export class MessageDetailsDialogComponent {
 
-  hasDetails: boolean = false;
-  showDetails: boolean = false;
+  hasDetails = false;
+  showDetails = false;
 
   constructor(
     public dialogRef: MatDialogRef<MessageDetailsDialogComponent>,

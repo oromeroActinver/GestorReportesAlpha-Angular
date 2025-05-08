@@ -22,15 +22,15 @@ import { MessageDetailsDialogComponent } from '../pages/message-details-dialog/m
   styleUrl: './repor-upload.component.css'
 })
 export class ReporUploadComponent {
-  section: string = 'Carga de Reportes';
-  inputSelestPath: string = 'Seleccionar Archivos';
+  section = 'Carga de Reportes';
+  inputSelestPath = 'Seleccionar Archivos';
   apiUrl = environment.API_URL;
-  uploadButton: string = 'Cargar Reportes';
-  saveFiles: string = 'Guardar';
+  uploadButton = 'Cargar Reportes';
+  saveFiles = 'Guardar';
   selectedFiles: FileList | null = null;
   isLoading: boolean = false;
   folderPath: string | null = null;
-  uploadMethod: string = 'file';
+  uploadMethod = 'file';
 
   files: File[] = [];
   years: number[] = [];
@@ -42,7 +42,6 @@ export class ReporUploadComponent {
   constructor(private http: HttpClient, private router: Router, private authService: AuthService,
     private estrategiasService: EstrategiasService, private utilities: Utilities,
     private dialog: MatDialog) {
-
     const currentYear = new Date().getFullYear();
     this.months = utilities.getMonthNames();
     const pastYears = currentYear - 10;
@@ -75,7 +74,6 @@ export class ReporUploadComponent {
       this.router.navigate(['/']);
     }
   }
-
 
   setUploadMethod(method: string): void {
     this.uploadMethod = method;
