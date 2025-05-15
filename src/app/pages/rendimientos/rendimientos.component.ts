@@ -17,7 +17,7 @@ import { MessageDetailsDialogComponent } from '../message-details-dialog/message
 import { EstrategiasService } from '../dispercion/EstrategiasService';
 import { MatTableDataSource } from '@angular/material/table';
 import { RendimientosDialogComponent } from '../rendimientos-dialog/rendimientos-dialog.component';
- 
+
 @Component({
   selector: 'app-rendimientos',
   standalone: true,
@@ -39,41 +39,57 @@ import { RendimientosDialogComponent } from '../rendimientos-dialog/rendimientos
 })
 export class RendimientosComponent {
 
-  rendimientosForm: FormGroup;  
+  rendimientosForm: FormGroup;
   apiUrl = environment.API_URL;
   token = localStorage.getItem('token');
-  
+
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   dataSource = new MatTableDataSource<any>();
-  
+
   // Datos y configuración
   strategies: any[] = [];
   years: number[] = [];
   selectedStrategy: string | null = null;
   selectedYear: number | null = null;
   isLoading: boolean = false;
-  
+
   // Datos originales y procesados
   rawData: any[] = [];
   groupedData: any[] = [];
   filteredGroupedData: any[] = [];
   displayedGroupedData: any[] = [];
-  
+
   // Estado de expansión
   expandedPortfolios: Set<number> = new Set();
-  
+
   // Filtros
   filters = {
     portafolio: '',
-    inicioAlpha: ''
+    inicioAlpha: '',
+    anioAnterior: '',
+    enero: '',
+    febrero: '',
+    marzo: '',
+    abril: '',
+    mayo: '',
+    junio: '',
+    julio: '',
+    agosto: '',
+    septiembre: '',
+    octubre: '',
+    noviembre: '',
+    diciembre: '',
+    enelAnio: '',
+    activoInicio: '',
+    activoFin: ''
   };
-  
+
   // Ordenamiento
   sorting = {
     column: '',
     direction: 'asc'
   };
- 
+
   constructor(
     private fb: FormBuilder,
     private estrategiasService: EstrategiasService,
@@ -87,18 +103,18 @@ export class RendimientosComponent {
       fechaInicioAnual: [''],
       fechaFinAnual: ['']
     });
-    
+
     // Generar años disponibles
     const currentYear = new Date().getFullYear();
     for (let year = currentYear; year >= currentYear - 10; year--) {
       this.years.push(year);
     }
   }
- 
+
   ngOnInit(): void {
     this.loadStrategies();
   }
- 
+
   loadStrategies(): void {
     const token = localStorage.getItem('token');
     if (token) {
@@ -121,7 +137,7 @@ export class RendimientosComponent {
       this.router.navigate(['/']);
     }
   }
- 
+
   searchRendimientos(): void {
     if (this.selectedYear && this.selectedStrategy) {
       this.isLoading = true;
@@ -130,14 +146,15 @@ export class RendimientosComponent {
         estrategia: this.selectedStrategy,
         anual: this.selectedYear.toString()
       };
- 
+
       if (this.token) {
         const headers = new HttpHeaders().set('Authorization', `Bearer ${this.token}`);
-        
         this.http.get<any[]>(url, { headers, params }).subscribe({
           next: (data) => {
             this.isLoading = false;
             this.processResponseData(data);
+            // Resetear paginador después de nueva búsqueda
+            this.resetPaginator();
           },
           error: (error) => {
             this.isLoading = false;
@@ -152,7 +169,15 @@ export class RendimientosComponent {
       this.showDialog('MESSAGE', 'Por favor, seleccione Año y Estrategia.');
     }
   }
- 
+
+  // Método para resetear el paginador
+  private resetPaginator(): void {
+    if (this.paginator) {
+      this.paginator.firstPage(); // Va a la primera página
+      this.paginator.length = this.filteredGroupedData.length; // Actualiza el total de items
+    }
+  }
+
   private processResponseData(data: any[]): void {
     if (data && data.length > 0) {
       this.rawData = data.map(item => this.transformDataItem(item));
@@ -162,35 +187,39 @@ export class RendimientosComponent {
       this.handleNoData();
     }
   }
- 
+
+  private getValueOrEmpty(value: any): any {
+    return value !== null && value !== undefined ? value : '';
+  }
+
   private transformDataItem(item: any): any {
     return {
-      portafolio: item.cvePortafolio,
-      concepto: item.concepto,
-      estrategia: item.nomEstrategia,
-      inicioAlpha: item.fechaInvAlpha || 'N/A',
-      anioAnterior: item.anoAnt || 0,
-      enero: item.enero || 0,
-      febrero: item.febrero || 0,
-      marzo: item.marzo || 0,
-      abril: item.abril || 0,
-      mayo: item.mayo || 0,
-      junio: item.junio || 0,
-      julio: item.julio || 0,
-      agosto: item.agosto || 0,
-      septiembre: item.septiembre || 0,
-      octubre: item.octubre || 0,
-      noviembre: item.noviembre || 0,
-      diciembre: item.diciembre || 0,
-      enelAnio: item.enAno || 0,
-      activoInicio: item.activoIni || 0,
-      activoFin: item.activo || 0
+      portafolio: this.getValueOrEmpty(item.cvePortafolio),
+      concepto: this.getValueOrEmpty(item.concepto),
+      estrategia: this.getValueOrEmpty(item.nomEstrategia),
+      inicioAlpha: this.getValueOrEmpty(item.fechaInvAlpha),
+      anioAnterior: this.getValueOrEmpty(item.anoAnt),
+      enero: this.getValueOrEmpty(item.enero),
+      febrero: this.getValueOrEmpty(item.febrero),
+      marzo: this.getValueOrEmpty(item.marzo),
+      abril: this.getValueOrEmpty(item.abril),
+      mayo: this.getValueOrEmpty(item.mayo),
+      junio: this.getValueOrEmpty(item.junio),
+      julio: this.getValueOrEmpty(item.julio),
+      agosto: this.getValueOrEmpty(item.agosto),
+      septiembre: this.getValueOrEmpty(item.septiembre),
+      octubre: this.getValueOrEmpty(item.octubre),
+      noviembre: this.getValueOrEmpty(item.noviembre),
+      diciembre: this.getValueOrEmpty(item.diciembre),
+      enelAnio: this.getValueOrEmpty(item.enAno),
+      activoInicio: this.getValueOrEmpty(item.activoIni),
+      activoFin: this.getValueOrEmpty(item.activo)
     };
   }
- 
+
   private groupByPortfolio(data: any[]): any[] {
     const groupedMap = new Map<number, any>();
-    
+
     data.forEach(item => {
       if (!groupedMap.has(item.portafolio)) {
         groupedMap.set(item.portafolio, {
@@ -212,50 +241,60 @@ export class RendimientosComponent {
         }
       }
     });
-    
+
     return Array.from(groupedMap.values());
   }
- 
+
+
   applyFilters(): void {
-    // Aplicar filtros a los datos agrupados
     this.filteredGroupedData = this.groupedData.filter(grupo => {
-      const matchesPortfolio = !this.filters.portafolio || 
+      const matchesPortfolio = !this.filters.portafolio ||
         grupo.portafolio.toString().toLowerCase().includes(this.filters.portafolio.toLowerCase());
-      
-      const matchesAlpha = !this.filters.inicioAlpha || 
+
+      const matchesAlpha = !this.filters.inicioAlpha ||
         (grupo.inicioAlpha && grupo.inicioAlpha.toString().toLowerCase().includes(this.filters.inicioAlpha.toLowerCase()));
-      
+
       return matchesPortfolio && matchesAlpha;
     });
- 
+
     // Aplicar ordenamiento
     if (this.sorting.column) {
       this.filteredGroupedData.sort((a, b) => {
-        // Para ordenar por columnas específicas
-        let valueA, valueB;
-        
-        if (this.sorting.column === 'portafolio' || this.sorting.column === 'estrategia' || this.sorting.column === 'inicioAlpha') {
+        let valueA: any, valueB: any;
+
+        if (this.sorting.column === 'portafolio' || this.sorting.column === 'estrategia') {
           valueA = a[this.sorting.column];
           valueB = b[this.sorting.column];
-        } else {
-          // Para columnas de rendimiento/benchmark
+        }
+        else if (this.sorting.column === 'inicioAlpha') {
+          valueA = this.parseDateString(a[this.sorting.column]);
+          valueB = this.parseDateString(b[this.sorting.column]);
+        }
+        else {
           valueA = a.rendimiento ? a.rendimiento[this.sorting.column] : null;
           valueB = b.rendimiento ? b.rendimiento[this.sorting.column] : null;
         }
- 
+
         if (valueA == null) return 1;
         if (valueB == null) return -1;
-        
-        const comparison = valueA < valueB ? -1 : valueA > valueB ? 1 : 0;
+
+        let comparison = 0;
+
+        if (this.sorting.column === 'inicioAlpha') {
+          comparison = valueA.getTime() - valueB.getTime();
+        } else {
+          comparison = valueA < valueB ? -1 : valueA > valueB ? 1 : 0;
+        }
+
         return this.sorting.direction === 'asc' ? comparison : -comparison;
       });
     }
- 
-    // Actualizar paginación
-    this.paginator.length = this.filteredGroupedData.length;
+
+    // 3. Resetear paginador a la primera página
+    this.resetPaginator();
     this.updatePaginatedData();
   }
- 
+
   sortBy(column: string): void {
     if (this.sorting.column === column) {
       this.sorting.direction = this.sorting.direction === 'asc' ? 'desc' : 'asc';
@@ -265,26 +304,41 @@ export class RendimientosComponent {
     }
     this.applyFilters();
   }
- 
+
+  private parseDateString(dateStr: string): Date | null {
+    if (!dateStr) return null;
+
+    const parts = dateStr.split('/');
+    if (parts.length !== 3) return null;
+
+    const day = parseInt(parts[0], 10);
+    const month = parseInt(parts[1], 10) - 1;
+    const year = parseInt(parts[2], 10);
+
+    if (isNaN(day) || isNaN(month) || isNaN(year)) return null;
+
+    return new Date(year, month, day);
+  }
+
   onPageChange(event: PageEvent): void {
     this.paginator.pageSize = event.pageSize;
     this.paginator.pageIndex = event.pageIndex;
     this.updatePaginatedData();
   }
- 
+
   private updatePaginatedData(): void {
     const startIndex = this.paginator.pageIndex * this.paginator.pageSize;
     const endIndex = startIndex + this.paginator.pageSize;
     this.displayedGroupedData = this.filteredGroupedData.slice(startIndex, endIndex);
   }
- 
+
   togglePortfolio(portafolio: number): void {
     const item = this.filteredGroupedData.find(d => d.portafolio === portafolio);
     if (item) {
       item.isExpanded = !item.isExpanded;
     }
   }
- 
+
   private handleNoData(): void {
     this.rawData = [];
     this.groupedData = [];
@@ -293,7 +347,7 @@ export class RendimientosComponent {
     this.paginator.length = 0;
     this.showDialog('MESSAGE', 'No existen DATOS de rendimientos.');
   }
- 
+
   // Resto de métodos (showDialog, openRendimientosDialog, etc.) permanecen igual
   showDialog(title: string, content: string, details?: string[]): void {
     this.dialog.open(MessageDetailsDialogComponent, {
@@ -301,15 +355,15 @@ export class RendimientosComponent {
       data: { messageTitle: title, messageContent: content, details: details }
     });
   }
- 
+
   openRendimientosDialog() {
     this.dialog.open(RendimientosDialogComponent, {
       width: '900px',
       height: '300px',
-      panelClass: 'custom-dialog',  
+      panelClass: 'custom-dialog',
     });
   }
- 
+
   ngAfterViewInit() {
     this.paginator.pageSize = this.paginator.pageSize || 10;
     this.paginator.pageSizeOptions = [5, 10, 20, 50, 100, 200];

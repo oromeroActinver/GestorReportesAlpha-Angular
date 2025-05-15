@@ -222,11 +222,16 @@ table {
   border-collapse: collapse;
 }
  
-th, td {
-  padding: 12px 8px;
+th {
+  padding: 8px 6px;
   text-align: center;
   border-bottom: 1px solid #ddd;
 }
+
+td {
+  padding: 4px 6px;
+}
+
  
 th {
   background-color: #041e42;
@@ -262,7 +267,7 @@ th {
 }
  
 .benchmark-row {
-  background-color: #ece5c8/*#f9f9f9;*/
+  background-color: #c0d9ee/*#f9f9f9;*/
 }
  
 /* Estilos para números negativos */
