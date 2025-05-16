@@ -23,13 +23,13 @@
         <mat-icon>send</mat-icon>
         <span>{{dispersionAlphaButton}}</span>
       </button>
-      <button mat-menu-item (click)="navigate('/genReporAlpha')">
+      <button mat-menu-item (click)="navigate('/reporUpload')">
         <mat-icon>description</mat-icon>
         <span>Cargar PDF Alpha</span>
       </button>
       <button mat-menu-item (click)="navigate('/CalculaRend')">
         <mat-icon>settings</mat-icon>
-        <span>Calcula Rendimientos Alpha</span>
+        <span>Rendimientos Alpha</span>
       </button>
       <mat-divider></mat-divider>
       <button mat-menu-item (click)="navigate('/newHome')">
@@ -41,6 +41,7 @@
  
   <ul class="navbar-center">
     <!--<li><button (click)="openRendimientosDialog()"><i class="fas fa-chart-line"></i> {{fechas}}</button></li>-->
+
     <!--<li><button (click)="navigate('/newHome')"><i class="fas fa-chart-line"></i> {{newMenu}} </button></li>-->
     <!--<li><button (click)="navigate('/rendimientos')"><i class="fas fa-chart-line"></i> {{rendiAlphaButton}} </button></li>-->
     <li><button (click)="navigate('/reporUpload')"><i class="fas fa-envelope"></i>{{ reportsButton }}</button></li>

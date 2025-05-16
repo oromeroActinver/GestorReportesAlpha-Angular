@@ -56,4 +56,5 @@ export const routes: Routes = [
     canActivate: [AuthGuard]
   }
   //CalculaRendimientosComponent
+  
 ];

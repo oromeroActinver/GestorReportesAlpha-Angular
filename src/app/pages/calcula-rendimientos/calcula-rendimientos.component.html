@@ -1,1 +1,126 @@
-<p>calcula-rendimientos works!</p>
+<!-- En el template HTML -->
+<div class="main-container">
+
+  <div class="form-container">
+    <div class="toggle-buttons">
+      <button class="type-button" [ngClass]="{'active': uploadMethod === 'file'}"
+        matTooltip="Se recomienda para subir no mas de 200 archivos" (click)="setUploadMethod('file')">Rendimientos por
+        fechas</button>
+      <button class="type-button" [ngClass]="{'active': uploadMethod === 'folder'}"
+        matTooltip="Se recomienda para subir mas de 200 archivos" (click)="setUploadMethod('folder')">Calcular por
+        Mes</button>
+    </div>
+  </div>
+
+  <!-- Formulario por fechas -->
+  <div class="file-upload-container" *ngIf="uploadMethod === 'file'">
+    <form [formGroup]="rendimientosForm">
+      <div class="date-row">
+        <mat-form-field appearance="fill" class="date-field">
+          <mat-label>Fecha Inicio</mat-label>
+          <input matInput [matDatepicker]="picker1" formControlName="fechaInicio">
+          <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+          <mat-datepicker #picker1></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" style="flex: 1;">
+          <mat-label>Fecha Fin</mat-label>
+          <input matInput [matDatepicker]="picker2" formControlName="fechaFin">
+          <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+          <mat-datepicker #picker2></mat-datepicker>
+        </mat-form-field>
+
+        <button class="calcular-button" mat-raised-button color="primary" (click)="onSubmit()"
+          [disabled]="rendimientosForm.invalid || isLoading">
+          Calcular
+        </button>
+      </div>
+    </form>
+
+    <!-- Campo de búsqueda -->
+    <div class="search-container" *ngIf="dataSource.data.length > 0">
+      <mat-form-field appearance="outline" floatLabel="always">
+        <mat-label>Buscar</mat-label>
+        <input matInput (keyup)="applyFilter($event)" placeholder="Buscar" #input>
+        <!--<mat-icon>search</mat-icon>-->
+      </mat-form-field>
+    </div>
+
+    <!-- Tabla de resultados con paginación -->
+    <div class="table-container" *ngIf="dataSource.data.length > 0">
+      <table mat-table [dataSource]="dataSource" matSort class="compact-table mat-elevation-z8">
+        <!-- Columna Cuenta -->
+        <ng-container matColumnDef="Cuenta">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Cuenta </th>
+          <td mat-cell *matCellDef="let element"> {{element.Cuenta}} </td>
+        </ng-container>
+
+        <!-- Columna Fecha Inicio -->
+        <ng-container matColumnDef="FechaInicio">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Fecha Inicio </th>
+          <td mat-cell *matCellDef="let element"> {{element.FechaInicio | date:'dd/MM/yyyy'}} </td>
+        </ng-container>
+
+        <!-- Columna Saldo Inicial -->
+        <ng-container matColumnDef="SaldoInicio">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Saldo Inicial </th>
+          <td mat-cell *matCellDef="let element"> {{element.SaldoInicio | currency}} </td>
+        </ng-container>
+
+        <!-- Columna Saldo Final -->
+        <ng-container matColumnDef="Saldo">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Saldo Final </th>
+          <td mat-cell *matCellDef="let element"> {{element.Saldo | currency}} </td>
+        </ng-container>
+
+        <!-- Columna TIR Anualizada -->
+        <ng-container matColumnDef="TIRAnualizada">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> TIR Anualizada </th>
+          <td mat-cell *matCellDef="let element"> {{element.TIRAnualizada | percent:'1.2-2'}} </td>
+        </ng-container>
+
+        <!-- Columna TIR Efectiva -->
+        <ng-container matColumnDef="TIREfectiva">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> TIR Efectiva </th>
+          <td mat-cell *matCellDef="let element"> {{element.TIREfectiva | percent:'1.2-2'}} </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+
+      
+    </div>
+    <!-- Paginador - debe estar FUERA de la tabla pero dentro del contenedor -->
+    <mat-paginator [pageSizeOptions]="[10, 25, 50, 100]" [pageSize]="10" showFirstLastButtons
+    aria-label="Seleccionar página de resultados">
+  </mat-paginator>
+  </div>
+
+  <!-- Formulario por mes/año -->
+  <div class="file-upload-container" *ngIf="uploadMethod === 'folder'">
+    <div class="form-container">
+      <h2 class="upload-title">Calcular Rendimientos Alpha Mensual</h2>
+      <div class="form-group">
+        <label for="year">Año:</label>
+        <select id="year" [(ngModel)]="selectedYear">
+          <option *ngFor="let year of years" [value]="year">{{ year }}</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="month">Mes:</label>
+        <select id="month" [(ngModel)]="selectedMonth">
+          <option *ngFor="let month of months" [value]="month">{{ month }}</option>
+        </select>
+      </div>
+    </div>
+    <button class="select-button" (click)="uploadFolderPath()">{{ calcular }}</button>
+  </div>
+
+  <div class="loading-spinner" *ngIf="isLoading">
+    <div class="spinner"></div>
+  </div>
+
+</div>
+
+<li><button (click)="openRendimientosDialog()"><i class="fas fa-chart-line"></i> {{fechas}}</button></li>
