@@ -1,0 +1,158 @@
+
+.card-form {
+  border: 1px solid #b4a46c;
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 20px;
+  background-color: #fff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+ 
+.card-form .form-group {
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+}
+ 
+.card-form input[type="text"] {
+  padding: 10px;
+  font-size: 1.1em;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  width: 200px;
+  margin-right: 10px;
+}
+ 
+.card-form input[disabled] {
+  font-weight: bold;
+  background-color: #f0f0f0;
+  color: #041e42;
+  width: 300px;
+}
+ 
+.card-form .select-button {
+  margin-top: 10px;
+}
+ 
+.card-form .row.right {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 10px;
+}
+
+.upload-button, .file-upload-button, .select-button {
+  background-color: #041e42;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 15px;
+  cursor: pointer;
+  font-size: 1em;
+  text-align: center;
+  display: inline-block;
+  margin-left: 10px;
+}
+
+/* Elimina estilos duplicados y añade estos nuevos */
+.form-group {
+  display: flex;
+  align-items: center;
+gap: 10px;
+margin-bottom: 15px
+
+}
+
+.form-group label {
+  font-size: 1em;
+  color: #041e42;
+}
+
+.form-group select {
+  font-size: 1.1em;
+  padding: 8px;
+  border-radius: 10px;
+  border: 1px solid #041e42;
+  width: 200px; 
+  text-align: center;
+  background-color: #f1f1f1;
+  color: #041e42;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  position: relative;
+  padding-right: 30px;
+}
+
+.form-group select::after {
+  content: '▼';
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.form-group select:focus {
+  border-color: #b4a46c;
+  outline: none;
+}
+
+.form-group:nth-child(3) select {
+  width: 300px; 
+}
+
+
+.form-group input[type="text"] {
+   padding: 8px;
+   font-size: 16px;
+ }  
+
+ 
+.form-group input[name="contrato"] {
+ width: 200px;
+ }
+
+.form-group input[disabled] {
+ width: 600px;
+ }
+
+
+
+.form-container {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  margin-bottom: 30px;
+  width: 90%;
+}
+
+.type-button {
+  border: 2px solid #007bff;
+  transition: background-color 0.3s, color 0.3s;
+
+  padding: 10px 20px;
+  background-color: #041e42;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+.type-button.active {
+  background-color: #b4a46c;
+  color: #fff;
+}
+ 
+/* Responsive */
+@media (max-width: 768px) {
+  .date-row {
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .date-field, .calcular-button {
+    width: 100%;
+  }
+  
+  .calcular-button {
+    margin-top: 10px;
+  }
+}

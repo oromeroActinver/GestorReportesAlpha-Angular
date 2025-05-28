@@ -1,0 +1,62 @@
+<!-- PRIMER BLOQUE -->
+
+<div class="form-container card-form">
+    <!-- Fila de contrato y cliente -->
+    <div class="form-group">
+        <input type="text" placeholder="Contrato" [(ngModel)]="contrato" name="contrato" required />
+        <input type="text" [value]="nombreCliente" placeholder="Nombre del Cliente" disabled />
+        <button class="select-button" (click)="buscarCliente()">Buscar</button>
+    </div>
+
+    <!-- Selects de año y mes-->
+    <div class="form-group">
+        <label for="year">Año:</label>
+        <select id="year" [(ngModel)]="selectedYear" (change)="onYearChange(selectedYear)">
+            <option *ngFor="let year of years" [value]="year">{{ year }}</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="month">Mes:</label>
+        <select id="month" [(ngModel)]="selectedMonth">
+            <option *ngFor="let month of months" [value]="month">{{ month }}</option>
+        </select>
+    </div>
+
+
+    <!-- Botón Generar Reporte [disabled]="!todosLosCamposLlenos()"-->
+    <div class="row right">
+        <button class="select-button" (click)="generarReporte()">
+            Generar Reporte
+        </button>
+    </div>
+</div>
+
+<!-- SEGUNDO BLOQUE -->
+<div class="form-container card-form">
+    <div class="form-group">
+        <label for="year">Año:</label>
+        <select id="year" [(ngModel)]="selectedYear">
+            <option *ngFor="let year of years" [value]="year">{{ year }}</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="month">Mes:</label>
+        <select id="month" [(ngModel)]="selectedMonth">
+            <option *ngFor="let month of months" [value]="month">{{ month }}</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="strategy">Estrategia:</label>
+        <select id="strategy" class="custom-select" [(ngModel)]="selectedStrategy">
+            <option *ngFor="let strategy of strategies" [value]="strategy">{{ strategy }}</option>
+        </select>
+    </div>
+    <button class="select-button" (click)="uploadFolderPath()">Generar Reportes</button>
+</div>
+<!-- Spinner de carga -->
+<div class="loading-spinner" *ngIf="isLoading">
+    <div class="spinner"></div>
+</div>

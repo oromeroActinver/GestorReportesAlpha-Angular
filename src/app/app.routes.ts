@@ -9,6 +9,7 @@ import { RendimientosComponent } from './pages/rendimientos/rendimientos.compone
 import { MenuHomeComponent } from './pages/menu-home/menu-home.component';
 import { DispercionAlphaComponent } from './pages/dispercion-alpha/dispercion-alpha.component';
 import { CalculaRendimientosComponent } from './pages/calcula-rendimientos/calcula-rendimientos.component';
+import { ReportesAlphaComponent } from './pages/reportes-alpha/reportes-alpha.component';
 
 export const routes: Routes = [
   {
@@ -48,6 +49,11 @@ export const routes: Routes = [
   {
     path: 'CalculaRend',
     component: CalculaRendimientosComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'ReporteAlpha',
+    component: ReportesAlphaComponent,
     canActivate: [AuthGuard]
   },
   {
