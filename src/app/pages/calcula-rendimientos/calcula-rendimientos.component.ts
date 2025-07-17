@@ -208,7 +208,7 @@ export class CalculaRendimientosComponent implements OnInit, AfterViewInit {
       month: monthIndex
     };
 
-    const url = `${environment.API_URL}/Rend/mensual`;
+    const url = `${environment.API_URL}/Rend/rendimientos`;
 
     this.http.post(url, body, { headers }).subscribe({
       next: (response: any) => this.handleUploadResponse(response),

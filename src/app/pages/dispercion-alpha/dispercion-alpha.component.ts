@@ -198,6 +198,7 @@ export class DispercionAlphaComponent {
         window.open(url);
       });
     }
+    this.isLoading = false;
   }
 
   onPageChange(event: PageEvent): void {

@@ -25,7 +25,6 @@ export enum UploadMethod {
 })
 
 export class ReportesAlphaComponent {
-  // ... (mantén tus variables existentes)
   mensajeExito: string = '';
   mensajeError: string = '';
   contrato = '';
@@ -97,24 +96,6 @@ export class ReportesAlphaComponent {
     this.months = this.utilities.getMonthNames();
 
   }
-
-  /*buscarCliente(): void {
-    const token = localStorage.getItem('token');
-    if (token) {
-      if (this.contrato === '831023') {
-        this.nombreCliente = 'Juan Pérez';
-        this.years = [2023, 2024, 2025];
-        this.months = ['Enero', 'Febrero', 'Marzo', 'Abril'];
-      } else {
-        this.nombreCliente = 'Cliente no encontrado';
-        this.years = [];
-        this.months = [];
-      }
-    } else {
-      this.showDialog('FAILED', 'Usuario no autenticado.');
-      this.router.navigate(['/']);
-    }
-  }*/
 
 
   buscarCliente(): void {
