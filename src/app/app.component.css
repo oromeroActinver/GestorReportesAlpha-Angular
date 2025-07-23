@@ -10,3 +10,22 @@
   .content {
     padding-top: 20px; 
   }
+
+  footer {
+    text-align: center;
+    padding: 10px;
+    background-color: #f1f1f1;
+    position: static;
+    bottom: 0;
+    width: 100%;
+  }
+
+  .loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.3); /* Fondo semitransparente */
+  z-index: 9998; /* Debajo del spinner pero encima de todo lo demás */
+}

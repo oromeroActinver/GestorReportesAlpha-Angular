@@ -6,12 +6,12 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { MatNativeDateModule, MAT_DATE_LOCALE  } from '@angular/material/core';
-import {MatIconModule} from '@angular/material/icon';
+import { MatNativeDateModule, MAT_DATE_LOCALE } from '@angular/material/core';
+import { MatIconModule } from '@angular/material/icon';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { environment } from '../../../environments/environment';
-import {provideNativeDateAdapter} from '@angular/material/core';
+import { provideNativeDateAdapter } from '@angular/material/core';
 import { MessageDetailsDialogComponent } from '../message-details-dialog/message-details-dialog.component';
 import { EstrategiasService } from '../dispercion/EstrategiasService';
 
@@ -29,7 +29,7 @@ import { EstrategiasService } from '../dispercion/EstrategiasService';
   ],
   templateUrl: './rendimientos-dialog.component.html',
   providers: [provideNativeDateAdapter(),
-    { provide: MAT_DATE_LOCALE, useValue: 'es' }  
+  { provide: MAT_DATE_LOCALE, useValue: 'es' }
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrl: './rendimientos-dialog.component.css'
@@ -41,6 +41,7 @@ export class RendimientosDialogComponent {
   years: number[] = [];
   rendimientosForm: FormGroup;
   isLoading: boolean = false;
+
 
   constructor(
     private fb: FormBuilder,
@@ -57,6 +58,7 @@ export class RendimientosDialogComponent {
       fechaFinAnual: ['']
     });
   }
+
 
 
   // Función para formatear fecha a 'YYYYMMDD'
@@ -95,7 +97,7 @@ if (username) {
       this.showDialog('FAILED', 'Debe completar al menos las fechas mensuales o las fechas anuales.');
       return;
     }
-  
+
     // Validación: fechas finales deben ser mayores que las fechas de inicio
     if (fechasMensualesCompletas) {
       const inicioMensual = new Date(formData.fechaInicioMensual);
@@ -106,7 +108,7 @@ if (username) {
         return;
       }
     }
-  
+
     if (fechasAnualesCompletas) {
       const inicioAnual = new Date(formData.fechaInicioAnual);
       const finAnual = new Date(formData.fechaFinAnual);
@@ -120,17 +122,17 @@ if (username) {
     if (token) {
       const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
       const body = [
-        { 
-          fechInicio: fechasMensualesCompletas ? this.formatDateToYYYYMMDD(formData.fechaInicioMensual) : null, 
-          fechFinal: fechasMensualesCompletas ? this.formatDateToYYYYMMDD(formData.fechaFinMensual) : null 
+        {
+          fechInicio: fechasMensualesCompletas ? this.formatDateToYYYYMMDD(formData.fechaInicioMensual) : null,
+          fechFinal: fechasMensualesCompletas ? this.formatDateToYYYYMMDD(formData.fechaFinMensual) : null
         },
-        { 
-          fechInicio: fechasAnualesCompletas ? this.formatDateToYYYYMMDD(formData.fechaInicioAnual) : null, 
-          fechFinal: fechasAnualesCompletas ? this.formatDateToYYYYMMDD(formData.fechaFinAnual) : null 
+        {
+          fechInicio: fechasAnualesCompletas ? this.formatDateToYYYYMMDD(formData.fechaInicioAnual) : null,
+          fechFinal: fechasAnualesCompletas ? this.formatDateToYYYYMMDD(formData.fechaFinAnual) : null
         }
       ];
 
-      const url = '/api/a2k/fechs';
+      const url = '/api/Rend/fechs';
 
       this.http.post(url, body, { headers }).subscribe(
         (response: any) => {

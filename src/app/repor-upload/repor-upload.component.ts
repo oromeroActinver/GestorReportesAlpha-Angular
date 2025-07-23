@@ -96,7 +96,7 @@ export class ReporUploadComponent {
       formData.append('year', this.selectedYear.toString());
       formData.append('month', monthIndex.toString());
 
-      const url = `/api/files/uploadFiles`;
+      const url = `/api/reportesAlpha/saveReport`;
       const token = localStorage.getItem('token');
 
       if (token) {

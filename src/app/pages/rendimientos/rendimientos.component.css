@@ -1,294 +1,366 @@
-/* Estilo general para el formulario */
-.form-container {
-    display: flex;
-    gap: 15px;
-    justify-content: center;
-    margin-bottom: 20px;
-    width: 100%;
-  }
-  
-  /* Estilo general para los grupos del formulario */
-  .form-group {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-  }
-  
-  .form-group label {
-    font-size: 1em;
-    color: #041e42;
-  }
-  
-  .form-group select {
-    font-size: 1em;
-    padding: 8px;
-    border-radius: 10px;
-    border: 1px solid #041e42;
-    width: 200px; 
-    text-align: center;
-    background-color: #f1f1f1;
-    color: #041e42;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    position: relative;
-    padding-right: 30px;
-  }
-  
-  .form-group select::after {
-    content: '▼';
-    position: absolute;
-    top: 50%;
-    right: 10px;
-    transform: translateY(-50%);
-    pointer-events: none;
-  }
-  
-  .form-group select:focus {
-    border-color: #b4a46c;
-    outline: none;
-  }
-  
-  .form-group:nth-child(2) select {
-    width: 350px;
-  }
-  
-  .custom-select {
-    padding: 8px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    width: 150px; 
-  }
-  
-  .search-button, .send-button {
-    padding: 8px 14px;
-    border-radius: 15px;
-    color: white;
-    border: 1px solid #ccc;
-    background-color: #041e42;
-    cursor: pointer;
-  }
-  
-  
-  .view-button {
-    padding: 5px 10px;
-    border-radius: 15px;
-    color: white;
-    border: 1px solid #ccc;
-    background-color: #041e42;
-    cursor: pointer;
-  }
-  
-  .button-container {
-    display: flex;
-    justify-content: flex-end;
-    padding: 15px;
-    width: 100%;
-  }
-  
-  
-  .send-button {
-    position: absolute;
-    bottom: -50px;
-    right: 20;
-    padding: 8px 14px;
-    border-radius: 15px;
-    color: white;
-    border: 1px solid #ccc;
-    background-color: #041e42;
-    cursor: pointer;
-  }
-  
-  
-  .search-button:hover, .send-button:hover, .view-button:hover {
-    background-color: #b4a46c;
-  }
-  
-  
-  .send-button:disabled {
-    background-color: #999; 
-    border-color: #999;
-    cursor: not-allowed; 
-    opacity: 0.5;
-  }
-  
-  .send-button:disabled:hover {
-    background-color: #999;
-  }
-  
-  .table-container {
-    position: relative;
-  }
-  
-  table {
-    width: 100%;
-    border-collapse: collapse;
-  }
-  
-  th, td {
-    font-size: 0.8em;
-    border: 0.5px solid #b4a46c;
-    padding: 8px;
-    text-align: center;
-  }
-  
-  th {
-    font-size: 0.5em;
-    background-color: #041e42;
-    color: #edf0f3;
-  }
-  
-  .upload-title {
-    font-size: 0.7em;
-    margin-bottom: 30px;
-  }
-  
-  th.select-all {
-    width: 100px;
-  }
-  
-  ul {
-    list-style: none;
-    padding: 0;
-    margin: 10px 0;
-  }
-  
-  li {
-    margin: 5px 0;
-    padding: 8px;
-    background-color: #eee;
-    border-radius: 3px;
-  }
-  
-  .red-text {
-    color: red;
-  }
-  
-  
-  .loading-spinner {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 9999;
-  }
-  
-  .spinner {
-    border: 12px solid #b4a46c;
-    border-top: 12px solid #041e42;
-    border-radius: 50%;
-    width: 60px;
-    height: 60px;
-    animation: spin 2s linear infinite;
-  }
-  
-  @keyframes spin {
-    0% {
-      transform: rotate(0deg);
-    }
-    100% {
-      transform: rotate(360deg);
-    }
-  }
-  
-  ::ng-deep .mat-paginator {
-    background-color: #f1f1f1;
-    color: #041e42;
-  }
-  
-  /* Estilo para el input de filtro de contrato */
-  .contract-filter {
-    font-size: 1em;
-    padding: 0px;
-    border-radius: 8px;
-    border: 1px solid #041e42;
-    width: 100px;
-    text-align: center;
-    background-color: #f1f1f1;
-    color: #041e42;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  }
-  
-  .contract-filter::placeholder {
-    opacity: 50;
-  }
+/* ==================== */
+/* ESTILOS DEL FORMULARIO (ORIGINAL) */
+/* ==================== */
 
-/* Estilos para la tabla */
+.form-container {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  margin-bottom: 20px;
+  width: 100%;
+}
+
+/* Grupo de elementos del formulario */
+.form-group {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+/* Etiquetas del formulario */
+.form-group label {
+  font-size: 1em;
+  color: #041e42;
+}
+
+/* Selects del formulario - Estilo base */
+.form-group select {
+  font-size: 1em;
+  padding: 8px 30px 8px 12px;
+  border-radius: 10px;
+  border: 1px solid #041e42;
+  width: 200px;
+  text-align: center;
+  background-color: #f1f1f1;
+  color: #041e42;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23041e42'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 8px center;
+  background-size: 16px;
+}
+
+/* Select de estrategia (más ancho) */
+.form-group:nth-child(2) select {
+  width: 350px;
+}
+
+/* Select de años con scroll */
+.year-select {
+  height: 38px;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+/* ==================== */
+/* ESTILOS DE BOTONES (ORIGINAL) */
+/* ==================== */
+
+/* Botones principales */
+.search-button,
+.send-button,
+.view-button {
+  padding: 8px 14px;
+  border-radius: 15px;
+  color: white;
+  border: 1px solid #ccc;
+  background-color: #041e42;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+/* Botón de vista (más pequeño) */
+.view-button {
+  padding: 5px 10px;
+}
+
+/* Botón de enviar (posición especial) */
+.send-button {
+  position: absolute;
+  bottom: -50px;
+  right: 20px;
+}
+
+/* Hover para botones */
+.search-button:hover,
+.send-button:hover,
+.view-button:hover {
+  background-color: #b4a46c;
+}
+
+/* Botón deshabilitado */
+.send-button:disabled {
+  background-color: #999;
+  border-color: #999;
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.send-button:disabled:hover {
+  background-color: #999;
+}
+
+/* Contenedor de botones */
+.button-container {
+  display: flex;
+  justify-content: flex-end;
+  padding: 15px;
+  width: 100%;
+}
+
+/* ==================== */
+/* ESTILOS DE TABLA (ORIGINAL) */
+/* ==================== */
+
 .table-container {
+  position: relative;
   overflow-x: auto;
   margin-top: 20px;
 }
- 
+
 table {
   width: 100%;
   border-collapse: collapse;
 }
- 
-th, td {
-  padding: 12px 8px;
-  text-align: center;
-  border-bottom: 1px solid #ddd;
-}
- 
+
+/* CABECERAS */
 th {
+  font-size: 0.5em;
   background-color: #041e42;
-  color: white;
+  color: #edf0f3;
   position: sticky;
   top: 0;
+  padding: 8px;
+  border: 0.5px solid #b4a46c;
+  text-align: center;
 }
- 
-/* Estilos para grupos de portafolio */
-.portfolio-group {
-  background-color: #f5f5f5;
+
+/* CELDAS DE DATOS */
+td {
+  font-size: 0.7em;
+  padding: 4px 6px;
+  border: 0.5px solid #b4a46c;
+  text-align: center;
+  line-height: 1.2;
 }
- 
-.portfolio-group.expanded {
-  background-color: #ece5c8/*#e0e0e0;*/
+
+/* Títulos de columnas */
+.upload-title {
+  font-size: 0.7em;
 }
- 
-.portfolio-toggle {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-weight: bold;
-  cursor: pointer;
-}
- 
-.toggle-icon {
-  font-size: 18px;
-  transition: transform 0.2s;
-}
- 
-.portfolio-group.expanded .toggle-icon {
-  transform: rotate(180deg);
-}
- 
-.benchmark-row {
-  background-color: #ece5c8/*#f9f9f9;*/
-}
- 
-/* Estilos para números negativos */
-.red-text {
-  color: #d32f2f;
-  font-weight: 500;
-}
- 
-/* Estilos para los filtros */
+
+/* Inputs de filtro en la tabla */
 .contract-filter {
   width: 80px;
   padding: 5px;
   margin-left: 5px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
+  border: 1px solid #041e42;
+  border-radius: 8px;
+  text-align: center;
+  background-color: #f1f1f1;
+  color: #041e42;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  font-size: 0.7em;
 }
- 
-/* Estilos para el paginador */
-mat-paginator {
-  margin-top: 10px;
+
+/* FILAS DE PORTAFOLIO */
+.portfolio-group {
   background-color: #f5f5f5;
+  height: 28px;
 }
- 
-/* Estilos para el estado de carga */
-.loading-spinner {
+
+.portfolio-group.expanded {
+  background-color: #ece5c8;
+}
+
+/* Celda clickeable para expandir */
+.portfolio-toggle {
   display: flex;
-  justify-content: center;
-  padding: 20px;
+  align-items: center;
+  gap: 4px;
+  font-weight: bold;
+  cursor: pointer;
+  height: 100%;
+  padding: 0;
+}
+
+/* Ícono de toggle */
+.toggle-icon {
+  font-size: 16px;
+  transition: transform 0.2s;
+}
+
+/* Ícono cuando está expandido */
+.portfolio-group.expanded .toggle-icon {
+  transform: rotate(180deg);
+}
+
+/* FILAS BENCHMARK */
+.benchmark-row {
+  background-color: #c0d9ee;
+  height: 26px;
+}
+
+/* ==================== */
+/* ESTILOS DE ESTADO (ORIGINAL) */
+/* ==================== */
+
+/* Texto en rojo para valores negativos */
+.red-text {
+  color: #d32f2f;
+  font-weight: 500;
+}
+
+/* Spinner de carga */
+.loading-spinner {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 9999;
+}
+
+.spinner {
+  border: 12px solid #b4a46c;
+  border-top: 12px solid #041e42;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* ==================== */
+/* COMPONENTES EXTERNOS (ORIGINAL) */
+/* ==================== */
+
+/* Paginador de Material */
+::ng-deep .mat-paginator {
+  background-color: #f1f1f1;
+  color: #041e42;
+  margin-top: 10px;
+}
+
+/* ==================== */
+/* MEDIA QUERIES PARA RESPONSIVIDAD */
+/* ==================== */
+
+@media (max-width: 1200px) {
+  .blocks-row {
+    flex-wrap: wrap;
+  }
+
+  .first-block,
+  .second-block {
+    min-width: 100%;
+  }
+}
+
+@media (max-width: 992px) {
+  .form-group select {
+    width: 180px;
+  }
+
+  .form-group:nth-child(2) select {
+    width: 300px;
+  }
+}
+
+@media (max-width: 768px) {
+  .main-container {
+    padding: 15px;
+  }
+
+  .blocks-row {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .horizontal-fields {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .form-group {
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+  }
+
+  .form-group select {
+    width: 100%;
+  }
+
+  .form-group:nth-child(2) select {
+    width: 100%;
+  }
+
+  .horizontal-form-group {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .form-item {
+    width: 100%;
+  }
+
+  .button-container {
+    justify-content: center;
+  }
+
+  .send-button {
+    position: static;
+    margin-top: 20px;
+    width: 100%;
+  }
+
+  th,
+  td {
+    padding: 8px 4px;
+    font-size: 0.65em;
+  }
+
+  .contract-filter {
+    width: 60px;
+  }
+}
+
+@media (max-width: 480px) {
+  .form-container {
+    gap: 10px;
+  }
+
+  .form-group select,
+  input[type="text"] {
+    padding: 6px 10px;
+    font-size: 0.9em;
+  }
+
+  .search-button,
+  .select-button {
+    padding: 6px 12px;
+    font-size: 0.9em;
+  }
+
+  table {
+    font-size: 0.6em;
+  }
+
+  th {
+    padding: 6px 2px;
+  }
+
+  td {
+    padding: 4px 2px;
+  }
 }
