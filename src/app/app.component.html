@@ -1,16 +1,25 @@
 <div *ngIf="showNavbar">
   <app-navbar></app-navbar>
 </div>
+
 <main>
   <div class="content">
     <router-outlet></router-outlet>
   </div>
 </main>
+
 <div>
   <h1></h1>
   <h2></h2>
 </div>
-<footer>
-  <p>&copy; 2024 Actinver (Administrador de Reportes ALFA)</p>
-</footer>
 
+<!-- Spinner de carga con overlay -->
+<div *ngIf="isLoading" class="loading-overlay">
+  <div class="loading-spinner">
+    <div class="spinner"></div>
+  </div>
+</div>
+
+<footer>
+  <p>&copy; 2025 Actinver (Administrador de Reportes ALFA)</p>
+</footer>

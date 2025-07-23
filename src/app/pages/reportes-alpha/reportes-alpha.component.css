@@ -1,162 +1,331 @@
-
-.card-form {
-  border: 1px solid #b4a46c;
-  border-radius: 10px;
+/* Estilos generales */
+.main-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
   padding: 20px;
+  background-color: #f5f5f5;
+  font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+/* Contenedor para los dos primeros bloques */
+.blocks-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
   margin-bottom: 20px;
-  background-color: #fff;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
 }
- 
-.card-form .form-group {
-  margin-bottom: 10px;
-  flex-wrap: wrap;
+
+/* Estilos de tarjetas */
+.card-form {
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  padding: 25px;
+  background-color: white;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  transition: box-shadow 0.3s ease;
 }
- 
-.card-form input[type="text"] {
-  padding: 10px;
-  font-size: 1.1em;
-  border-radius: 10px;
-  border: 1px solid #ccc;
-  width: 200px;
-  margin-right: 10px;
+
+.card-form:hover {
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
 }
- 
-.card-form input[disabled] {
-  font-weight: bold;
-  background-color: #f0f0f0;
+
+.card-form h2 {
+  margin-top: 0;
   color: #041e42;
-  width: 300px;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 12px;
+  font-size: 1.4rem;
+  font-weight: 600;
 }
- 
-.card-form .select-button {
-  margin-top: 10px;
+
+/* Primer bloque (izquierda) */
+.first-block {
+  width: 48%;
 }
- 
-.card-form .row.right {
+
+/* Segundo bloque (derecha) */
+.second-block {
+  width: 48%;
+}
+
+/* Formularios */
+.form-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* Estilos para grupos de campos alineados horizontalmente */
+.horizontal-fields {
+  display: flex;
+  gap: 15px;
+  align-items: flex-end;
+}
+
+.horizontal-fields .form-group {
+  flex: 1;
+}
+
+/* Estilo para el contenedor del botón alineado a la derecha */
+.button-container {
   display: flex;
   justify-content: flex-end;
   margin-top: 10px;
 }
 
-.upload-button, .file-upload-button, .select-button {
-  background-color: #041e42;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 15px;
-  cursor: pointer;
-  font-size: 1em;
-  text-align: center;
-  display: inline-block;
-  margin-left: 10px;
+/* Inputs y selects mejorados */
+input[type="text"],
+select {
+  padding: 12px 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 14px;
+  transition: all 0.3s ease;
+  background-color: #f9f9f9;
 }
 
-/* Elimina estilos duplicados y añade estos nuevos */
-.form-group {
-  display: flex;
-  align-items: center;
-gap: 10px;
-margin-bottom: 15px
-
-}
-
-.form-group label {
-  font-size: 1em;
-  color: #041e42;
-}
-
-.form-group select {
-  font-size: 1.1em;
-  padding: 8px;
-  border-radius: 10px;
-  border: 1px solid #041e42;
-  width: 200px; 
-  text-align: center;
-  background-color: #f1f1f1;
-  color: #041e42;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  position: relative;
-  padding-right: 30px;
-}
-
-.form-group select::after {
-  content: '▼';
-  position: absolute;
-  top: 50%;
-  right: 10px;
-  transform: translateY(-50%);
-  pointer-events: none;
-}
-
-.form-group select:focus {
-  border-color: #b4a46c;
+input[type="text"]:focus,
+select:focus {
   outline: none;
+  border-color: #041e42;
+  box-shadow: 0 0 0 2px rgba(4, 30, 66, 0.1);
+  background-color: white;
 }
 
-.form-group:nth-child(3) select {
-  width: 300px; 
+select {
+  background-color: #f9f9f9;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23041e42'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 15px center;
+  background-size: 12px;
+  padding-right: 35px;
+  appearance: none;
+  cursor: pointer;
 }
 
-
-.form-group input[type="text"] {
-   padding: 8px;
-   font-size: 16px;
- }  
-
- 
-.form-group input[name="contrato"] {
- width: 200px;
- }
-
-.form-group input[disabled] {
- width: 600px;
- }
-
-
-
-.form-container {
-  display: flex;
-  gap: 15px;
-  justify-content: center;
-  margin-bottom: 30px;
-  width: 90%;
+/* Placeholder estilizado */
+input::placeholder {
+  color: #999;
+  opacity: 1;
 }
 
-.type-button {
-  border: 2px solid #007bff;
-  transition: background-color 0.3s, color 0.3s;
-
-  padding: 10px 20px;
+/* Botones mejorados */
+.select-button,
+.view-button {
   background-color: #041e42;
   color: white;
   border: none;
-  border-radius: 20px;
+  padding: 12px 20px;
+  border-radius: 8px;
   cursor: pointer;
-  margin-left: 10px;
+  font-size: 14px;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.type-button.active {
+.select-button:hover,
+.view-button:hover {
   background-color: #b4a46c;
-  color: #fff;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
- 
-/* Responsive */
+
+.select-button:active,
+.search-button:active,
+.send-button:active,
+.view-button:active {
+  transform: translateY(0);
+}
+
+.send-button:hover,
+.search-button:hover {
+  background-color: #041e42;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.send-button,
+.search-button {
+  background-color: #b4a46c;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.view-button {
+  padding: 8px 12px;
+}
+
+/* Tercer bloque - formulario horizontal */
+.third-block .form-container {
+  padding: 20px;
+}
+
+.horizontal-form-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.horizontal-form-group .form-item {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 180px;
+}
+
+/* Tabla mejorada */
+.table-container {
+  background-color: white;
+  border-radius: 12px;
+  padding: 25px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  margin-top: 25px;
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin-bottom: 20px;
+}
+
+th,
+td {
+  padding: 14px 12px;
+  text-align: center;
+  border-bottom: 1px solid #eee;
+}
+
+th {
+  /*background-color: #041e42;*/
+  background-color: #b4a46c;
+  color: #041e42;
+  position: sticky;
+  top: 0;
+  font-weight: 500;
+}
+
+tr:hover td {
+  background-color: #f8f8f8;
+}
+
+.record-count {
+  margin-bottom: 15px;
+  font-weight: 600;
+  color: #041e42;
+  font-size: 0.9rem;
+}
+
+.contract-filter {
+  width: 80%;
+  padding: 8px 12px;
+  margin-top: 5px;
+  border-radius: 8px;
+}
+
+/* Paginador mejorado */
+mat-paginator {
+  background-color: #f9f9f9;
+  border-top: 1px solid #eee;
+  border-radius: 0 0 8px 8px;
+}
+
+/* Botón enviar alineado a la derecha */
+.send-button-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
+}
+
+/* Estilos para dispositivos móviles */
 @media (max-width: 768px) {
-  .date-row {
+  .main-container {
+    padding: 15px;
+  }
+
+  .blocks-row {
     flex-direction: column;
     gap: 15px;
   }
-  
-  .date-field, .calcular-button {
+
+  .first-block,
+  .second-block {
     width: 100%;
   }
-  
-  .calcular-button {
-    margin-top: 10px;
+
+  .horizontal-form-group {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 15px;
+  }
+
+  .horizontal-form-group .form-item {
+    width: 100%;
+    min-width: auto;
+  }
+
+  .horizontal-fields {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .button-container {
+    justify-content: center;
+  }
+
+  .table-container {
+    padding: 15px;
+  }
+
+  th,
+  td {
+    padding: 10px 8px;
+    font-size: 0.85rem;
   }
 }
 
+@media (max-width: 480px) {
+  .card-form {
+    padding: 15px;
+  }
+
+  input[type="text"],
+  select {
+    padding: 10px 12px;
+  }
+
+  .select-button,
+  .search-button,
+  .send-button {
+    padding: 10px 15px;
+  }
+}
+
+/* Spinner de carga */
 .loading-spinner {
   position: fixed;
   top: 50%;
@@ -166,7 +335,7 @@ margin-bottom: 15px
 }
 
 .spinner {
-  border: 12px solid #b4a46c; 
+  border: 12px solid #b4a46c;
   border-top: 12px solid #041e42;
   border-radius: 50%;
   width: 60px;
@@ -175,6 +344,23 @@ margin-bottom: 15px
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.3);
+  /* Fondo semitransparente */
+  z-index: 9998;
+  /* Debajo del spinner pero encima de todo lo demás */
 }

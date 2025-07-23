@@ -1,63 +1,183 @@
-<!-- PRIMER BLOQUE -->
+<div class="main-container">
+    <div class="blocks-row">
+        <!-- PRIMER BLOQUE - Izquierda -->
+        <div class="first-block card-form">
+            <h2>Genera reporte</h2>
+            <div class="form-container">
+                <div class="form-group">
+                    <input type="text" placeholder="Contrato" [(ngModel)]="contrato" name="contrato" required />
+                    <input type="text" [value]="nombreCliente" placeholder="Nombre del Cliente" disabled />
+                    <input type="text" [value]="estrategia" placeholder="Estrategia" disabled />
+                    <button class="select-button" (click)="buscarCliente()">Buscar</button>
+                </div>
 
-<div class="form-container card-form">
-    <!-- Fila de contrato y cliente -->
-    <div class="form-group">
-        <input type="text" placeholder="Contrato" [(ngModel)]="contrato" name="contrato" required />
-        <input type="text" [value]="nombreCliente" placeholder="Nombre del Cliente" disabled />
-        <button class="select-button" (click)="buscarCliente()">Buscar</button>
+                <div class="horizontal-fields">
+                    <div class="form-group">
+                        <label for="searchYear">Año:</label>
+                        <select id="searchYear" [(ngModel)]="searchYear"
+                            (change)="searchYear && onYearChange(searchYear)">
+                            <option *ngFor="let year of searchYears" [value]="year">{{ year }}</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="searchMonth">Mes:</label>
+                        <select id="searchMonth" [(ngModel)]="searchMonth">
+                            <option *ngFor="let month of months" [value]="month">{{ month }}</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="button-container">
+                    <button class="select-button" (click)="generarReporte()">
+                        Generar Reporte
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- SEGUNDO BLOQUE - Derecha -->
+        <div class="second-block card-form">
+            <h2>Generar reportes</h2>
+            <div class="form-container">
+                <div class="form-group">
+                    <label for="generateStrategy">Estrategia:</label>
+                    <select id="generateStrategy" [(ngModel)]="generateStrategy">
+                        <option *ngFor="let strategy of strategies" [value]="strategy">{{ strategy }}</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="generateYear">Año:</label>
+                    <select id="generateYear" [(ngModel)]="generateYear" (change)="onGenerateYearChange(generateYear)">
+                        <option *ngFor="let year of generateYears" [value]="year">{{ year }}</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="generateMonth">Mes:</label>
+                    <select id="generateMonth" [(ngModel)]="generateMonth">
+                        <option *ngFor="let month of monthsStrategy" [value]="month">{{ month }}</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <button class="select-button" (click)="uploadFolderPath()">Generar Reportes</button>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <!-- Selects de año y mes-->
-    <div class="form-group">
-        <label for="year">Año:</label>
-        <select id="year" [(ngModel)]="selectedYear" (change)="onYearChange(selectedYear)">
-            <option *ngFor="let year of years" [value]="year">{{ year }}</option>
-        </select>
+    <!-- TERCER BLOQUE - Abajo -->
+    <div class="third-block">
+        <div class="form-container card-form">
+            <div class="horizontal-form-group">
+                <div class="form-item">
+                    <label for="filesYear">Año:</label>
+                    <select id="filesYear" [(ngModel)]="filesYear" (change)="onFilesYearChange(filesYear)">
+                        <option *ngFor="let year of filesYears" [value]="year">{{ year }}</option>
+                    </select>
+                </div>
+
+                <div class="form-item">
+                    <label for="filesMonth">Mes:</label>
+                    <select id="filesMonth" [(ngModel)]="filesMonth">
+                        <option *ngFor="let month of monthsFiles" [value]="month">{{ month }}</option>
+                    </select>
+                </div>
+
+                <div class="form-item">
+                    <label for="filesStrategy">Estrategia:</label>
+                    <select id="filesStrategy" [(ngModel)]="filesStrategy">
+                        <option *ngFor="let strategy of strategies" [value]="strategy">{{ strategy }}</option>
+                    </select>
+                </div>
+
+                <div class="form-item">
+                    <button class="search-button" (click)="searchFiles()">
+                        <mat-icon>search</mat-icon> Buscar
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- TABLA -->
+        <div class="table-container">
+            <div *ngIf="lengRegister !== null" class="record-count">
+                {{ lengRegister }} registros
+            </div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th class="select-all">
+                            <input type="checkbox" (change)="toggleSelectAll($event)" [checked]="allSelected" />
+                        </th>
+                        <th>
+                            Contrato
+                            <input type="text" class="contract-filter" [(ngModel)]="filters.contrato"
+                                (input)="applyFilters()" />
+                        </th>
+                        <th>
+                            Cliente
+                            <input type="text" class="client-filter" [(ngModel)]="filters.cliente"
+                                (input)="applyFilters()" />
+                        </th>
+                        <th>
+                            Correo
+                            <input type="text" class="email-filter" [(ngModel)]="filters.correo"
+                                (input)="applyFilters()" />
+                        </th>
+
+                        <th>Estrategia</th>
+                        <th>Mes</th>
+                        <th>Año</th>
+                        <th>Reporte</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let dato of paginatedDatos">
+                        <td>
+                            <input type="checkbox" [(ngModel)]="dato.selected" (change)="updateAnySelected()" />
+                        </td>
+                        <td>{{ dato.contrato }}</td>
+                        <td>{{ dato.cliente }}</td>
+                        <td>{{ dato.correo }}</td>
+                        <td>{{ dato.estrategia }}</td>
+                        <td>{{ dato.mes }}</td>
+                        <td>{{ dato.anual }}</td>
+                        <td>
+                            <button class="view-button" (click)="viewPDF(dato.contrato, dato.estrategia)"
+                                matTooltip="{{dato.nombrePdf}}">
+                                <mat-icon class="pdf-icon">description</mat-icon>
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <mat-paginator [length]="dataSource.data.length" [pageSize]="10" [pageSizeOptions]="[5, 10, 20, 50]"
+                [showFirstLastButtons]="true" (page)="onPageChange($event)">
+            </mat-paginator>
+
+
+            <div class="send-button-container">
+                <button class="send-button" (click)="sendFiles()" [disabled]="!anySelected">
+                    {{ sendfiles }}
+                </button>
+            </div>
+
+        </div>
     </div>
 
-    <div class="form-group">
-        <label for="month">Mes:</label>
-        <select id="month" [(ngModel)]="selectedMonth">
-            <option *ngFor="let month of months" [value]="month">{{ month }}</option>
-        </select>
+    <div *ngIf="isLoading" class="loading-overlay"></div>
+
+
+    <!-- Spinner de carga con overlay -->
+    <div *ngIf="isLoading" class="loading-overlay">
+        <div class="loading-spinner" *ngIf="isLoading">
+            <div class="spinner"></div>
+        </div>
     </div>
 
-
-    <!-- Botón Generar Reporte [disabled]="!todosLosCamposLlenos()"-->
-    <div class="row right">
-        <button class="select-button" (click)="generarReporte()">
-            Generar Reporte
-        </button>
-    </div>
-</div>
-
-<!-- SEGUNDO BLOQUE -->
-<div class="form-container card-form">
-    <div class="form-group">
-        <label for="year">Año:</label>
-        <select id="year" [(ngModel)]="selectedYear">
-            <option *ngFor="let year of years" [value]="year">{{ year }}</option>
-        </select>
-    </div>
-
-    <div class="form-group">
-        <label for="month">Mes:</label>
-        <select id="month" [(ngModel)]="selectedMonth">
-            <option *ngFor="let month of months" [value]="month">{{ month }}</option>
-        </select>
-    </div>
-
-    <div class="form-group">
-        <label for="strategy">Estrategia:</label>
-        <select id="strategy" class="custom-select" [(ngModel)]="selectedStrategy">
-            <option *ngFor="let strategy of strategies" [value]="strategy">{{ strategy }}</option>
-        </select>
-    </div>
-    <button class="select-button" (click)="uploadFolderPath()">Generar Reportes</button>
-</div>
-
-<!-- Spinner de carga -->
-<div class="loading-spinner" *ngIf="isLoading">
-    <div class="spinner"></div>
 </div>

@@ -70,6 +70,7 @@ export class DispercionAlphaComponent {
             this.router.navigate(['/']);
           } else {
             this.showDialog('FAILED', 'Error al obtener estrategias');
+            this.router.navigate(['/']);
           }
         }
       );

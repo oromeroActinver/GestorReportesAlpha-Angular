@@ -72,6 +72,7 @@ export class DispercionComponent implements AfterViewInit {
             this.router.navigate(['/']);
           } else {
             this.showDialog('FAILED', 'Error al obtener estrategias');
+            this.router.navigate(['/']);
           }
         }
       );
@@ -85,7 +86,7 @@ export class DispercionComponent implements AfterViewInit {
     this.paginator.pageSize = this.paginator.pageSize || 5;
     this.dataSource.paginator = this.paginator;
     this.paginatedDatos = this.datos.slice(0, this.paginator.pageSize);
-}
+  }
 
 
   toggleSelectAll(event: any) {
@@ -218,12 +219,12 @@ export class DispercionComponent implements AfterViewInit {
     }
   }
 
-onPageChange(event: PageEvent): void {
-  this.paginator.pageSize = event.pageSize;
-  const startIndex = event.pageIndex * event.pageSize;
-  const endIndex = startIndex + event.pageSize;
-  this.paginatedDatos = this.datos.slice(startIndex, endIndex);
-}
+  onPageChange(event: PageEvent): void {
+    this.paginator.pageSize = event.pageSize;
+    const startIndex = event.pageIndex * event.pageSize;
+    const endIndex = startIndex + event.pageSize;
+    this.paginatedDatos = this.datos.slice(startIndex, endIndex);
+  }
 
 
   showDialog(title: string, content: string, details?: string[]): void {
@@ -247,7 +248,7 @@ onPageChange(event: PageEvent): void {
     const startIndex = this.paginator.pageIndex * this.paginator.pageSize;
     this.paginatedDatos = this.paginatedDatos.slice(startIndex, startIndex + this.paginator.pageSize);
   }
-  
+
 
 }
 

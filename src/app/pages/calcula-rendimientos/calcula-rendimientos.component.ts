@@ -99,7 +99,6 @@ export class CalculaRendimientosComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    // Configurar el paginador y ordenamiento después de que la vista esté inicializada
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
   }
@@ -153,7 +152,6 @@ export class CalculaRendimientosComponent implements OnInit, AfterViewInit {
     if (fileInput) fileInput.value = '';
   }
 
-  // Métodos para subir archivos
   uploadFiles(): void {
     if (this.files.length === 0) {
       this.showDialog('MESSAGE', 'Seleccione al menos un archivo.');
@@ -271,20 +269,16 @@ export class CalculaRendimientosComponent implements OnInit, AfterViewInit {
       fechFinal: this.formatDateToYYYYMMDD(formData.fechaFin)
     };
 
-    const url = `${environment.API_URL}/Rend/a2k`;
+    const url = `${environment.API_URL}/Rend/getRendByFechs`;
 
     this.http.post(url, body, { headers }).subscribe({
       next: (response: any) => {
         this.isLoading = false;
         if (response?.status === 'SUCCESS') {
-          // Transforma los datos para que coincidan con la tabla
-          const tableData = this.parseResponseToTableData(response.details);
-          //const tableData = this.parseResponseToTableData(response.details);
 
-          // Asigna los datos al MatTableDataSource
+          const tableData = this.parseResponseToTableData(response.details);
           this.dataSource = new MatTableDataSource(tableData);
 
-          // Configurar el sortingDataAccessor para manejar correctamente las fechas y números
           this.dataSource.sortingDataAccessor = (item, property) => {
             switch (property) {
               case 'FechaInicio':
@@ -300,11 +294,9 @@ export class CalculaRendimientosComponent implements OnInit, AfterViewInit {
             }
           };
 
-          // Asignar paginador y sort
           this.dataSource.paginator = this.paginator;
           this.dataSource.sort = this.sort;
 
-          // Configura el paginador y ordenamiento
           setTimeout(() => {
             this.dataSource.paginator = this.paginator;
             this.dataSource.sort = this.sort;
@@ -324,17 +316,14 @@ export class CalculaRendimientosComponent implements OnInit, AfterViewInit {
     });
   }
 
-  // Cuando obtengas los datos (en tu método onSubmit o similar)
   loadData(data: any[]) {
-    this.dataSource = new MatTableDataSource(data); // Crear nueva instancia
+    this.dataSource = new MatTableDataSource(data);
 
-    // Configurar sort y paginator después de que la vista esté actualizada
     setTimeout(() => {
       this.dataSource.sort = this.sort;
       this.dataSource.paginator = this.paginator;
     });
 
-    // Opcional: Configurar ordenamiento personalizado
     this.dataSource.sortingDataAccessor = (item, property) => {
       switch (property) {
         case 'FechaInicio':
@@ -348,19 +337,13 @@ export class CalculaRendimientosComponent implements OnInit, AfterViewInit {
     };
   }
 
-  // Método para aplicar filtros mejorado
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
-
-    // Filtro personalizado para manejar fechas correctamente
     this.dataSource.filterPredicate = (data: any, filter: string) => {
-      // Convertir todos los datos a string y normalizar para búsqueda
       const dataStr = Object.keys(data).map(key => {
-        // Manejo especial para fechas
         if (key === 'FechaInicio') {
           return this.formatDateForFilter(data[key]);
         }
-        // Manejo especial para números
         if (['SaldoInicio', 'Saldo', 'TIRAnualizada', 'TIREfectiva'].includes(key)) {
           return data[key].toString().replace(/[^0-9.-]/g, '');
         }
@@ -377,14 +360,12 @@ export class CalculaRendimientosComponent implements OnInit, AfterViewInit {
     }
   }
 
-  // Método auxiliar para formatear fechas para el filtro
   private formatDateForFilter(date: string | Date): string {
     if (!date) return '';
     const d = new Date(date);
     return `${d.getDate()}/${d.getMonth() + 1}/${d.getFullYear()}`;
   }
 
-  // Método para transformar los datos del backend al formato que espera la tabla
   private parseResponseToTableData(details: string[]): any[] {
     return details.map(detail => {
       const parts = detail.split(', ');
@@ -421,7 +402,6 @@ export class CalculaRendimientosComponent implements OnInit, AfterViewInit {
     });
   }
 
-  // Métodos auxiliares
   private dateValidator(group: FormGroup): { [key: string]: any } | null {
     const fechaInicio = group.get('fechaInicio')?.value;
     const fechaFin = group.get('fechaFin')?.value;

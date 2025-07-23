@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ViewChild, Component } from '@angular/core';
+import { ChangeDetectionStrategy, ViewChild, Component, ChangeDetectorRef } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
@@ -35,6 +35,7 @@ import { RendimientosDialogComponent } from '../rendimientos-dialog/rendimientos
   templateUrl: './rendimientos.component.html',
   providers: [provideNativeDateAdapter()],
   changeDetection: ChangeDetectionStrategy.OnPush,
+
   styleUrls: ['./rendimientos.component.css']
 })
 export class RendimientosComponent {
@@ -46,23 +47,17 @@ export class RendimientosComponent {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   dataSource = new MatTableDataSource<any>();
 
-  // Datos y configuración
   strategies: any[] = [];
   years: number[] = [];
   selectedStrategy: string | null = null;
   selectedYear: number | null = null;
   isLoading: boolean = false;
-
-  // Datos originales y procesados
   rawData: any[] = [];
   groupedData: any[] = [];
   filteredGroupedData: any[] = [];
   displayedGroupedData: any[] = [];
-
-  // Estado de expansión
   expandedPortfolios: Set<number> = new Set();
 
-  // Filtros
   filters = {
     portafolio: '',
     inicioAlpha: '',
@@ -84,7 +79,6 @@ export class RendimientosComponent {
     activoFin: ''
   };
 
-  // Ordenamiento
   sorting = {
     column: '',
     direction: 'asc'
@@ -95,7 +89,8 @@ export class RendimientosComponent {
     private estrategiasService: EstrategiasService,
     private dialog: MatDialog,
     private router: Router,
-    private http: HttpClient
+    private http: HttpClient,
+    private cdr: ChangeDetectorRef
   ) {
     this.rendimientosForm = this.fb.group({
       fechaInicioMensual: [''],
@@ -103,15 +98,10 @@ export class RendimientosComponent {
       fechaInicioAnual: [''],
       fechaFinAnual: ['']
     });
-
-    // Generar años disponibles
-    const currentYear = new Date().getFullYear();
-    for (let year = currentYear; year >= currentYear - 10; year--) {
-      this.years.push(year);
-    }
   }
 
   ngOnInit(): void {
+    this.loadYears();
     this.loadStrategies();
   }
 
@@ -120,7 +110,8 @@ export class RendimientosComponent {
     if (token) {
       this.estrategiasService.getNewEstrategias(token).subscribe({
         next: (data: string[]) => {
-          this.strategies = data;
+          this.strategies = [...data];
+          this.cdr.markForCheck();
         },
         error: (error) => {
           console.error(error);
@@ -129,6 +120,38 @@ export class RendimientosComponent {
             this.router.navigate(['/']);
           } else {
             this.showDialog('FAILED', 'Error al obtener estrategias');
+            this.router.navigate(['/']);
+          }
+        }
+      });
+    } else {
+      this.showDialog('FAILED', 'Usuario no autenticado.');
+      this.router.navigate(['/']);
+    }
+  }
+
+
+  loadYears(): void {
+    const token = localStorage.getItem('token');
+    if (token) {
+      const url = `${this.apiUrl}/Rend/getYears`;
+      const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+      this.http.get<string[] | null>(url, { headers }).subscribe({
+        next: (data: string[] | null) => {
+          if (data === null || data.length === 0) {
+            this.showDialog('FAILED', 'No hay años disponibles.');
+          } else {
+            this.years = [...data.map(year => Number(year))];
+            this.cdr.markForCheck();
+          }
+        },
+        error: (error) => {
+          console.error(error);
+          if (error.error.token === "El token de autenticación ha expirado." || error.error.token === "El token de autenticación es inválido.") {
+            this.showDialog('FAILED', error.error.token);
+            this.router.navigate(['/']);
+          } else {
+            this.showDialog('FAILED', 'Error al obtener años');
           }
         }
       });
@@ -140,8 +163,10 @@ export class RendimientosComponent {
 
   searchRendimientos(): void {
     if (this.selectedYear && this.selectedStrategy) {
+      this.resetFiltersAndSorting();
+
       this.isLoading = true;
-      const url = `${this.apiUrl}/Rend/historico`;
+      const url = `${this.apiUrl}/Rend/getRendimientos`;
       const params = {
         estrategia: this.selectedStrategy,
         anual: this.selectedYear.toString()
@@ -153,7 +178,6 @@ export class RendimientosComponent {
           next: (data) => {
             this.isLoading = false;
             this.processResponseData(data);
-            // Resetear paginador después de nueva búsqueda
             this.resetPaginator();
           },
           error: (error) => {
@@ -170,11 +194,13 @@ export class RendimientosComponent {
     }
   }
 
-  // Método para resetear el paginador
+
+
+
   private resetPaginator(): void {
     if (this.paginator) {
-      this.paginator.firstPage(); // Va a la primera página
-      this.paginator.length = this.filteredGroupedData.length; // Actualiza el total de items
+      this.paginator.firstPage();
+      this.paginator.length = this.filteredGroupedData.length;
     }
   }
 
@@ -182,7 +208,7 @@ export class RendimientosComponent {
     if (data && data.length > 0) {
       this.rawData = data.map(item => this.transformDataItem(item));
       this.groupedData = this.groupByPortfolio(this.rawData);
-      this.applyFilters(); // Aplica filtros iniciales
+      this.applyFilters();
     } else {
       this.handleNoData();
     }
@@ -257,7 +283,6 @@ export class RendimientosComponent {
       return matchesPortfolio && matchesAlpha;
     });
 
-    // Aplicar ordenamiento
     if (this.sorting.column) {
       this.filteredGroupedData.sort((a, b) => {
         let valueA: any, valueB: any;
@@ -290,7 +315,6 @@ export class RendimientosComponent {
       });
     }
 
-    // 3. Resetear paginador a la primera página
     this.resetPaginator();
     this.updatePaginatedData();
   }
@@ -348,7 +372,6 @@ export class RendimientosComponent {
     this.showDialog('MESSAGE', 'No existen DATOS de rendimientos.');
   }
 
-  // Resto de métodos (showDialog, openRendimientosDialog, etc.) permanecen igual
   showDialog(title: string, content: string, details?: string[]): void {
     this.dialog.open(MessageDetailsDialogComponent, {
       width: '300px',
@@ -369,4 +392,34 @@ export class RendimientosComponent {
     this.paginator.pageSizeOptions = [5, 10, 20, 50, 100, 200];
     this.dataSource.paginator = this.paginator;
   }
+
+  private resetFiltersAndSorting(): void {
+    this.filters = {
+      portafolio: '',
+      inicioAlpha: '',
+      anioAnterior: '',
+      enero: '',
+      febrero: '',
+      marzo: '',
+      abril: '',
+      mayo: '',
+      junio: '',
+      julio: '',
+      agosto: '',
+      septiembre: '',
+      octubre: '',
+      noviembre: '',
+      diciembre: '',
+      enelAnio: '',
+      activoInicio: '',
+      activoFin: ''
+    };
+    this.sorting = {
+      column: '',
+      direction: 'asc'
+    };
+
+    this.expandedPortfolios.clear();
+  }
+
 }
