@@ -3,6 +3,7 @@ import { Router, NavigationEnd } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { NavbarComponent } from './navbar/navbar.component';
 import { RouterOutlet } from '@angular/router';
+import { InactivityService } from './services/InactivityService';
 
 @Component({
   selector: 'app-root',
@@ -14,9 +15,10 @@ import { RouterOutlet } from '@angular/router';
 export class AppComponent implements OnInit {
   title = 'grAlfaFront';
   showNavbar = true;
-  isLoading: boolean = false
+  showFooter = true;
+  isLoading: boolean = false;
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private inactivityService: InactivityService) { }
 
   ngOnInit(): void {
     this.router.events.subscribe(event => {
@@ -26,10 +28,13 @@ export class AppComponent implements OnInit {
     });
     this.checkRoute(this.router.url);
   }
-
-  private checkRoute(url: string): void {
-    this.showNavbar = !(url === '/' || url.includes('/login'));
+ 
+private checkRoute(url: string): void {
+    const hideOnLogin = url === '/' || url.includes('/login');
+    this.showNavbar = !hideOnLogin;
+    this.showFooter = !hideOnLogin;
   }
+
 }
 
 

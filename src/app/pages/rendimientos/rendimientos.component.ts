@@ -57,6 +57,7 @@ export class RendimientosComponent {
   filteredGroupedData: any[] = [];
   displayedGroupedData: any[] = [];
   expandedPortfolios: Set<number> = new Set();
+  allExpanded: boolean = false;
 
   filters = {
     portafolio: '',
@@ -192,10 +193,8 @@ export class RendimientosComponent {
     } else {
       this.showDialog('MESSAGE', 'Por favor, seleccione Año y Estrategia.');
     }
+    this.paginator._changePageSize(20);
   }
-
-
-
 
   private resetPaginator(): void {
     if (this.paginator) {
@@ -391,6 +390,16 @@ export class RendimientosComponent {
     this.paginator.pageSize = this.paginator.pageSize || 10;
     this.paginator.pageSizeOptions = [5, 10, 20, 50, 100, 200];
     this.dataSource.paginator = this.paginator;
+  }
+
+  toggleAll(event: MouseEvent) {
+    event.stopPropagation();
+    this.allExpanded = !this.allExpanded;
+    this.displayedGroupedData.forEach(grupo => {
+      if (grupo.benchmark) {
+        grupo.isExpanded = this.allExpanded;
+      }
+    });
   }
 
   private resetFiltersAndSorting(): void {

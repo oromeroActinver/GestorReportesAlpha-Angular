@@ -1,7 +1,8 @@
 export interface LoginResponse {
   exist: boolean;
-  fullName: string | null;
-  userEmail: string | null;
+  fullName: string ;
+  userEmail: string;
   message: string;
   token: string;
+  perfil: string;
 }

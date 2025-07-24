@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common'
 import { Router } from '@angular/router';
 import { AuthService } from '../pages/login/AuthService';
-import {MatIconModule} from '@angular/material/icon';
+import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatDialog } from '@angular/material/dialog';
 //import { RendimientosComponent } from '../pages/rendimientos/rendimientos.component';
@@ -16,7 +17,7 @@ import { MatDividerModule } from '@angular/material/divider';
   selector: 'app-navbar',
   standalone: true,
   templateUrl: './navbar.component.html',
-  imports: [MatIconModule, MatTooltipModule, MatMenuModule, MatDividerModule],
+  imports: [MatIconModule, MatTooltipModule, MatMenuModule, MatDividerModule, CommonModule],
   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent {
@@ -26,10 +27,17 @@ export class NavbarComponent {
   logoutButton: string = 'cerrar cesión ';
   rendiAlphaButton: string = 'Rendimientos Alpha';
   newMenu: string = 'Nuevo Home';
-  
+  userFullName: string | null = '';
+  userEmail: string = ''
 
+  constructor(private router: Router, private authService: AuthService, private dialog: MatDialog) { }
+  userPerfil: string = 'VIST'; // o 'ASESOR', 'VIST'
 
-  constructor(private router: Router, private authService: AuthService, private dialog: MatDialog) {}
+  ngOnInit(): void {
+    this.userFullName = localStorage.getItem('fullName') || '';
+    this.userEmail = localStorage.getItem('userEmail') || '';
+    this.userPerfil = localStorage.getItem('perfil') || '';
+  }
 
   navigate(path: string): void {
     this.router.navigate([path]);

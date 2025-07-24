@@ -73,9 +73,38 @@ button {
   color: #b4a46c;
 }
 
-.navbar-left, .navbar-right {
+.navbar-left {
   flex: 0;
 }
+
+.navbar-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-right: 20px;
+}
+
+.icon-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+  overflow: visible; /* Asegura que no se corte */
+}
+
+.icon-container mat-icon {
+  font-size: 28px;
+  color: #fff;
+  transition: color 0.3s;
+}
+
+
+.icon-container mat-icon:hover {
+  color: #90caf9; /* Color al pasar el mouse */
+}
+
 
 .navbar-center {
   flex: 1;
