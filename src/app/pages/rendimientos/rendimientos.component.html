@@ -1,169 +1,177 @@
-<div class="main-container">
-  <div class="form-container">
+<div class="third-block">
+  <div class="main-container">
+    <div class="form-container card-form">
 
-    <div class="form-group" *ngIf="years && years.length > 0">
-      <label for="year">Año:</label>
-      <select id="year" class="custom-select year-select" [(ngModel)]="selectedYear">
-        <option *ngFor="let year of years" [value]="year">{{ year }}</option>
-      </select>
-    </div>
-
-
-    <div class="form-group" *ngIf="strategies && strategies.length > 0">
-      <label for="strategy">Estrategia:</label>
-      <select id="strategy" class="custom-select" [(ngModel)]="selectedStrategy">
-        <option *ngFor="let strategy of strategies" [value]="strategy">{{ strategy }}</option>
-      </select>
-    </div>
-
-    <div class="form-group">
-      <div class="button-container">
-        <button mat-raised-button color="primary" class="search-button" (click)="searchRendimientos()"
-          matTooltip="Buscar">
-          <mat-icon>search</mat-icon>
-        </button>
+      <div class="form-group" *ngIf="years && years.length > 0">
+        <label for="year">Año:</label>
+        <select id="year" class="custom-select year-select" [(ngModel)]="selectedYear">
+          <option *ngFor="let year of years" [value]="year">{{ year }}</option>
+        </select>
       </div>
+
+
+      <div class="form-group" *ngIf="strategies && strategies.length > 0">
+        <label for="strategy">Estrategia:</label>
+        <select id="strategy" class="custom-select" [(ngModel)]="selectedStrategy">
+          <option *ngFor="let strategy of strategies" [value]="strategy">{{ strategy }}</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <div class="button-container">
+          <button mat-raised-button color="primary" class="search-button" (click)="searchRendimientos()"
+            matTooltip="Buscar">
+            <mat-icon>search</mat-icon>
+          </button>
+        </div>
+      </div>
+
+
     </div>
 
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
 
-  </div>
+            <th class="upload-title">
+              <button (click)="sortBy('portafolio')">
+                <mat-icon class="toggle-icon" (click)="toggleAll($event)">
+                  {{ allExpanded ? 'expand_less' : 'expand_more' }}
+                </mat-icon>
+                PORTAFOLIO ↕
+              </button>
+              <input type="text" class="contract-filter" [(ngModel)]="filters.portafolio" (input)="applyFilters()" />
+            </th>
 
-  <div class="table-container">
-    <table>
-      <thead>
-        <tr>
-
-          <th class="upload-title">
-            <button (click)="sortBy('portafolio')">PORTAFOLIO ↕</button>
-            <input type="text" class="contract-filter" [(ngModel)]="filters.portafolio" (input)="applyFilters()" />
-          </th>
-          <th class="upload-title">
-            <button (click)="sortBy('inicioAlpha')">INICIO ALPHA ↕</button>
-          </th>
-          <th class="upload-title">CONCEPTO</th>
-          <th class="upload-title">
-            <button (click)="sortBy('anioAnterior')">AÑO ANTERIOR ↕</button>
-          </th>
-          <!-- Columnas de meses -->
-          <th class="upload-title">
-            <button (click)="sortBy('enero')">ENERO ↕</button>
-          </th>
-          <th class="upload-title">
-            <button (click)="sortBy('febrero')">FEBRERO ↕</button>
-          </th>
-          <th class="upload-title">
-            <button (click)="sortBy('marzo')">MARZO ↕</button>
-          </th>
-          <th class="upload-title">
-            <button (click)="sortBy('abril')">ABRIL ↕</button>
-          </th>
-          <th class="upload-title">
-            <button (click)="sortBy('mayo')">MAYO ↕</button>
-          </th>
-          <th class="upload-title">
-            <button (click)="sortBy('junio')">JUNIO ↕</button>
-          </th>
-          <th class="upload-title">
-            <button (click)="sortBy('julio')">JULIO ↕</button>
-          </th>
-          <th class="upload-title">
-            <button (click)="sortBy('agosto')">AGOSTO ↕</button>
-          </th>
-          <th class="upload-title">
-            <button (click)="sortBy('septiembre')">SEPTIEMBRE ↕</button>
-          </th>
-          <th class="upload-title">
-            <button (click)="sortBy('octubre')">OCTUBRE ↕</button>
-          </th>
-          <th class="upload-title">
-            <button (click)="sortBy('noviembre')">NOVIEMBRE ↕</button>
-          </th>
-          <th class="upload-title">
-            <button (click)="sortBy('diciembre')">DICIEMBRE ↕</button>
-          </th>
-          <th class="upload-title">
-            <button (click)="sortBy('enelAnio')">EN EL AÑO ↕</button>
-          </th>
-          <th class="upload-title">
-            <button (click)="sortBy('activoInicio')">ACTIVO INICIO ↕</button>
-          </th>
-          <th class="upload-title">
-            <button (click)="sortBy('activoFin')">ACTIVO FIN ↕</button>
-          </th>
-          <th class="upload-title">ESTRATEGIA</th>
-        </tr>
-      </thead>
-      <tbody>
-        <ng-container *ngFor="let grupo of displayedGroupedData">
-          <!-- Fila de Rendimiento -->
-          <tr [ngClass]="{ 'portfolio-group': true, 'expanded': grupo.isExpanded }">
-            <td (click)="togglePortfolio(grupo.portafolio)" class="portfolio-toggle">
-              {{ grupo.portafolio }}
-              <mat-icon class="toggle-icon" *ngIf="grupo.benchmark">
-                {{ grupo.isExpanded ? 'expand_less' : 'expand_more' }}
-              </mat-icon>
-            </td>
-            <td>{{ grupo.inicioAlpha }}</td>
-            <td>Rendimiento</td>
-            <td [ngClass]="{ 'red-text': grupo.rendimiento?.anioAnterior < 0 }">
-              {{ grupo.rendimiento?.anioAnterior }}
-            </td>
-            <!-- Columnas de meses para Rendimiento -->
-            <td [ngClass]="{ 'red-text': grupo.rendimiento?.enero < 0 }">{{ grupo.rendimiento?.enero }}</td>
-            <td [ngClass]="{ 'red-text': grupo.rendimiento?.febrero < 0 }">{{ grupo.rendimiento?.febrero }}</td>
-            <td [ngClass]="{ 'red-text': grupo.rendimiento?.marzo < 0 }">{{ grupo.rendimiento?.marzo }}</td>
-            <td [ngClass]="{ 'red-text': grupo.rendimiento?.abril < 0 }">{{ grupo.rendimiento?.abril }}</td>
-            <td [ngClass]="{ 'red-text': grupo.rendimiento?.mayo < 0 }">{{ grupo.rendimiento?.mayo }}</td>
-            <td [ngClass]="{ 'red-text': grupo.rendimiento?.junio < 0 }">{{ grupo.rendimiento?.junio }}</td>
-            <td [ngClass]="{ 'red-text': grupo.rendimiento?.julio < 0 }">{{ grupo.rendimiento?.julio }}</td>
-            <td [ngClass]="{ 'red-text': grupo.rendimiento?.agosto < 0 }">{{ grupo.rendimiento?.agosto }}</td>
-            <td [ngClass]="{ 'red-text': grupo.rendimiento?.septiembre < 0 }">{{ grupo.rendimiento?.septiembre }}</td>
-            <td [ngClass]="{ 'red-text': grupo.rendimiento?.octubre < 0 }">{{ grupo.rendimiento?.octubre }}</td>
-            <td [ngClass]="{ 'red-text': grupo.rendimiento?.noviembre < 0 }">{{ grupo.rendimiento?.noviembre }}</td>
-            <td [ngClass]="{ 'red-text': grupo.rendimiento?.diciembre < 0 }">{{ grupo.rendimiento?.diciembre }}</td>
-
-            <td [ngClass]="{ 'red-text': grupo.rendimiento?.enelAnio < 0 }">{{ grupo.rendimiento?.enelAnio }}</td>
-
-            <td [ngClass]="{ 'red-text': grupo.rendimiento?.activoInicio < 0 }">
-              {{ grupo.rendimiento?.activoInicio | currency:'USD':'symbol':'1.2-2' }}
-            </td>
-            <td [ngClass]="{ 'red-text': grupo.rendimiento?.activoFin < 0 }">
-              {{ grupo.rendimiento?.activoFin | currency:'USD':'symbol':'1.2-2' }}
-            </td>
-            <td>{{ grupo.estrategia }}</td>
+            <th class="upload-title">
+              <button (click)="sortBy('inicioAlpha')">INICIO ALPHA ↕</button>
+            </th>
+            <th class="upload-title">CONCEPTO</th>
+            <th class="upload-title">
+              <button (click)="sortBy('anioAnterior')">AÑO ANTERIOR ↕</button>
+            </th>
+            <!-- Columnas de meses -->
+            <th class="upload-title">
+              <button (click)="sortBy('enero')">ENERO ↕</button>
+            </th>
+            <th class="upload-title">
+              <button (click)="sortBy('febrero')">FEBRERO ↕</button>
+            </th>
+            <th class="upload-title">
+              <button (click)="sortBy('marzo')">MARZO ↕</button>
+            </th>
+            <th class="upload-title">
+              <button (click)="sortBy('abril')">ABRIL ↕</button>
+            </th>
+            <th class="upload-title">
+              <button (click)="sortBy('mayo')">MAYO ↕</button>
+            </th>
+            <th class="upload-title">
+              <button (click)="sortBy('junio')">JUNIO ↕</button>
+            </th>
+            <th class="upload-title">
+              <button (click)="sortBy('julio')">JULIO ↕</button>
+            </th>
+            <th class="upload-title">
+              <button (click)="sortBy('agosto')">AGOSTO ↕</button>
+            </th>
+            <th class="upload-title">
+              <button (click)="sortBy('septiembre')">SEPTIEMBRE ↕</button>
+            </th>
+            <th class="upload-title">
+              <button (click)="sortBy('octubre')">OCTUBRE ↕</button>
+            </th>
+            <th class="upload-title">
+              <button (click)="sortBy('noviembre')">NOVIEMBRE ↕</button>
+            </th>
+            <th class="upload-title">
+              <button (click)="sortBy('diciembre')">DICIEMBRE ↕</button>
+            </th>
+            <th class="upload-title">
+              <button (click)="sortBy('enelAnio')">EN EL AÑO ↕</button>
+            </th>
+            <th class="upload-title">
+              <button (click)="sortBy('activoInicio')">ACTIVO INICIO ↕</button>
+            </th>
+            <th class="upload-title">
+              <button (click)="sortBy('activoFin')">ACTIVO FIN ↕</button>
+            </th>
+            <th class="upload-title">ESTRATEGIA</th>
           </tr>
+        </thead>
+        <tbody>
+          <ng-container *ngFor="let grupo of displayedGroupedData">
+            <!-- Fila de Rendimiento -->
+            <tr [ngClass]="{ 'portfolio-group': true, 'expanded': grupo.isExpanded }">
+              <td (click)="togglePortfolio(grupo.portafolio)" class="portfolio-toggle">
+                {{ grupo.portafolio }}
+                <mat-icon class="toggle-icon" *ngIf="grupo.benchmark">
+                  {{ grupo.isExpanded ? 'expand_less' : 'expand_more' }}
+                </mat-icon>
+              </td>
+              <td>{{ grupo.inicioAlpha }}</td>
+              <td>Rendimiento</td>
+              <td [ngClass]="{ 'red-text': grupo.rendimiento?.anioAnterior < 0 }">
+                {{ grupo.rendimiento?.anioAnterior }}
+              </td>
+              <!-- Columnas de meses para Rendimiento -->
+              <td [ngClass]="{ 'red-text': grupo.rendimiento?.enero < 0 }">{{ grupo.rendimiento?.enero }}</td>
+              <td [ngClass]="{ 'red-text': grupo.rendimiento?.febrero < 0 }">{{ grupo.rendimiento?.febrero }}</td>
+              <td [ngClass]="{ 'red-text': grupo.rendimiento?.marzo < 0 }">{{ grupo.rendimiento?.marzo }}</td>
+              <td [ngClass]="{ 'red-text': grupo.rendimiento?.abril < 0 }">{{ grupo.rendimiento?.abril }}</td>
+              <td [ngClass]="{ 'red-text': grupo.rendimiento?.mayo < 0 }">{{ grupo.rendimiento?.mayo }}</td>
+              <td [ngClass]="{ 'red-text': grupo.rendimiento?.junio < 0 }">{{ grupo.rendimiento?.junio }}</td>
+              <td [ngClass]="{ 'red-text': grupo.rendimiento?.julio < 0 }">{{ grupo.rendimiento?.julio }}</td>
+              <td [ngClass]="{ 'red-text': grupo.rendimiento?.agosto < 0 }">{{ grupo.rendimiento?.agosto }}</td>
+              <td [ngClass]="{ 'red-text': grupo.rendimiento?.septiembre < 0 }">{{ grupo.rendimiento?.septiembre }}</td>
+              <td [ngClass]="{ 'red-text': grupo.rendimiento?.octubre < 0 }">{{ grupo.rendimiento?.octubre }}</td>
+              <td [ngClass]="{ 'red-text': grupo.rendimiento?.noviembre < 0 }">{{ grupo.rendimiento?.noviembre }}</td>
+              <td [ngClass]="{ 'red-text': grupo.rendimiento?.diciembre < 0 }">{{ grupo.rendimiento?.diciembre }}</td>
 
-          <!-- Fila de Benchmark (solo visible cuando está expandido) -->
-          <tr *ngIf="grupo.isExpanded && grupo.benchmark" class="benchmark-row">
-            <td></td>
-            <td></td>
-            <td>Benchmark</td>
-            <td [ngClass]="{ 'red-text': grupo.benchmark.anioAnterior < 0 }">
-              {{ grupo.benchmark.anioAnterior }}
-            </td>
-            <!-- Columnas de meses para Benchmark -->
-            <td [ngClass]="{ 'red-text': grupo.benchmark.enero < 0 }">{{ grupo.benchmark.enero }}</td>
-            <td [ngClass]="{ 'red-text': grupo.benchmark.febrero < 0 }">{{ grupo.benchmark.febrero }}</td>
-            <td [ngClass]="{ 'red-text': grupo.benchmark.marzo < 0 }">{{ grupo.benchmark.marzo }}</td>
-            <td [ngClass]="{ 'red-text': grupo.benchmark.abril < 0 }">{{ grupo.benchmark.abril }}</td>
-            <td [ngClass]="{ 'red-text': grupo.benchmark.mayo < 0 }">{{ grupo.benchmark.mayo }}</td>
-            <td [ngClass]="{ 'red-text': grupo.benchmark.junio < 0 }">{{ grupo.benchmark.junio }}</td>
-            <td [ngClass]="{ 'red-text': grupo.benchmark.julio < 0 }">{{ grupo.benchmark.julio }}</td>
-            <td [ngClass]="{ 'red-text': grupo.benchmark.agosto < 0 }">{{ grupo.benchmark.agosto }}</td>
-            <td [ngClass]="{ 'red-text': grupo.benchmark.septiembre < 0 }">{{ grupo.benchmark.septiembre }}</td>
-            <td [ngClass]="{ 'red-text': grupo.benchmark.octubre < 0 }">{{ grupo.benchmark.octubre }}</td>
-            <td [ngClass]="{ 'red-text': grupo.benchmark.noviembre < 0 }">{{ grupo.benchmark.noviembre }}</td>
-            <td [ngClass]="{ 'red-text': grupo.benchmark.diciembre < 0 }">{{ grupo.benchmark.diciembre }}</td>
-            <td [ngClass]="{ 'red-text': grupo.benchmark.enelAnio < 0 }">{{ grupo.benchmark.enelAnio }}</td>
-            <td></td>
-            <td></td>
-            <td></td>
-          </tr>
-        </ng-container>
-      </tbody>
-    </table>
-    <mat-paginator [length]="filteredGroupedData.length" [pageSize]="20" [pageSizeOptions]="[5, 10, 20, 50, 100, 200]"
-      (page)="onPageChange($event)">
-    </mat-paginator>
+              <td [ngClass]="{ 'red-text': grupo.rendimiento?.enelAnio < 0 }">{{ grupo.rendimiento?.enelAnio }}</td>
+
+              <td [ngClass]="{ 'red-text': grupo.rendimiento?.activoInicio < 0 }">
+                {{ grupo.rendimiento?.activoInicio | currency:'USD':'symbol':'1.2-2' }}
+              </td>
+              <td [ngClass]="{ 'red-text': grupo.rendimiento?.activoFin < 0 }">
+                {{ grupo.rendimiento?.activoFin | currency:'USD':'symbol':'1.2-2' }}
+              </td>
+              <td>{{ grupo.estrategia }}</td>
+            </tr>
+
+            <!-- Fila de Benchmark (solo visible cuando está expandido) -->
+            <tr *ngIf="grupo.isExpanded && grupo.benchmark" class="benchmark-row">
+              <td></td>
+              <td></td>
+              <td>Benchmark</td>
+              <td [ngClass]="{ 'red-text': grupo.benchmark.anioAnterior < 0 }">
+                {{ grupo.benchmark.anioAnterior }}
+              </td>
+              <!-- Columnas de meses para Benchmark -->
+              <td [ngClass]="{ 'red-text': grupo.benchmark.enero < 0 }">{{ grupo.benchmark.enero }}</td>
+              <td [ngClass]="{ 'red-text': grupo.benchmark.febrero < 0 }">{{ grupo.benchmark.febrero }}</td>
+              <td [ngClass]="{ 'red-text': grupo.benchmark.marzo < 0 }">{{ grupo.benchmark.marzo }}</td>
+              <td [ngClass]="{ 'red-text': grupo.benchmark.abril < 0 }">{{ grupo.benchmark.abril }}</td>
+              <td [ngClass]="{ 'red-text': grupo.benchmark.mayo < 0 }">{{ grupo.benchmark.mayo }}</td>
+              <td [ngClass]="{ 'red-text': grupo.benchmark.junio < 0 }">{{ grupo.benchmark.junio }}</td>
+              <td [ngClass]="{ 'red-text': grupo.benchmark.julio < 0 }">{{ grupo.benchmark.julio }}</td>
+              <td [ngClass]="{ 'red-text': grupo.benchmark.agosto < 0 }">{{ grupo.benchmark.agosto }}</td>
+              <td [ngClass]="{ 'red-text': grupo.benchmark.septiembre < 0 }">{{ grupo.benchmark.septiembre }}</td>
+              <td [ngClass]="{ 'red-text': grupo.benchmark.octubre < 0 }">{{ grupo.benchmark.octubre }}</td>
+              <td [ngClass]="{ 'red-text': grupo.benchmark.noviembre < 0 }">{{ grupo.benchmark.noviembre }}</td>
+              <td [ngClass]="{ 'red-text': grupo.benchmark.diciembre < 0 }">{{ grupo.benchmark.diciembre }}</td>
+              <td [ngClass]="{ 'red-text': grupo.benchmark.enelAnio < 0 }">{{ grupo.benchmark.enelAnio }}</td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+          </ng-container>
+        </tbody>
+      </table>
+      <mat-paginator [length]="filteredGroupedData.length" [pageSize]="20" [pageSizeOptions]="[5, 10, 20, 50, 100, 200]"
+        [showFirstLastButtons]="true" (page)="onPageChange($event)">
+      </mat-paginator>
+    </div>
   </div>
 </div>

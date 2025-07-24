@@ -1,57 +1,76 @@
 <nav>
   <ul class="navbar-left">
     <li class="icon-container">
-      <mat-icon matTooltip="Inicio" (click)="navigate('/home')" aria-hidden="false" aria-label="Example home icon" fontIcon="home"></mat-icon>
+      <mat-icon matTooltip="Inicio" (click)="navigate('/home')" aria-hidden="false" aria-label="Example home icon"
+        fontIcon="home"></mat-icon>
     </li>
   </ul>
 
-  <li class="menu-container">
+  <li class="menu-container" *ngIf="userPerfil === 'ADMIN' || userPerfil === 'ASESOR'">
     <button mat-button [matMenuTriggerFor]="mainMenu" class="menu-trigger">
       <span>Contratos ALPHA</span>
       <mat-icon>expand_more</mat-icon>
     </button>
     <mat-menu #mainMenu="matMenu" class="custom-menu">
-      <button mat-menu-item (click)="navigate('/rendimientos')">
+      <button mat-menu-item *ngIf="userPerfil === 'ADMIN' || userPerfil === 'ASESOR'" (click)="navigate('/rendimientos')">
         <mat-icon>dashboard</mat-icon>
         <span>{{rendiAlphaButton}}</span>
       </button>
-      <button mat-menu-item (click)="navigate('/ReporteAlpha')">
+      <button mat-menu-item *ngIf="userPerfil === 'ADMIN' || userPerfil === 'ASESOR'" (click)="navigate('/ReporteAlpha')">
         <mat-icon>description</mat-icon>
         <span>Reportes Alpha</span>
       </button>
-      <button mat-menu-item (click)="navigate('/DispercionAlpha')">
+      <button mat-menu-item *ngIf="userPerfil === 'ADMIN'" (click)="navigate('/DispercionAlpha')">
         <mat-icon>send</mat-icon>
         <span>{{dispersionAlphaButton}}</span>
       </button>
-      <button mat-menu-item (click)="navigate('/reporUpload')">
+      <button mat-menu-item *ngIf="userPerfil === 'ADMIN'" (click)="navigate('/reporUpload')">
         <mat-icon>description</mat-icon>
         <span>Cargar PDF Alpha</span>
       </button>
-      <button mat-menu-item (click)="navigate('/CalculaRend')">
+      <button mat-menu-item *ngIf="userPerfil === 'ADMIN'" (click)="navigate('/CalculaRend')">
         <mat-icon>settings</mat-icon>
         <span>Rendimientos Alpha</span>
       </button>
-      <mat-divider></mat-divider>
-      <button mat-menu-item (click)="navigate('/newHome')">
+      <mat-divider *ngIf="userPerfil === 'ADMIN'"></mat-divider>
+      <button mat-menu-item *ngIf="userPerfil === 'ADMIN'" (click)="navigate('/newHome')">
         <mat-icon>home</mat-icon>
         <span>{{newMenu}}</span>
       </button>
     </mat-menu>
   </li>
- 
-  <ul class="navbar-center">
-    <!--<li><button (click)="openRendimientosDialog()"><i class="fas fa-chart-line"></i> {{fechas}}</button></li>-->
 
-    <!--<li><button (click)="navigate('/newHome')"><i class="fas fa-chart-line"></i> {{newMenu}} </button></li>-->
-    <!--<li><button (click)="navigate('/rendimientos')"><i class="fas fa-chart-line"></i> {{rendiAlphaButton}} </button></li>-->
-    <li><button (click)="navigate('/reporUpload')"><i class="fas fa-envelope"></i>{{ reportsButton }}</button></li>
-    <li><button (click)="navigate('/dispercion')"><i class="fas fa-info-circle"></i>{{dispersionButton}}</button></li>
-    <!--<li><button (click)="navigate('/DispercionAlpha')"><i class="fas fa-info-circle"></i>{{dispersionAlphaButton}}</button></li>-->
-  </ul>
- 
-  <ul class="navbar-right">
-    <li class="icon-container">
-      <mat-icon matTooltip="Cerrar sesión" matTooltipPosition="above" (click)="logout()" aria-hidden="false" aria-label="Logout icon" fontIcon="logout"></mat-icon>
+
+  <ul class="navbar-center">
+    <li *ngIf="userPerfil === 'ADMIN'">
+      <button (click)="navigate('/reporUpload')">
+        <i class="fas fa-envelope"></i>{{ reportsButton }}
+      </button>
+    </li>
+    <li *ngIf="userPerfil === 'ADMIN'">
+      <button (click)="navigate('/dispercion')">
+        <i class="fas fa-info-circle"></i>{{dispersionButton}}
+      </button>
     </li>
   </ul>
+
+
+  <ul class="navbar-right">
+    <li class="icon-container" [matMenuTriggerFor]="userMenu" matTooltip="Usuario">
+      <mat-icon>account_circle</mat-icon>
+    </li>
+
+    <mat-menu #userMenu="matMenu">
+      <div style="padding: 10px; max-width: 250px;">
+        <p style="margin: 0; font-weight: bold;">{{ userFullName }}</p>
+        <p style="margin: 0; font-size: 0.9em; color: gray;">{{ userEmail }}</p>
+      </div>
+    </mat-menu>
+
+    <li class="icon-container">
+      <mat-icon matTooltip="Cerrar sesión" matTooltipPosition="above" (click)="logout()">logout</mat-icon>
+    </li>
+  </ul>
+
+
 </nav>

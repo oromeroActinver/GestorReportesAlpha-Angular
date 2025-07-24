@@ -7,38 +7,38 @@ import { MessageDetailsDialogComponent } from '../pages/message-details-dialog/m
   providedIn: 'root'
 })
 export class InactivityService {
-  private timeout: any;
-  private readonly INACTIVITY_TIME = 1 * 60 * 1000; // 15 minutos
-  
+  private timeoutMinutes = 120; // 3 horas
+  private checkInterval = 600000; // 1 minuto
+
 
   constructor(private router: Router, private dialog: MatDialog) {
-    this.startInactivityTimer();
-    this.setupEventListeners();
+    this.initListeners();
+    this.startInactivityCheck();
   }
 
-  private resetInactivityTimer() {
-    clearTimeout(this.timeout);
-    this.startInactivityTimer();
+  private initListeners(): void {
+    ['click', 'mousemove', 'keydown'].forEach(event =>
+      window.addEventListener(event, () => this.updateLastActivity())
+    );
   }
 
-  private startInactivityTimer() {
-    this.timeout = setTimeout(() => {
-      this.logout();
-    }, this.INACTIVITY_TIME);
+  private updateLastActivity(): void {
+    localStorage.setItem('lastActivity', Date.now().toString());
   }
 
-  private setupEventListeners() {
-    window.addEventListener('mousemove', () => this.resetInactivityTimer());
-    window.addEventListener('keydown', () => this.resetInactivityTimer());
-    // Puedes añadir otros eventos si es necesario
+  private startInactivityCheck(): void {
+    setInterval(() => {
+      const lastActivity = parseInt(localStorage.getItem('lastActivity') || '0', 10);
+      const now = Date.now();
+      const diffMinutes = (now - lastActivity) / 1000 / 60;
+
+      if (diffMinutes > this.timeoutMinutes) {
+        localStorage.clear();
+        this.router.navigate(['/login']);
+      }
+    }, this.checkInterval);
   }
 
-  private logout() {
-    // Lógica para cerrar sesión, eliminar token o redirigir al login
-    //alert('Has sido desconectado por inactividad.');
-    this.showDialog('FAILED', 'Su token a finalizado por inactividad.');
-    this.router.navigate(['/']);
-  }
 
   showDialog(title: string, content: string, details?: string[]): void {
     this.dialog.open(MessageDetailsDialogComponent, {
