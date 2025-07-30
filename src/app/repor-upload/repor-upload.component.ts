@@ -96,7 +96,7 @@ export class ReporUploadComponent {
       formData.append('year', this.selectedYear.toString());
       formData.append('month', monthIndex.toString());
 
-      const url = `/api/reportesAlpha/saveReport`;
+      const url = `${environment.API_URL}/reportesAlpha/saveReport`;
       const token = localStorage.getItem('token');
 
       if (token) {
@@ -143,7 +143,7 @@ export class ReporUploadComponent {
       }
 
       this.isLoading = true;
-      const url = `/api/files/pathfiles`;
+      const url = `${environment.API_URL}/files/pathfiles`;
       const token = localStorage.getItem('token');
       const headers = new HttpHeaders({
         'Content-Type': 'application/json',
