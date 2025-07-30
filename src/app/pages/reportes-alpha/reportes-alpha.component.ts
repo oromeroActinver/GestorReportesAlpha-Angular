@@ -591,10 +591,26 @@ export class ReportesAlphaComponent {
   }
 
   obtenerNumeroMes(nombreMes: string | null): string {
-    if (!nombreMes) return '01';
-    const index = this.months.indexOf(nombreMes) + 1;
-    return index < 10 ? `0${index}` : `${index}`;
-  }
+  if (!nombreMes) return '01';
+
+  const mapaMeses: { [key: string]: string } = {
+    'Enero': '01',
+    'Febrero': '02',
+    'Marzo': '03',
+    'Abril': '04',
+    'Mayo': '05',
+    'Junio': '06',
+    'Julio': '07',
+    'Agosto': '08',
+    'Septiembre': '09',
+    'Octubre': '10',
+    'Noviembre': '11',
+    'Diciembre': '12'
+  };
+
+  return mapaMeses[nombreMes] || '01';
+}
+
 
   showDialog(title: string, content: string, details?: string[]): void {
     this.isLoading = false;
