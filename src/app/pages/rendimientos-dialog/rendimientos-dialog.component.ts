@@ -131,8 +131,7 @@ if (username) {
           fechFinal: fechasAnualesCompletas ? this.formatDateToYYYYMMDD(formData.fechaFinAnual) : null
         }
       ];
-
-      const url = '/api/Rend/fechs';
+      const url = `${environment.API_URL}/Rend/fechs`;
 
       this.http.post(url, body, { headers }).subscribe(
         (response: any) => {
