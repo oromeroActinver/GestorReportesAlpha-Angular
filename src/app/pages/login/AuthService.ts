@@ -12,7 +12,7 @@ import { Router } from '@angular/router';
 export class AuthService {
   private isAuthenticated = false;
   apiUrl = environment.API_URL;
-  private apiUrlValid = '/api/Login/valido';
+  private apiUrlValid = `${this.apiUrl}/Login/valido`;
 
   constructor(private http: HttpClient, private router: Router) { }
 

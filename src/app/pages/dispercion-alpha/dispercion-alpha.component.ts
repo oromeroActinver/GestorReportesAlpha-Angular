@@ -11,6 +11,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { Utilities } from '../../services/tempUtilities';
 import { EstrategiasService } from '../dispercion/EstrategiasService';
 import { MessageDetailsDialogComponent } from '../message-details-dialog/message-details-dialog.component';
+import { environment } from '../../../environments/environment';
 
 
 @Component({
@@ -84,7 +85,7 @@ export class DispercionAlphaComponent {
     if (this.selectedYear && this.selectedMonth && this.selectedStrategy) {
       this.isLoading = true;
       const monthIndex = this.months.indexOf(this.selectedMonth) + 1;
-      const url = '/api/dispercion/getReportes';
+      const url = `${environment.API_URL}/dispercion/getReportes`;
       const params = {
         year: this.selectedYear.toString(),
         month: monthIndex.toString(),
@@ -148,7 +149,7 @@ export class DispercionAlphaComponent {
       }));
 
     if (selectedFiles.length > 0) {
-      const url = '/api/dispercion/reportes';
+      const url = `${environment.API_URL}/dispercion/reportes`;
       const headers = new HttpHeaders().set('Authorization', `Bearer ${this.token}`);
       this.http.post(url, selectedFiles, { headers })
         .subscribe((response: any) => {
@@ -184,7 +185,7 @@ export class DispercionAlphaComponent {
     this.isLoading = true;
     if (this.selectedYear && this.selectedMonth) {
       const monthIndex = this.months.indexOf(this.selectedMonth) + 1;
-      const url = `/api/reportesAlpha/pdf/${contrato}`;
+      const url = `${environment.API_URL}/reportesAlpha/pdf/${contrato}`;
       const params = {
         year: this.selectedYear.toString(),
         month: monthIndex.toString(),

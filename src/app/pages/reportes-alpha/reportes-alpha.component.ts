@@ -212,7 +212,7 @@ export class ReportesAlphaComponent {
       return;
     }
 
-    const url = '/api/reportesAlpha/buscar';
+    const url = `${environment.API_URL}/reportesAlpha/buscar`;
     const headers = new HttpHeaders().set('Authorization', `Bearer ${this.token}`);
     const body = { contrato: Number(this.contrato) };
 

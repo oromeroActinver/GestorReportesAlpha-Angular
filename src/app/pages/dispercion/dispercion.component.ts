@@ -13,6 +13,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MessageDetailsDialogComponent } from '../message-details-dialog/message-details-dialog.component';
 import { MatTableDataSource } from '@angular/material/table';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-dispercion',
@@ -45,6 +46,7 @@ export class DispercionComponent implements AfterViewInit {
   paginatedDatos: any[] = [];
   dataSource = new MatTableDataSource<any>();
   allSelected: boolean = false;
+  apiUrl = environment.API_URL;
 
   constructor(private http: HttpClient, private estrategiasService: EstrategiasService, private utilities: Utilities,
     private router: Router, private dialog: MatDialog
@@ -104,7 +106,8 @@ export class DispercionComponent implements AfterViewInit {
     if (this.selectedYear && this.selectedMonth && this.selectedStrategy) {
       this.isLoading = true;
       const monthIndex = this.months.indexOf(this.selectedMonth) + 1;
-      const url = '/api/files/filesByCriteria';
+      const url = `${environment.API_URL}/files/filesByCriteria`;
+
       const params = {
         year: this.selectedYear.toString(),
         month: monthIndex.toString(),
@@ -166,7 +169,7 @@ export class DispercionComponent implements AfterViewInit {
       }));
 
     if (selectedFiles.length > 0) {
-      const url = '/api/files/sendSelectedFiles';
+      const url = `${environment.API_URL}/files/sendSelectedFiles`;
       const headers = new HttpHeaders().set('Authorization', `Bearer ${this.token}`);
       this.http.post(url, selectedFiles, { headers })
         .subscribe((response: any) => {
@@ -202,7 +205,7 @@ export class DispercionComponent implements AfterViewInit {
     this.isLoading = true;
     if (this.selectedYear && this.selectedMonth) {
       const monthIndex = this.months.indexOf(this.selectedMonth) + 1;
-      const url = `/api/files/pdf/${contrato}`;
+      const url = `${environment.API_URL}/files/pdf/${contrato}`;
       const params = {
         year: this.selectedYear.toString(),
         month: monthIndex.toString(),

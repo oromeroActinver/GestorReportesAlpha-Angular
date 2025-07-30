@@ -2,13 +2,14 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class EstrategiasService {
-  private apiUrl = '/api/files/estrategias';
-  private apiUrl2 = '/api/estrategias/getAll';
+  private apiUrl = `${environment.API_URL}/files/estrategias`;
+  private apiUrl2 = `${environment.API_URL}/estrategias/getAll`;
 
 
   constructor(private http: HttpClient) { }

@@ -173,7 +173,7 @@ export class CalculaRendimientosComponent implements OnInit, AfterViewInit {
     }
 
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    const url = `${environment.API_URL}/api/files/uploadFiles`;
+    const url = `${environment.API_URL}/files/uploadFiles`;
 
     this.http.post(url, formData, { headers }).subscribe({
       next: (response: any) => this.handleUploadResponse(response),
