@@ -20,6 +20,10 @@
         <mat-icon>description</mat-icon>
         <span>Reportes Alpha</span>
       </button>
+      <button mat-menu-item *ngIf="userPerfil === 'ADMIN' || userPerfil === 'ASESOR'" (click)="navigate('/ContracAlpha')">
+        <mat-icon>assessment</mat-icon>
+        <span>{{contracAlpha}}</span>
+      </button>
       <button mat-menu-item *ngIf="userPerfil === 'ADMIN'" (click)="navigate('/DispercionAlpha')">
         <mat-icon>send</mat-icon>
         <span>{{dispersionAlphaButton}}</span>

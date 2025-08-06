@@ -1,0 +1,401 @@
+/* Estilos generales */
+.main-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  padding: 20px;
+  background-color: #f5f5f5;
+  font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+/* Contenedor para los dos primeros bloques */
+.blocks-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+/* Estilos de tarjetas */
+.card-form {
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  padding: 25px;
+  background-color: white;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  transition: box-shadow 0.3s ease;
+}
+
+.card-form:hover {
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+}
+
+.card-form h2 {
+  margin-top: 0;
+  color: #041e42;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 12px;
+  font-size: 1.4rem;
+  font-weight: 600;
+}
+
+/* Formularios */
+.form-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* Inputs y selects mejorados */
+input[type="text"],
+select {
+  padding: 12px 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 14px;
+  transition: all 0.3s ease;
+  background-color: #f9f9f9;
+}
+
+input[type="text"]:focus,
+select:focus {
+  outline: none;
+  border-color: #041e42;
+  box-shadow: 0 0 0 2px rgba(4, 30, 66, 0.1);
+  background-color: white;
+}
+
+select {
+  background-color: #f9f9f9;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23041e42'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 15px center;
+  background-size: 12px;
+  padding-right: 35px;
+  appearance: none;
+  cursor: pointer;
+}
+
+/* Placeholder estilizado */
+input::placeholder {
+  color: #999;
+  opacity: 1;
+}
+
+/* Botones mejorados */
+.select-button,
+.view-button {
+  background-color: #041e42;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.select-button:hover,
+.view-button:hover {
+  background-color: #b4a46c;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.select-button:active,
+.search-button:active,
+.send-button:active,
+.view-button:active {
+  transform: translateY(0);
+}
+
+.send-button:hover,
+.search-button:hover {
+  background-color: #041e42;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.send-button,
+.search-button {
+  background-color: #b4a46c;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.view-button {
+  padding: 8px 12px;
+}
+
+/* Tercer bloque - formulario horizontal */
+.third-block .form-container {
+  padding: 20px;
+}
+
+.horizontal-form-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.horizontal-form-group .form-item {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 180px;
+}
+
+/* Tabla mejorada */
+.table-container {
+  background-color: white;
+  border-radius: 12px;
+  padding: 25px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  margin-top: 25px;
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin-bottom: 20px;
+}
+
+th,
+td {
+  padding: 14px 12px;
+  text-align: center;
+  border-bottom: 1px solid #eee;
+}
+
+th {
+  /*background-color: #041e42;*/
+  background-color: #b4a46c;
+  color: #041e42;
+  position: sticky;
+  top: 0;
+  font-weight: 500;
+}
+
+tr:hover td {
+  background-color: #f8f8f8;
+}
+
+.record-count {
+  margin-bottom: 15px;
+  font-weight: 600;
+  color: #041e42;
+  font-size: 0.9rem;
+}
+
+.contract-filter {
+  width: 80%;
+  padding: 8px 12px;
+  margin-top: 5px;
+  border-radius: 8px;
+}
+
+/* Paginador mejorado */
+mat-paginator {
+  background-color: #f9f9f9;
+  border-top: 1px solid #eee;
+  border-radius: 0 0 8px 8px;
+}
+
+/* Botón enviar alineado a la derecha */
+.send-button-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
+}
+
+/* Estilos para dispositivos móviles */
+@media (max-width: 768px) {
+  .main-container {
+    padding: 15px;
+  }
+
+  .blocks-row {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .first-block,
+  .second-block {
+    width: 100%;
+  }
+
+  .horizontal-form-group {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 15px;
+  }
+
+  .horizontal-form-group .form-item {
+    width: 100%;
+    min-width: auto;
+  }
+
+  .horizontal-fields {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .button-container {
+    justify-content: center;
+  }
+
+  .table-container {
+    padding: 15px;
+  }
+
+  th,
+  td {
+    padding: 10px 8px;
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .card-form {
+    padding: 15px;
+  }
+
+  input[type="text"],
+  select {
+    padding: 10px 12px;
+  }
+
+  .select-button,
+  .search-button,
+  .send-button {
+    padding: 10px 15px;
+  }
+}
+
+/* Spinner de carga */
+.loading-spinner {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 9999;
+}
+
+.spinner {
+  border: 12px solid #b4a46c;
+  border-top: 12px solid #041e42;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.3);
+  /* Fondo semitransparente */
+  z-index: 9998;
+  /* Debajo del spinner pero encima de todo lo demás */
+}
+
+/**-----------------nuvos estilos -------------------*/
+.custom-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-family: inherit;
+  background-color: white;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.custom-table th {
+  background-color: #b4a46c !important;
+  color: #041e42 !important;
+  font-weight: 500;
+  text-align: center;
+}
+
+.custom-table td {
+  text-align: center;
+  border-bottom: 1px solid #eee;
+}
+
+.custom-table tr:hover td {
+  background-color: #f8f8f8;
+}
+
+
+::ng-deep .mat-paginator {
+  background-color: #f9f9f9;
+  border-top: 1px solid #eee;
+  border-radius: 0 0 8px 8px;
+  font-family: inherit;
+}
+
+::ng-deep .mat-paginator-page-size {
+  color: #041e42;
+}
+
+.estado-btn {
+  background-color: #041e42;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.estado-btn:hover {
+  background-color: #b4a46c;
+  color: #041e42;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+
+
+

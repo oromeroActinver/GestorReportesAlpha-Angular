@@ -14,7 +14,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { AppComponent } from './app.component';
 import { DispercionComponent } from './pages/dispercion/dispercion.component';
-<<<<<<< HEAD
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -27,6 +26,8 @@ import { LOCALE_ID } from '@angular/core';
 import { registerLocaleData } from '@angular/common';
 import localeEs from '@angular/common/locales/es';
 import { MatMenuModule } from '@angular/material/menu';
+import { ConfirmDialogComponent } from './pages/contratos-alpha/ConfirmDialogComponent';
+
 //import { CardComponent } from './card.component';
 
 
@@ -45,20 +46,14 @@ export const MY_DATE_FORMATS = {
   },
 };
 
-=======
-import { MessageDialogComponent } from './message-dialog/message-dialog.component'; // Conservando este componente
->>>>>>> bef7ed8fe65805fe20396315734200105ff2bd61
+
 
 @NgModule({
   declarations: [
     AppComponent,
-<<<<<<< HEAD
     RendimientosComponent,
-    DispercionComponent
-=======
     DispercionComponent,
-    MessageDialogComponent // Componente del branch remoto
->>>>>>> bef7ed8fe65805fe20396315734200105ff2bd61
+    ConfirmDialogComponent
   ],
   imports: [
     BrowserModule,

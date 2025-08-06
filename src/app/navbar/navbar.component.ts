@@ -26,6 +26,7 @@ export class NavbarComponent {
   reportsButton: string = 'Carga de Reportes';
   logoutButton: string = 'cerrar cesión ';
   rendiAlphaButton: string = 'Rendimientos Alpha';
+  contracAlpha: string = 'Contratos Alpha';
   newMenu: string = 'Nuevo Home';
   userFullName: string | null = '';
   userEmail: string = ''

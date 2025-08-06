@@ -1,0 +1,86 @@
+<!-- TABLA -->
+<div class="table-container">
+    <div *ngIf="lengRegister !== null" class="record-count">
+        {{ lengRegister }} registros
+    </div>
+
+    <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8 custom-table">
+
+        <!-- Contrato Column (sortable) -->
+
+        <ng-container matColumnDef="contrato">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                Contrato
+                <input type="text" [(ngModel)]="filters.contrato" (input)="applyFilters()"
+                    (click)="$event.stopPropagation()" />
+            </th>
+            <td mat-cell *matCellDef="let dato">{{ dato.contrato }}</td>
+        </ng-container>
+
+
+        <!-- Cliente Column (not sortable) -->
+        <ng-container matColumnDef="cliente">
+            <th mat-header-cell *matHeaderCellDef>
+                Nombre Cliente
+                <input type="text" [(ngModel)]="filters.cliente" (input)="applyFilters()" />
+            </th>
+            <td mat-cell *matCellDef="let dato">{{ dato.cliente }}</td>
+        </ng-container>
+
+        <!-- Estrategia Column (not sortable) -->
+        <ng-container matColumnDef="estrategia">
+            <th mat-header-cell *matHeaderCellDef>
+                Estrategia
+                <select [(ngModel)]="filters.estrategia" (change)="applyFilters()" (click)="$event.stopPropagation()">
+                    <option value="">TODAS</option>
+                    <option *ngFor="let estrategia of strategies" [value]="estrategia">
+                        {{ estrategia }}
+                    </option>
+                </select>
+            </th>
+            <td mat-cell *matCellDef="let dato">{{ dato.estrategia }}</td>
+        </ng-container>
+
+
+
+        <!-- Fecha Inicio Alpha Column (sortable) -->
+        <ng-container matColumnDef="fechaIniAlpha">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                Fecha Inicio Alpha
+                <input type="text" [(ngModel)]="filters.fecha" (input)="applyFilters()"
+                    (click)="$event.stopPropagation()" />
+            </th>
+            <td mat-cell *matCellDef="let dato">{{ dato.fechaIniAlpha }}</td>
+        </ng-container>
+
+        <!-- Estado Column (sortable) -->
+        <ng-container matColumnDef="estado">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Estado</th>
+            <td mat-cell *matCellDef="let dato">
+                <button (click)="openEstadoDialog(dato)" class="estado-btn">
+                    {{ dato.estado }}
+                </button>
+            </td>
+        </ng-container>
+
+
+        <!-- Header and Row Declarations -->
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+
+
+    <mat-paginator [length]="dataSource.data.length" [pageSize]="10" [pageSizeOptions]="[5, 10, 15, 20, 50]"
+        [showFirstLastButtons]="true">
+    </mat-paginator>
+</div>
+
+<div *ngIf="isLoading" class="loading-overlay"></div>
+
+
+<!-- Spinner de carga con overlay -->
+<div *ngIf="isLoading" class="loading-overlay">
+    <div class="loading-spinner" *ngIf="isLoading">
+        <div class="spinner"></div>
+    </div>
+</div>
