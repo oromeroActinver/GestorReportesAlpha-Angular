@@ -13,6 +13,11 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatTableModule } from '@angular/material/table';
+import { MatSort } from '@angular/material/sort';
+import { MatSortModule } from '@angular/material/sort';
+
 
 export enum UploadMethod {
   DATES = 'DATES',
@@ -22,11 +27,13 @@ export enum UploadMethod {
 @Component({
   selector: 'app-reportes-alpha',
   standalone: true,
-  imports: [CommonModule, FormsModule, MatIconModule, MatPaginatorModule, MatTooltipModule],
+  imports: [CommonModule, FormsModule, MatIconModule, MatPaginatorModule, MatTooltipModule, MatCheckboxModule, MatTableModule, MatSortModule],
   templateUrl: './reportes-alpha.component.html',
   styleUrl: './reportes-alpha.component.css'
 })
 export class ReportesAlphaComponent {
+  displayedColumns: string[] = ['select', 'contrato', 'cliente', 'correo', 'estrategia', 'mes', 'anual', 'reporte'];
+  @ViewChild(MatSort) sort!: MatSort;
   // Variables primer bloque (Búsqueda por contrato)
   contrato: string = '';
   nombreCliente = '';
@@ -450,8 +457,10 @@ export class ReportesAlphaComponent {
         this.isLoading = false;
 
         if (error.status === 404 && error.error?.message) {
-          this.showDialog('MESSAGE', error.error.message);
+          this.dataSource.data = [];
+          this.showDialog('FAILED', error.error.message);
         } else {
+          this.dataSource.data = [];
           this.showDialog('FAILED', 'Ocurrió un error al buscar los archivos.');
         }
       }
@@ -511,6 +520,39 @@ export class ReportesAlphaComponent {
     });
   }
 
+  downloadPDF(contrato: number, estrategia: string, nombreArchivo: string): void {
+  if (!this.filesYear || !this.filesMonth) {
+    return;
+  }
+
+  this.isLoading = true;
+  const monthIndex = this.monthsFiles.indexOf(this.filesMonth) + 1;
+  const url = `${this.apiUrl}/reportesAlpha/pdf/${contrato}`;
+  const params = {
+    year: this.filesYear.toString(),
+    month: monthIndex.toString(),
+    strategy: estrategia
+  };
+
+  const headers = new HttpHeaders().set('Authorization', `Bearer ${this.token}`);
+
+  this.http.get(url, { responseType: 'blob', headers, params }).subscribe({
+    next: (response: Blob) => {
+      this.isLoading = false;
+      const blob = new Blob([response], { type: 'application/pdf' });
+      const link = document.createElement('a');
+      link.href = window.URL.createObjectURL(blob);
+      link.download = nombreArchivo;
+      link.click();
+      window.URL.revokeObjectURL(link.href); // Limpieza
+    },
+    error: () => {
+      this.isLoading = false;
+    }
+  });
+}
+
+
   viewPDF(contrato: number, estrategia: string): void {
     if (!this.filesYear || !this.filesMonth) {
       return;
@@ -550,19 +592,23 @@ export class ReportesAlphaComponent {
   }
 
   applyFilters() {
-    const datosFiltrados = this.datos.filter(dato => {
-      const contratoMatch = !this.filters.contrato || dato.contrato.toString().includes(this.filters.contrato);
-      const clienteMatch = !this.filters.cliente || dato.cliente.toLowerCase().includes(this.filters.cliente.toLowerCase());
-      const correoMatch = !this.filters.correo || dato.correo.toLowerCase().includes(this.filters.correo.toLowerCase());
-      return contratoMatch && clienteMatch && correoMatch;
-    });
-    this.paginator.firstPage();
-    this.paginator.length = datosFiltrados.length;
-    const startIndex = this.paginator.pageIndex * this.paginator.pageSize;
-    this.paginatedDatos = datosFiltrados.slice(startIndex, startIndex + this.paginator.pageSize);
+    this.dataSource.filter = JSON.stringify(this.filters);
+    this.dataSource.filterPredicate = (dato, filtroTexto) => {
+      const filtro = JSON.parse(filtroTexto);
+
+      const contratoMatch = !filtro.contrato || dato.contrato.toString().includes(filtro.contrato);
+      const clienteMatch = !filtro.cliente || dato.cliente.toLowerCase().includes(filtro.cliente.toLowerCase());
+      const correoMatch = !filtro.correo || dato.correo.toLowerCase().includes(filtro.correo.toLowerCase());
+      const estrategiaMatch = !filtro.estrategia || dato.estrategia.toLowerCase() === filtro.estrategia.toLowerCase();
+
+      return contratoMatch && clienteMatch && correoMatch && estrategiaMatch;
+    };
+
+
+    if (this.paginator) {
+      this.paginator.firstPage();
+    }
   }
-
-
 
   ngAfterViewInit() {
     this.paginator.pageSize = this.paginator.pageSize || 5;
@@ -571,17 +617,20 @@ export class ReportesAlphaComponent {
   }
 
   toggleSelectAll(event: any) {
-    const checked = event.target.checked;
+    const checked = event.checked ?? event.target?.checked;
     this.allSelected = checked;
-    this.datos.forEach(dato => dato.selected = checked);
+
+    this.dataSource.data.forEach(dato => dato.selected = checked);
     this.updateAnySelected();
   }
 
+
   clearSelections() {
-    this.datos.forEach(dato => dato.selected = false);
+    this.dataSource.data.forEach(dato => dato.selected = false);
     this.allSelected = false;
     this.anySelected = false;
   }
+
 
   private mostrarMensaje(mensaje: string, tipo: 'success' | 'error'): void {
     this.snackBar.open(mensaje, 'Cerrar', {
@@ -591,25 +640,25 @@ export class ReportesAlphaComponent {
   }
 
   obtenerNumeroMes(nombreMes: string | null): string {
-  if (!nombreMes) return '01';
+    if (!nombreMes) return '01';
 
-  const mapaMeses: { [key: string]: string } = {
-    'Enero': '01',
-    'Febrero': '02',
-    'Marzo': '03',
-    'Abril': '04',
-    'Mayo': '05',
-    'Junio': '06',
-    'Julio': '07',
-    'Agosto': '08',
-    'Septiembre': '09',
-    'Octubre': '10',
-    'Noviembre': '11',
-    'Diciembre': '12'
-  };
+    const mapaMeses: { [key: string]: string } = {
+      'Enero': '01',
+      'Febrero': '02',
+      'Marzo': '03',
+      'Abril': '04',
+      'Mayo': '05',
+      'Junio': '06',
+      'Julio': '07',
+      'Agosto': '08',
+      'Septiembre': '09',
+      'Octubre': '10',
+      'Noviembre': '11',
+      'Diciembre': '12'
+    };
 
-  return mapaMeses[nombreMes] || '01';
-}
+    return mapaMeses[nombreMes] || '01';
+  }
 
 
   showDialog(title: string, content: string, details?: string[]): void {
