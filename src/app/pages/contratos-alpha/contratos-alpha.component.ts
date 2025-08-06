@@ -3,7 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Utilities } from '../../services/tempUtilities';
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
-import { EstrategiasService } from '../dispercion/EstrategiasService';
+import { EstrategiasService } from '../../services/EstrategiasService';
 import { MessageDetailsDialogComponent } from '../message-details-dialog/message-details-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
@@ -48,7 +48,7 @@ export class ContratosAlphaComponent {
     this.dataSource.sortingDataAccessor = (item, property) => {
       if (property === 'fechaIniAlpha') {
         const parts = item.fechaIniAlpha.split('/');
-        return new Date(+parts[2], +parts[1] - 1, +parts[0]); // Año, Mes (0-indexed), Día
+        return new Date(+parts[2], +parts[1] - 1, +parts[0]);
       }
       return item[property];
     };
@@ -60,8 +60,6 @@ export class ContratosAlphaComponent {
   isLoading = false;
   token = localStorage.getItem('token');
   apiUrl = environment.API_URL;
-
-  // Variables para tabla y paginación
 
   datos: any[] = [];
   paginatedDatos: any[] = [];
@@ -150,7 +148,7 @@ export class ContratosAlphaComponent {
   loadStrategies(): void {
     const token = localStorage.getItem('token');
     if (token) {
-      this.estrategiasService.getNewEstrategias(token).subscribe({
+      this.estrategiasService.getEstrategias(token).subscribe({
         next: (data: string[]) => {
           this.strategies = [...data];
           this.cdr.markForCheck();

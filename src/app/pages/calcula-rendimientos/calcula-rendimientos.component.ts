@@ -10,7 +10,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { AuthService } from '../login/AuthService';
 import { Utilities } from '../../services/tempUtilities';
 import { MatDialog } from '@angular/material/dialog';
-import { EstrategiasService } from '../dispercion/EstrategiasService';
+import { EstrategiasService } from '../../services/EstrategiasService';
 import { MessageDetailsDialogComponent } from '../message-details-dialog/message-details-dialog.component';
 import { MatDialogRef } from '@angular/material/dialog';
 import { ReactiveFormsModule } from '@angular/forms';

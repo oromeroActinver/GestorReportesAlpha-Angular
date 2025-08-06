@@ -3,7 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Utilities } from '../../services/tempUtilities';
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
-import { EstrategiasService } from '../dispercion/EstrategiasService';
+import { EstrategiasService } from '../../services/EstrategiasService';
 import { MessageDetailsDialogComponent } from '../message-details-dialog/message-details-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
@@ -112,7 +112,7 @@ export class ReportesAlphaComponent {
   loadStrategies(): void {
     const token = localStorage.getItem('token');
     if (token) {
-      this.estrategiasService.getNewEstrategias(token).subscribe({
+      this.estrategiasService.getEstrategias(token).subscribe({
         next: (data: string[]) => {
           this.strategies = data;
         },

@@ -3,7 +3,6 @@ import { LabsComponent } from './pages/labs/labs.component';
 import { HomeComponent } from './pages/home/home.component';
 import { LoginComponent } from './pages/login/login.component';
 import { ReporUploadComponent } from './repor-upload/repor-upload.component';
-import { DispercionComponent } from './pages/dispercion/dispercion.component';
 import { AuthGuard } from './auth.guard';
 import { RendimientosComponent } from './pages/rendimientos/rendimientos.component';
 import { MenuHomeComponent } from './pages/menu-home/menu-home.component';
@@ -25,11 +24,6 @@ export const routes: Routes = [
   {
     path: 'reporUpload',
     component: ReporUploadComponent,
-    canActivate: [AuthGuard]
-  },
-  {
-    path: 'dispercion',
-    component: DispercionComponent,
     canActivate: [AuthGuard]
   },
   {

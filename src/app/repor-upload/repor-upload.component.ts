@@ -8,7 +8,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { AuthService } from '../pages/login/AuthService';
 import { Utilities } from '../services/tempUtilities';
 import { MatDialog } from '@angular/material/dialog';
-import { EstrategiasService } from '../pages/dispercion/EstrategiasService';
+import { EstrategiasService } from '../services/EstrategiasService';
 import { MessageDetailsDialogComponent } from '../pages/message-details-dialog/message-details-dialog.component';
 
 @Component({

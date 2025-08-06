@@ -14,7 +14,7 @@ import { FormsModule } from '@angular/forms';
 import { environment } from '../../../environments/environment';
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { MessageDetailsDialogComponent } from '../message-details-dialog/message-details-dialog.component';
-import { EstrategiasService } from '../dispercion/EstrategiasService';
+import { EstrategiasService } from '../../services/EstrategiasService';
 import { MatTableDataSource } from '@angular/material/table';
 import { RendimientosDialogComponent } from '../rendimientos-dialog/rendimientos-dialog.component';
 
@@ -109,7 +109,7 @@ export class RendimientosComponent {
   loadStrategies(): void {
     const token = localStorage.getItem('token');
     if (token) {
-      this.estrategiasService.getNewEstrategias(token).subscribe({
+      this.estrategiasService.getEstrategias(token).subscribe({
         next: (data: string[]) => {
           this.strategies = [...data];
           this.cdr.markForCheck();
