@@ -36,6 +36,10 @@
         <mat-icon>settings</mat-icon>
         <span>Rendimientos Alpha</span>
       </button>
+      <button mat-menu-item *ngIf="userPerfil === 'ADMIN'" (click)="navigate('/BenchAlpha')">
+        <mat-icon>settings</mat-icon>
+        <span>Benchmark Alpha</span>
+      </button>
       <mat-divider *ngIf="userPerfil === 'ADMIN'"></mat-divider>
       <button mat-menu-item *ngIf="userPerfil === 'ADMIN'" (click)="navigate('/newHome')">
         <mat-icon>home</mat-icon>

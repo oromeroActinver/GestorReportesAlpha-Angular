@@ -9,9 +9,6 @@ import { environment } from '../../environments/environment';
 })
 export class EstrategiasService {
   private apiUrl = `${environment.API_URL}/estrategias/getAll`;
-  private apiUrl2 = `${environment.API_URL}/estrategias/getAll`;
-
-
   constructor(private http: HttpClient) { }
 
   getEstrategias(token: string | null): Observable<string[]> {

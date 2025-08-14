@@ -10,6 +10,7 @@ import { DispercionAlphaComponent } from './pages/dispercion-alpha/dispercion-al
 import { CalculaRendimientosComponent } from './pages/calcula-rendimientos/calcula-rendimientos.component';
 import { ReportesAlphaComponent } from './pages/reportes-alpha/reportes-alpha.component';
 import { ContratosAlphaComponent } from './pages/contratos-alpha/contratos-alpha.component';
+import { BenchmarkComponent } from './pages/benchmark/benchmark.component';
 
 export const routes: Routes = [
   {
@@ -54,6 +55,11 @@ export const routes: Routes = [
   {
     path: 'ContracAlpha',
     component: ContratosAlphaComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'BenchAlpha',
+    component: BenchmarkComponent,
     canActivate: [AuthGuard]
   },
   {
