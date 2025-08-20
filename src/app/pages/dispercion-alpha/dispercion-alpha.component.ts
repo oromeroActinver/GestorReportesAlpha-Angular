@@ -9,7 +9,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { Utilities } from '../../services/tempUtilities';
-import { EstrategiasService } from '../dispercion/EstrategiasService';
+import { EstrategiasService } from '../../services/EstrategiasService';
 import { MessageDetailsDialogComponent } from '../message-details-dialog/message-details-dialog.component';
 import { environment } from '../../../environments/environment';
 

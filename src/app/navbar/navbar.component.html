@@ -36,6 +36,10 @@
         <mat-icon>settings</mat-icon>
         <span>Rendimientos Alpha</span>
       </button>
+      <button mat-menu-item *ngIf="userPerfil === 'ADMIN' || userPerfil === 'ASESOR'" (click)="navigate('/BenchAlpha')">
+        <mat-icon>speed</mat-icon>
+        <span>Benchmark</span>
+      </button>
       <mat-divider *ngIf="userPerfil === 'ADMIN'"></mat-divider>
       <button mat-menu-item *ngIf="userPerfil === 'ADMIN'" (click)="navigate('/newHome')">
         <mat-icon>home</mat-icon>
@@ -49,11 +53,6 @@
     <li *ngIf="userPerfil === 'ADMIN'">
       <button (click)="navigate('/reporUpload')">
         <i class="fas fa-envelope"></i>{{ reportsButton }}
-      </button>
-    </li>
-    <li *ngIf="userPerfil === 'ADMIN'">
-      <button (click)="navigate('/dispercion')">
-        <i class="fas fa-info-circle"></i>{{dispersionButton}}
       </button>
     </li>
   </ul>

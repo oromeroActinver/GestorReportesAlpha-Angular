@@ -103,58 +103,105 @@
 
         <!-- TABLA -->
         <div class="table-container">
-            <div *ngIf="lengRegister !== null" class="record-count">
-                {{ lengRegister }} registros
-            </div>
 
-            <table>
-                <thead>
-                    <tr>
-                        <th class="select-all">
-                            <input type="checkbox" (change)="toggleSelectAll($event)" [checked]="allSelected" />
-                        </th>
-                        <th>
-                            Contrato
-                            <input type="text" class="contract-filter" [(ngModel)]="filters.contrato"
-                                (input)="applyFilters()" />
-                        </th>
-                        <th>
-                            Cliente
-                            <input type="text" class="client-filter" [(ngModel)]="filters.cliente"
-                                (input)="applyFilters()" />
-                        </th>
-                        <th>
-                            Correo
-                            <input type="text" class="email-filter" [(ngModel)]="filters.correo"
-                                (input)="applyFilters()" />
-                        </th>
+            <!-- Tabla Angular Material -->
+            <div class="table-container">
+                <div *ngIf="lengRegister !== null" class="record-count">
+                    {{ lengRegister }} registros
+                </div>
 
-                        <th>Estrategia</th>
-                        <th>Mes</th>
-                        <th>Año</th>
-                        <th>Reporte</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let dato of paginatedDatos">
-                        <td>
-                            <input type="checkbox" [(ngModel)]="dato.selected" (change)="updateAnySelected()" />
+                <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8 custom-table">
+
+                    <!-- Checkbox de selección -->
+                    <ng-container matColumnDef="select">
+                        <th mat-header-cell *matHeaderCellDef>
+                            <mat-checkbox (change)="toggleSelectAll($event)" [checked]="allSelected"></mat-checkbox>
+                        </th>
+                        <td mat-cell *matCellDef="let dato">
+                            <mat-checkbox [(ngModel)]="dato.selected" (change)="updateAnySelected()"></mat-checkbox>
                         </td>
-                        <td>{{ dato.contrato }}</td>
-                        <td>{{ dato.cliente }}</td>
-                        <td>{{ dato.correo }}</td>
-                        <td>{{ dato.estrategia }}</td>
-                        <td>{{ dato.mes }}</td>
-                        <td>{{ dato.anual }}</td>
-                        <td>
-                            <button class="view-button" (click)="viewPDF(dato.contrato, dato.estrategia)"
+                    </ng-container>
+
+                    <!-- Contrato -->
+                    <ng-container matColumnDef="contrato">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                            Contrato
+                            <input type="text" [(ngModel)]="filters.contrato" (input)="applyFilters()"
+                                (click)="$event.stopPropagation()" />
+                        </th>
+                        <td mat-cell *matCellDef="let dato">{{ dato.contrato }}</td>
+                    </ng-container>
+
+                    <!-- Cliente -->
+                    <ng-container matColumnDef="cliente">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                            Cliente
+                            <input type="text" [(ngModel)]="filters.cliente" (input)="applyFilters()" />
+                        </th>
+                        <td mat-cell *matCellDef="let dato">{{ dato.cliente }}</td>
+                    </ng-container>
+
+                    <!-- Correo -->
+                    <ng-container matColumnDef="correo">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                            Correo
+                            <input type="text" [(ngModel)]="filters.correo" (input)="applyFilters()" />
+                        </th>
+                        <td mat-cell *matCellDef="let dato">{{ dato.correo }}</td>
+                    </ng-container>
+
+                    <!-- Estrategia -->
+                    <ng-container matColumnDef="estrategia">
+                        <th mat-header-cell *matHeaderCellDef>
+                            Estrategia
+                        </th>
+                        <td mat-cell *matCellDef="let dato">{{ dato.estrategia }}</td>
+                    </ng-container>
+
+
+                    <!-- Mes -->
+                    <ng-container matColumnDef="mes">
+                        <th mat-header-cell *matHeaderCellDef>Mes</th>
+                        <td mat-cell *matCellDef="let dato">{{ dato.mes }}</td>
+                    </ng-container>
+
+
+                    <!-- Año -->
+                    <ng-container matColumnDef="anual">
+                        <th mat-header-cell *matHeaderCellDef>Año</th>
+                        <td mat-cell *matCellDef="let dato">{{ dato.anual }}</td>
+                    </ng-container>
+
+
+                    <!-- Reporte -->
+                    <!-- Reporte -->
+                    <ng-container matColumnDef="reporte">
+                        <th mat-header-cell *matHeaderCellDef>Reporte</th>
+                        <td mat-cell *matCellDef="let dato">
+                            <!-- Ver PDF -->
+                            <button class="view-button button-spacing" (click)="viewPDF(dato.contrato, dato.estrategia)"
                                 matTooltip="{{dato.nombrePdf}}">
                                 <mat-icon class="pdf-icon">description</mat-icon>
                             </button>
+
+                            <!-- Descargar PDF -->
+                            <button class="download-button"
+                                (click)="downloadPDF(dato.contrato, dato.estrategia, dato.nombrePdf)"
+                                matTooltip="Descargar PDF">
+                                <mat-icon class="pdf-icon">download</mat-icon>
+                            </button>
                         </td>
-                    </tr>
-                </tbody>
-            </table>
+                    </ng-container>
+
+
+
+
+                    <!-- Declaración de filas -->
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                </table>
+            </div>
+
 
             <mat-paginator [length]="dataSource.data.length" [pageSize]="10" [pageSizeOptions]="[5, 10, 20, 50]"
                 [showFirstLastButtons]="true" (page)="onPageChange($event)">

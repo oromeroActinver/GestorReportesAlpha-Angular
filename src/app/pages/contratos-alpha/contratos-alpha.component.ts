@@ -3,7 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Utilities } from '../../services/tempUtilities';
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
-import { EstrategiasService } from '../dispercion/EstrategiasService';
+import { EstrategiasService } from '../../services/EstrategiasService';
 import { MessageDetailsDialogComponent } from '../message-details-dialog/message-details-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
@@ -34,8 +34,8 @@ import { MatTableModule } from '@angular/material/table';
 export class ContratosAlphaComponent {
   displayedColumns: string[] = ['contrato', 'cliente', 'estrategia', 'fechaIniAlpha', 'estado'];
   dataSource = new MatTableDataSource<any>();
-  estrategiasDisponibles: string[] = [];  
-strategies: string[] = [];
+  estrategiasDisponibles: string[] = [];
+  strategies: string[] = [];
 
 
   @ViewChild(MatSort) sort!: MatSort;
@@ -44,15 +44,22 @@ strategies: string[] = [];
   ngAfterViewInit() {
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
+
+    this.dataSource.sortingDataAccessor = (item, property) => {
+      if (property === 'fechaIniAlpha') {
+        const parts = item.fechaIniAlpha.split('/');
+        return new Date(+parts[2], +parts[1] - 1, +parts[0]);
+      }
+      return item[property];
+    };
   }
+
 
 
   lengRegister: number | null = null;
   isLoading = false;
   token = localStorage.getItem('token');
   apiUrl = environment.API_URL;
-
-  // Variables para tabla y paginación
 
   datos: any[] = [];
   paginatedDatos: any[] = [];
@@ -137,11 +144,11 @@ strategies: string[] = [];
 
   }
 
-  
-loadStrategies(): void {
+
+  loadStrategies(): void {
     const token = localStorage.getItem('token');
     if (token) {
-      this.estrategiasService.getNewEstrategias(token).subscribe({
+      this.estrategiasService.getEstrategias(token).subscribe({
         next: (data: string[]) => {
           this.strategies = [...data];
           this.cdr.markForCheck();
@@ -205,15 +212,13 @@ loadStrategies(): void {
 
   }
 
-
-
   applyFilters() {
     this.dataSource.filterPredicate = (dato, filtroTexto) => {
       const filtro = JSON.parse(filtroTexto);
 
       const contratoMatch = !filtro.contrato || dato.contrato.toString().includes(filtro.contrato);
       const clienteMatch = !filtro.cliente || dato.cliente.toLowerCase().includes(filtro.cliente.toLowerCase());
-      const estrategiaMatch = !filtro.estrategia || dato.estrategia.toLowerCase().includes(filtro.estrategia.toLowerCase());
+      const estrategiaMatch = !filtro.estrategia || dato.estrategia.toLowerCase() === filtro.estrategia.toLowerCase();
       const fechaMatch = !filtro.fecha || dato.fechaIniAlpha.toLowerCase().includes(filtro.fecha.toLowerCase());
 
       return contratoMatch && clienteMatch && estrategiaMatch && fechaMatch;
@@ -225,6 +230,7 @@ loadStrategies(): void {
       this.paginator.firstPage();
     }
   }
+
 
 
   showDialog(title: string, content: string, details?: string[]): void {

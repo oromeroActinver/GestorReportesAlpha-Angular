@@ -13,7 +13,7 @@ import { Router } from '@angular/router';
 import { environment } from '../../../environments/environment';
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { MessageDetailsDialogComponent } from '../message-details-dialog/message-details-dialog.component';
-import { EstrategiasService } from '../dispercion/EstrategiasService';
+import { EstrategiasService } from '../../services/EstrategiasService';
 
 @Component({
   selector: 'app-rendimientos-dialog',

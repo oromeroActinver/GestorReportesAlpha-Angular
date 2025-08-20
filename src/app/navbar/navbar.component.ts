@@ -21,7 +21,6 @@ import { MatDividerModule } from '@angular/material/divider';
   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent {
-  dispersionButton: string = 'Dispercion';
   dispersionAlphaButton: string = 'Dispercion Alpha';
   reportsButton: string = 'Carga de Reportes';
   logoutButton: string = 'cerrar cesión ';

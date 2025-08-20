@@ -118,6 +118,7 @@ input::placeholder {
 
 /* Botones mejorados */
 .select-button,
+.download-button,
 .view-button {
   background-color: #041e42;
   color: white;
@@ -135,6 +136,7 @@ input::placeholder {
 }
 
 .select-button:hover,
+.download-button:hover,
 .view-button:hover {
   background-color: #b4a46c;
   transform: translateY(-1px);
@@ -144,6 +146,7 @@ input::placeholder {
 .select-button:active,
 .search-button:active,
 .send-button:active,
+.download-button:active,
 .view-button:active {
   transform: translateY(0);
 }
@@ -172,9 +175,15 @@ input::placeholder {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.view-button {
+.view-button,
+.download-button {
   padding: 8px 12px;
 }
+
+.button-spacing {
+  margin-right: 8px; /* Puedes ajustar el valor según lo que necesites */
+}
+
 
 /* Tercer bloque - formulario horizontal */
 .third-block .form-container {
@@ -363,4 +372,49 @@ mat-paginator {
   /* Fondo semitransparente */
   z-index: 9998;
   /* Debajo del spinner pero encima de todo lo demás */
+}
+
+::ng-deep mat-checkbox.mat-checkbox-checked .mat-checkbox-background,
+::ng-deep mat-checkbox.mat-accent .mat-checkbox-background {
+  background-color: #041e42 !important;
+  border-color: #041e42 !important;
+}
+
+/**-----------------nuvos estilos -------------------*/
+.custom-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-family: inherit;
+  background-color: white;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.custom-table th {
+  background-color: #b4a46c !important;
+  color: #041e42 !important;
+  font-weight: 500;
+  text-align: center;
+}
+
+.custom-table td {
+  text-align: center;
+  border-bottom: 1px solid #eee;
+}
+
+.custom-table tr:hover td {
+  background-color: #f8f8f8;
+}
+
+
+::ng-deep .mat-paginator {
+  background-color: #f9f9f9;
+  border-top: 1px solid #eee;
+  border-radius: 0 0 8px 8px;
+  font-family: inherit;
+}
+
+::ng-deep .mat-paginator-page-size {
+  color: #041e42;
 }
