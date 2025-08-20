@@ -458,7 +458,7 @@ export class ReportesAlphaComponent {
 
         if (error.status === 404 && error.error?.message) {
           this.dataSource.data = [];
-          this.showDialog('FAILED', error.error.message);
+          this.showDialog('MESSAGE', error.error.message);
         } else {
           this.dataSource.data = [];
           this.showDialog('FAILED', 'Ocurrió un error al buscar los archivos.');

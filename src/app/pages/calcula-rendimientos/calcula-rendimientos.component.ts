@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit, TemplateRef } from '@angular/core';
 import { RendimientosDialogComponent } from '../rendimientos-dialog/rendimientos-dialog.component';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
@@ -27,6 +27,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatIconModule } from '@angular/material/icon';
+import { MatDialogModule } from '@angular/material/dialog';
 
 export enum UploadMethod {
   DATES = 'DATES',
@@ -50,7 +51,8 @@ export enum UploadMethod {
     CommonModule,
     MatTableModule,
     MatSortModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    MatDialogModule
   ],
   templateUrl: './calcula-rendimientos.component.html',
   styleUrl: './calcula-rendimientos.component.css'
@@ -58,6 +60,8 @@ export enum UploadMethod {
 export class CalculaRendimientosComponent implements OnInit, AfterViewInit {
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild('RendimientosDialogComponent') dialogCargarBenchmark!: TemplateRef<any>;
+
 
   fechas: string = 'Calcular por fechas';
   calcular: string = 'Calcular';
@@ -77,6 +81,8 @@ export class CalculaRendimientosComponent implements OnInit, AfterViewInit {
   rendimientosForm: FormGroup;
   dataSource: MatTableDataSource<any> = new MatTableDataSource();
   displayedColumns: string[] = ['Cuenta', 'FechaInicio', 'SaldoInicio', 'Saldo', 'TIRAnualizada', 'TIREfectiva'];
+  selectedFile: File | null = null;
+
 
   constructor(
     private http: HttpClient,
@@ -131,8 +137,7 @@ export class CalculaRendimientosComponent implements OnInit, AfterViewInit {
       }
     });
   }
-
-
+  
   onFilesSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
@@ -432,6 +437,68 @@ export class CalculaRendimientosComponent implements OnInit, AfterViewInit {
         details: details
       }
     });
+  }
+
+  uploadFileRendimientos(): void {
+    this.isLoading = true;
+    if (!this.selectedFile) {
+      this.showDialog('MESSAGE', 'Seleccione un archivo.');
+      return;
+    }
+    const formData: FormData = new FormData();
+    formData.append('file', this.selectedFile, this.selectedFile.name);
+
+    const url = `${environment.API_URL}/Bench/upload`;
+    const token = localStorage.getItem('token');
+
+    if (token) {
+      const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+
+      this.http.post(url, formData, { headers }).subscribe(
+        (response: any) => {
+          this.isLoading = false;
+          switch (response.status) {
+            case 'SUCCESS':
+              this.dialog.closeAll();
+              this.showDialog('SUCCESS', response.message, response.details);
+              break;
+            case 'FAILED':
+              this.dialog.closeAll();
+              this.showDialog('FAILED', response.message, response.details);
+              break;
+            case 'PARTIAL_SUCCESS':
+              this.dialog.closeAll();
+              this.showDialog('PARTIAL SUCCESS', response.message, response.details);
+              break;
+            default:
+              this.dialog.closeAll();
+              this.showDialog('FAILED', 'Estado de respuesta desconocido');
+          }
+          this.clearSelectedFiles();
+        },
+        error => {
+          this.isLoading = false;
+          this.dialog.closeAll();
+          this.showDialog('FAILED', 'Error al subir el archivo: ' + error.message);
+          this.clearSelectedFiles();
+        }
+      );
+    } else {
+      this.isLoading = false;
+      this.dialog.closeAll();
+      this.showDialog('FAILED', 'No se encontró un token de autenticación.');
+    }
+  }
+
+  abrirDialogRendimientos(): void {
+    this.dialog.open(this.dialogCargarBenchmark, {
+      width: '500px'
+    });
+  }
+
+  onFileSelected(event: any): void {
+    const file = event.target.files[0];
+    this.selectedFile = file ? file : null;
   }
 
   openRendimientosDialog(): void {

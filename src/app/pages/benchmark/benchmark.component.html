@@ -1,30 +1,162 @@
-<div class="benchmark-container">
-    <h2 class="title">Subir archivo de Benchmark</h2>
+<div class="benchmark-layout">
+    <div class="table-section">
+        <section class="benchmark-section">
+            <div class="benchmark-header">
+                <mat-form-field appearance="outline" class="month-input">
+                    <mat-label>Mes</mat-label>
+                    <input matInput [(ngModel)]="mesSeleccionado" placeholder="MM/YYYY" />
+                </mat-form-field>
 
-    <div class="file-upload">
-        <label for="fileInput" class="file-label">
-            Seleccionar archivo
-        </label>
-        <input type="file" id="fileInput" (change)="onFileSelected($event)" accept=".xlsx, .xls" class="file-input" />
-        <p *ngIf="selectedFile" class="file-name">
-            Archivo seleccionado: {{ selectedFile.name }}
-        </p>
+                <button class="type-button" mat-raised-button (click)="consultarBenchmarkPorMes()">
+                    <mat-icon>search</mat-icon> Buscar
+                </button>
+
+                <button class="type-button" mat-raised-button color="primary" (click)="abrirDialogCargarBenchmark()">
+                    <mat-icon>file_upload</mat-icon> Cargar Benchmark
+                </button>
+            </div>
+        </section>
+
+        <div class="table-container scrollable-table">
+
+            <table mat-table [dataSource]="dataSource" matSort class="custom-table mat-elevation-z8">
+
+                <!-- Columnas -->
+                <ng-container matColumnDef="fecha">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Fecha</th>
+                    <td mat-cell *matCellDef="let element">{{ element.fecha | date:'dd-MM-yyyy' }}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="indiceBench">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Índice Bench</th>
+                    <td mat-cell *matCellDef="let element">{{ element.cveIndiceBench }}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="benchmark">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Benchmark</th>
+                    <td mat-cell *matCellDef="let element">{{ element.benchmark }}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="usuario">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Usuario</th>
+                    <td mat-cell *matCellDef="let element">{{ element.usuario }}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="fechaModificacion">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Fecha Registro</th>
+                    <td mat-cell *matCellDef="let element">{{ element.fechaModificacion | date:'dd-MM-yyyy' }}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="opciones" *ngIf="userPerfil === 'ADMIN'">
+                    <th mat-header-cell *matHeaderCellDef>Opciones</th>
+                    <td mat-cell *matCellDef="let element">
+                        <button mat-icon-button matTooltip="Editar" (click)="editarElemento(element)">
+                            <mat-icon class="icon-custom">edit</mat-icon>
+                        </button>
+                        <button mat-icon-button (click)="eliminarElemento(element)">
+                            <mat-icon class="icon-custom">delete</mat-icon>
+                        </button>
+                    </td>
+                </ng-container>
+
+                <!-- Fila de filtros -->
+                <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+                <!-- Fila de filtros -->
+                <tr class="filter-row">
+                    <td *ngFor="let col of displayedColumns">
+                        <ng-container [ngSwitch]="col">
+                            <input *ngSwitchCase="'opciones'" disabled />
+                            <input *ngSwitchDefault matInput (input)="applyColumnFilter(col, $any($event.target).value)"
+                                placeholder="Filtrar" />
+                        </ng-container>
+                    </td>
+                </tr>
 
 
-    </div>
+                <!-- Filas de datos -->
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+        </div>
 
-    <div class="actions">
-        <button class="type-button" mat-raised-button color="primary" (click)="uploadFiles()" [disabled]="isLoading">
-            {{ isLoading ? 'Subiendo...' : 'Cargar Benchmark' }}
-        </button>
-    </div>
+        <div class="total-items">
 
-    <!-- Spinner de carga con overlay -->
-    <div *ngIf="isLoading" class="loading-overlay">
-        <div class="loading-spinner">
-            <mat-spinner diameter="40"></mat-spinner>
+            Total: {{ dataSource.filteredData.length }}
         </div>
     </div>
 </div>
 
+<ng-template #dialogCargarBenchmark>
+    <h2 mat-dialog-title>Cargar Benchmark por archivo</h2>
+    <mat-dialog-content>
+        <div class="file-upload">
+            <label for="fileInputBenchmark" class="file-label">Seleccionar archivo</label>
+            <input type="file" id="fileInputBenchmark" (change)="onFileSelected($event)" accept=".xlsx, .xls"
+                class="file-input" />
+            <p *ngIf="selectedFile" class="file-name">Archivo seleccionado: {{ selectedFile.name }}</p>
+        </div>
+    </mat-dialog-content>
+    <mat-dialog-actions>
+        <button class="type-button" mat-raised-button mat-button mat-dialog-close>Cancelar</button>
+        <button class="type-button" mat-raised-button color="primary" (click)="uploadFiles()" [disabled]="isLoading">
+            {{ isLoading ? 'Subiendo...' : 'Cargar Benchmark' }}
+        </button>
+    </mat-dialog-actions>
+</ng-template>
 
+<ng-template #dialogEditarBenchmark>
+    <div *ngIf="modoDialogo === 'editar'" class="dialogo">
+        <h4>Editar Benchmark</h4>
+        <form class="form-grid">
+
+            <div class="readonly-field">
+                <label>Fecha:</label>
+                <span>{{ elementoSeleccionado.fecha | date:'dd-MM-yyyy' }}</span>
+            </div>
+
+            <div class="readonly-field">
+                <label>Índice Benchmark:</label>
+                <span>{{ elementoSeleccionado.cveIndiceBench }}</span>
+            </div>
+
+            <div class="readonly-field">
+                <label>Usuario:</label>
+                <span>{{ elementoSeleccionado.usuario }}</span>
+            </div>
+
+            <mat-form-field appearance="outline">
+                <mat-label>Benchmark</mat-label>
+                <input matInput [(ngModel)]="elementoSeleccionado.benchmark" name="benchmark" type="number">
+            </mat-form-field>
+
+
+
+            <div class="acciones-dialogo">
+                <button mat-raised-button mat-dialog-close (click)="cancelarDialogo()">Cancelar</button>
+                <button mat-raised-button color="primary" (click)="confirmarEdicion()">Guardar</button>
+            </div>
+        </form>
+    </div>
+</ng-template>
+
+<ng-template #dialogEliminarBenchmark>
+    <div class="dialogo">
+        <h4>¿Eliminar Benchmark?</h4>
+        <p>¿Estás seguro de eliminar el benchmark?</p>
+        <p>{{ elementoSeleccionado.fecha }}?</p>
+        <div class="acciones-dialogo">
+            <button class="type-button" mat-raised-button mat-button (click)="cancelarDialogo()">Cancelar</button>
+            <button class="type-button" mat-raised-button color="warn"
+                (click)="confirmarEliminacion()">Eliminar</button>
+        </div>
+    </div>
+</ng-template>
+
+<div *ngIf="isLoading" class="loading-overlay"></div>
+
+
+<!-- Spinner de carga con overlay -->
+<div *ngIf="isLoading" class="loading-overlay">
+    <div class="loading-spinner" *ngIf="isLoading">
+        <div class="spinner"></div>
+    </div>
+</div>

@@ -89,12 +89,12 @@
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
       </table>
 
-      
+
     </div>
     <!-- Paginador - debe estar FUERA de la tabla pero dentro del contenedor -->
     <mat-paginator [pageSizeOptions]="[10, 25, 50, 100]" [pageSize]="10" showFirstLastButtons
-    aria-label="Seleccionar página de resultados">
-  </mat-paginator>
+      aria-label="Seleccionar página de resultados">
+    </mat-paginator>
   </div>
 
   <!-- Formulario por mes/año -->
@@ -114,6 +114,9 @@
         </select>
       </div>
     </div>
+    <button class="type-button" mat-raised-button color="primary" (click)="abrirDialogRendimientos()">
+      <mat-icon>file_upload</mat-icon> Cargar Rendimientos
+    </button>
     <button class="select-button" (click)="uploadFolderPath()">{{ calcular }}</button>
   </div>
 
@@ -124,3 +127,21 @@
 </div>
 
 <li><button (click)="openRendimientosDialog()"><i class="fas fa-chart-line"></i> {{fechas}}</button></li>
+
+<ng-template #RendimientosDialogComponent>
+    <h2 mat-dialog-title>Cargar Benchmark por archivo</h2>
+    <mat-dialog-content>
+        <div class="file-upload">
+            <label for="fileInputBenchmark" class="file-label">Seleccionar archivo</label>
+            <input type="file" id="fileInputBenchmark" (change)="onFileSelected($event)" accept=".xlsx, .xls"
+                class="file-input" />
+            <p *ngIf="selectedFile" class="file-name">Archivo seleccionado: {{ selectedFile.name }}</p>
+        </div>
+    </mat-dialog-content>
+    <mat-dialog-actions>
+        <button class="type-button" mat-raised-button mat-button mat-dialog-close>Cancelar</button>
+        <button class="type-button" mat-raised-button color="primary" (click)="uploadFileRendimientos()" [disabled]="isLoading">
+            {{ isLoading ? 'Subiendo...' : 'Cargar Benchmark' }}
+        </button>
+    </mat-dialog-actions>
+</ng-template>
