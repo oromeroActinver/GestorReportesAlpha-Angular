@@ -32,7 +32,7 @@ export enum UploadMethod {
   styleUrl: './reportes-alpha.component.css'
 })
 export class ReportesAlphaComponent {
-  displayedColumns: string[] = ['select', 'contrato', 'cliente', 'correo', 'estrategia', 'mes', 'anual', 'reporte'];
+  displayedColumns: string[] = ['contrato', 'cliente', 'correo', 'estrategia', 'mes', 'anual', 'reporte'];
   @ViewChild(MatSort) sort!: MatSort;
   // Variables primer bloque (Búsqueda por contrato)
   contrato: string = '';
@@ -468,11 +468,11 @@ export class ReportesAlphaComponent {
 
   }
 
-  updateAnySelected() {
+/*  updateAnySelected() {
     this.anySelected = this.datos.some(dato => dato.selected);
-  }
+  }*/
 
-  sendFiles() {
+/*  sendFiles() {
     if (!this.anySelected) {
       this.showDialog('MESSAGE', 'No hay archivos seleccionados para enviar.');
       return;
@@ -518,7 +518,7 @@ export class ReportesAlphaComponent {
         console.log(error.message);
       }
     });
-  }
+  }*/
 
   downloadPDF(contrato: number, estrategia: string, nombreArchivo: string): void {
   if (!this.filesYear || !this.filesMonth) {
@@ -616,13 +616,13 @@ export class ReportesAlphaComponent {
     this.paginatedDatos = this.datos.slice(0, this.paginator.pageSize);
   }
 
-  toggleSelectAll(event: any) {
+  /*toggleSelectAll(event: any) {
     const checked = event.checked ?? event.target?.checked;
     this.allSelected = checked;
 
     this.dataSource.data.forEach(dato => dato.selected = checked);
     this.updateAnySelected();
-  }
+  }*/
 
 
   clearSelections() {

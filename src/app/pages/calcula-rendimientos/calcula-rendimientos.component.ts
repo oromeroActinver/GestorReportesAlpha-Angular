@@ -151,12 +151,6 @@ export class CalculaRendimientosComponent implements OnInit, AfterViewInit {
     }
   }
 
-  clearSelectedFiles(): void {
-    this.files = [];
-    const fileInput = document.getElementById('fileInput') as HTMLInputElement;
-    if (fileInput) fileInput.value = '';
-  }
-
   uploadFiles(): void {
     if (this.files.length === 0) {
       this.showDialog('MESSAGE', 'Seleccione al menos un archivo.');
@@ -448,7 +442,7 @@ export class CalculaRendimientosComponent implements OnInit, AfterViewInit {
     const formData: FormData = new FormData();
     formData.append('file', this.selectedFile, this.selectedFile.name);
 
-    const url = `${environment.API_URL}/Bench/upload`;
+    const url = `${environment.API_URL}/Rend/upload`;
     const token = localStorage.getItem('token');
 
     if (token) {
@@ -511,6 +505,15 @@ export class CalculaRendimientosComponent implements OnInit, AfterViewInit {
 
   setUploadMethod(method: string): void {
     this.uploadMethod = method;
+  }
+
+  clearSelectedFiles(): void {
+    this.files = [];
+    this.selectedFile = null;
+    const fileInput = document.getElementById('fileInput') as HTMLInputElement;
+    if (fileInput) {
+      fileInput.value = '';
+    }
   }
 
 }

@@ -120,10 +120,6 @@
     <button class="select-button" (click)="uploadFolderPath()">{{ calcular }}</button>
   </div>
 
-  <div class="loading-spinner" *ngIf="isLoading">
-    <div class="spinner"></div>
-  </div>
-
 </div>
 
 <li><button (click)="openRendimientosDialog()"><i class="fas fa-chart-line"></i> {{fechas}}</button></li>
@@ -145,3 +141,13 @@
         </button>
     </mat-dialog-actions>
 </ng-template>
+
+<div *ngIf="isLoading" class="loading-overlay"></div>
+
+
+<!-- Spinner de carga con overlay -->
+<div *ngIf="isLoading" class="loading-overlay">
+    <div class="loading-spinner" *ngIf="isLoading">
+        <div class="spinner"></div>
+    </div>
+</div>

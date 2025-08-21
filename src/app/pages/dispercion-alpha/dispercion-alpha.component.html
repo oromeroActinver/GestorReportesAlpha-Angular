@@ -1,87 +1,150 @@
-<p>dispercion-alpha works!</p>
+<!-- TERCER BLOQUE - Abajo -->
+<div class="third-block">
+    <div class="form-container card-form">
+        <div class="horizontal-form-group">
+            <div class="form-group">
+                <label for="filesYear">Año:</label>
+                <select id="filesYear" [(ngModel)]="filesYear" (change)="onFilesYearChange(filesYear)">
+                    <option *ngFor="let year of filesYears" [value]="year">{{ year }}</option>
+                </select>
+            </div>
 
-<div class="form-container">
-    <div class="form-group">
-        <label for="year">Año:</label>
-        <select id="year" class="custom-select" [(ngModel)]="selectedYear">
-            <option *ngFor="let year of years" [value]="year">{{ year }}</option>
-        </select>
-    </div>
-    <div class="form-group">
-        <label for="month">Mes:</label>
-        <select id="month" class="custom-select" [(ngModel)]="selectedMonth">
-            <option *ngFor="let month of months" [value]="month">{{ month }}</option>
-        </select>
-    </div>
-    <div class="form-group">
-        <label for="strategy">Estrategia:</label>
-        <select id="strategy" class="custom-select" [(ngModel)]="selectedStrategy">
-            <option *ngFor="let strategy of strategies" [value]="strategy">{{ strategy }}</option>
-        </select>
-    </div>
-    <div class="form-group">
-        <div class="button-container">
-            <button mat-raised-button color="primary" class="search-button" (click)="searchFiles()" matTooltip="Buscar">
-                <mat-icon>search</mat-icon>
-            </button>
+            <div class="form-group">
+                <label for="filesMonth">Mes:</label>
+                <select id="filesMonth" [(ngModel)]="filesMonth">
+                    <option *ngFor="let month of monthsFiles" [value]="month">{{ month }}</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="filesStrategy">Estrategia:</label>
+                <select id="filesStrategy" [(ngModel)]="filesStrategy">
+                    <option *ngFor="let strategy of strategies" [value]="strategy">{{ strategy }}</option>
+                </select>
+            </div>
+
+            <div class="form-item">
+                <button class="search-button" (click)="searchFiles()">
+                    <mat-icon>search</mat-icon> Buscar
+                </button>
+            </div>
         </div>
     </div>
+
+    <!-- TABLA -->
+    <div class="table-container">
+
+        <!-- Tabla Angular Material -->
+        <div class="table-container">
+            <div *ngIf="lengRegister !== null" class="upload-title select-all">
+                {{ lengRegister }} registros
+            </div>
+
+            <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8 custom-table">
+
+                <!-- Checkbox de selección -->
+                <ng-container matColumnDef="select">
+                    <th class="upload-title select-all" mat-header-cell *matHeaderCellDef>
+                        <mat-checkbox (change)="toggleSelectAll($event)" [checked]="allSelected"></mat-checkbox>
+                    </th>
+                    <td mat-cell *matCellDef="let dato">
+                        <mat-checkbox [(ngModel)]="dato.selected" (change)="updateAnySelected()"></mat-checkbox>
+                    </td>
+                </ng-container>
+
+                <!-- Contrato -->
+                <ng-container matColumnDef="contrato">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                        Contrato
+                        <input type="text" [(ngModel)]="filters.contrato" (input)="applyFilters()"
+                            (click)="$event.stopPropagation()" />
+                    </th>
+                    <td mat-cell *matCellDef="let dato">{{ dato.contrato }}</td>
+                </ng-container>
+
+                <!-- Cliente -->
+                <ng-container matColumnDef="cliente">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                        Cliente
+                        <input type="text" [(ngModel)]="filters.cliente" (input)="applyFilters()" />
+                    </th>
+                    <td mat-cell *matCellDef="let dato">{{ dato.cliente }}</td>
+                </ng-container>
+
+                <!-- Correo -->
+                <ng-container matColumnDef="correo">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                        Correo
+                        <input type="text" [(ngModel)]="filters.correo" (input)="applyFilters()" />
+                    </th>
+                    <td mat-cell *matCellDef="let dato">{{ dato.correo }}</td>
+                </ng-container>
+
+                <!-- Estrategia -->
+                <ng-container matColumnDef="estrategia">
+                    <th mat-header-cell *matHeaderCellDef>
+                        Estrategia
+                    </th>
+                    <td mat-cell *matCellDef="let dato">{{ dato.estrategia }}</td>
+                </ng-container>
+
+                <!-- Mes -->
+                <ng-container matColumnDef="mes">
+                    <th mat-header-cell *matHeaderCellDef>Mes</th>
+                    <td mat-cell *matCellDef="let dato">{{ dato.mes }}</td>
+                </ng-container>
+
+                <!-- Año -->
+                <ng-container matColumnDef="anual">
+                    <th mat-header-cell *matHeaderCellDef>Año</th>
+                    <td mat-cell *matCellDef="let dato">{{ dato.anual }}</td>
+                </ng-container>
+
+                <!-- Reporte -->
+                <ng-container matColumnDef="reporte">
+                    <th mat-header-cell *matHeaderCellDef>Reporte</th>
+                    <td mat-cell *matCellDef="let dato">
+                        <!-- Ver PDF -->
+                        <button class="view-button button-spacing" (click)="viewPDF(dato.contrato, dato.estrategia)"
+                            matTooltip="{{dato.nombrePdf}}">
+                            <mat-icon class="pdf-icon">description</mat-icon>
+                        </button>
+
+                        <!-- Descargar PDF -->
+                        <button class="download-button"
+                            (click)="downloadPDF(dato.contrato, dato.estrategia, dato.nombrePdf)"
+                            matTooltip="Descargar PDF">
+                            <mat-icon class="pdf-icon">download</mat-icon>
+                        </button>
+                    </td>
+                </ng-container>
+
+                <!-- Declaración de filas -->
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+        </div>
+
+
+        <mat-paginator [length]="dataSource.data.length" [pageSize]="10" [pageSizeOptions]="[5, 10, 20, 50]"
+            [showFirstLastButtons]="true" (page)="onPageChange($event)">
+        </mat-paginator>
+        <div class="send-button-container">
+            <button class="send-button" (click)="sendFiles()" [disabled]="!anySelected">
+                {{ sendfiles }}
+            </button>
+        </div>
+
+
+    </div>
+
 </div>
 
-<div class="table-container">
-    <div *ngIf="lengRegister !== null" class="record-count">
-        {{ lengRegister }} registros
-    </div>
-    <table>
-        <thead>
-            <tr>
-                <th class="upload-title select-all">
-                    <input type="checkbox" (change)="toggleSelectAll($event)" [checked]="allSelected" />
-                    
-                </th>
-                <th class="upload-title">
-                    Contrato
-                    <input type="text" class="contract-filter" [(ngModel)]="filters.contrato" (input)="applyFilters()" />
-                </th>
-                <th class="upload-title">Cliente</th>
-                <th class="upload-title">Correo</th>
-                <th class="upload-title">Estrategia</th>
-                <th class="upload-title">Mes</th>
-                <th class="upload-title">Año</th>
-                <th class="upload-title">Reporte</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr *ngFor="let dato of paginatedDatos">
-                <td>
-                    <input type="checkbox" [(ngModel)]="dato.selected" (change)="updateAnySelected()" />
-                </td>
-                <td>{{ dato.contrato }}</td>
-                <td>{{ dato.cliente }}</td>
-                <td>{{ dato.correo }}</td>
-                <td>{{ dato.estrategia }}</td>
-                <td>{{ dato.mes }}</td>
-                <td>{{ dato.anual }}</td>
-                <!--<td>
-                    <mat-icon>{{ dato.visualizador }}</mat-icon>
-                    {{ dato.nombrePdf }}
-                </td>-->
-                <td>
-                    
-                    <button class="view-button" (click)="viewPDF(dato.contrato, dato.estrategia)" matTooltip="{{dato.nombrePdf}}">
-                        <mat-icon class="pdf-icon">{{ dato.visualizador }}</mat-icon>
-                    </button>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    
-     <mat-paginator [length]="dataSource.data.length" [pageSize]="10" [pageSizeOptions]="[5, 10, 20]"
-        (page)="onPageChange($event)">
-     </mat-paginator>
+<div *ngIf="isLoading" class="loading-overlay"></div>
 
-    <button class="send-button" (click)="sendFiles()" [disabled]="!anySelected">{{sendfiles}}</button>
 
+<!-- Spinner de carga con overlay -->
+<div *ngIf="isLoading" class="loading-overlay">
     <div class="loading-spinner" *ngIf="isLoading">
         <div class="spinner"></div>
     </div>

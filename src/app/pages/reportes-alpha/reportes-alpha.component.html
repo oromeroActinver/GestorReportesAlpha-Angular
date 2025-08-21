@@ -112,23 +112,16 @@
 
                 <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8 custom-table">
 
-                    <!-- Checkbox de selección -->
-                    <ng-container matColumnDef="select">
-                        <th mat-header-cell *matHeaderCellDef>
-                            <mat-checkbox (change)="toggleSelectAll($event)" [checked]="allSelected"></mat-checkbox>
-                        </th>
-                        <td mat-cell *matCellDef="let dato">
-                            <mat-checkbox [(ngModel)]="dato.selected" (change)="updateAnySelected()"></mat-checkbox>
-                        </td>
-                    </ng-container>
-
                     <!-- Contrato -->
                     <ng-container matColumnDef="contrato">
                         <th mat-header-cell *matHeaderCellDef mat-sort-header>
-                            Contrato
-                            <input type="text" [(ngModel)]="filters.contrato" (input)="applyFilters()"
-                                (click)="$event.stopPropagation()" />
+                            <div class="header-with-input">
+                                <span>Contrato</span>
+                                <input type="text" [(ngModel)]="filters.contrato" (input)="applyFilters()"
+                                    (click)="$event.stopPropagation()" />
+                            </div>
                         </th>
+
                         <td mat-cell *matCellDef="let dato">{{ dato.contrato }}</td>
                     </ng-container>
 
@@ -171,9 +164,7 @@
                         <th mat-header-cell *matHeaderCellDef>Año</th>
                         <td mat-cell *matCellDef="let dato">{{ dato.anual }}</td>
                     </ng-container>
-
-
-                    <!-- Reporte -->
+                    
                     <!-- Reporte -->
                     <ng-container matColumnDef="reporte">
                         <th mat-header-cell *matHeaderCellDef>Reporte</th>
@@ -207,12 +198,6 @@
                 [showFirstLastButtons]="true" (page)="onPageChange($event)">
             </mat-paginator>
 
-
-            <div class="send-button-container">
-                <button class="send-button" (click)="sendFiles()" [disabled]="!anySelected">
-                    {{ sendfiles }}
-                </button>
-            </div>
 
         </div>
     </div>

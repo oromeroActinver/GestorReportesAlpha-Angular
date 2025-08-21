@@ -418,3 +418,9 @@ mat-paginator {
 ::ng-deep .mat-paginator-page-size {
   color: #041e42;
 }
+
+.header-with-input {
+  display: flex;
+  flex-direction: column;
+  gap: 6px; /* Ajusta según lo que necesites */
+}
