@@ -1,3 +1,4 @@
+<h2>trabajando:..</h2>
 <!-- TERCER BLOQUE - Abajo -->
 <div class="third-block">
     <div class="form-container card-form">
@@ -100,6 +101,18 @@
                     <td mat-cell *matCellDef="let dato">{{ dato.anual }}</td>
                 </ng-container>
 
+
+                <!-- Estatus solo si es ADMIN -->
+                <ng-container *ngIf="userPerfil === 'ADMIN'" matColumnDef="estatus">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Estatus</th>
+                    <td mat-cell *matCellDef="let dato">
+                        <button (click)="openEstatus(dato)" class="estado-btn">
+                            {{ dato.estatus }}
+                        </button>
+                    </td>
+                </ng-container>
+
+
                 <!-- Reporte -->
                 <ng-container matColumnDef="reporte">
                     <th mat-header-cell *matHeaderCellDef>Reporte</th>
@@ -111,11 +124,18 @@
                         </button>
 
                         <!-- Descargar PDF -->
-                        <button class="download-button"
+                        <button class="view-button button-spacing"
                             (click)="downloadPDF(dato.contrato, dato.estrategia, dato.nombrePdf)"
                             matTooltip="Descargar PDF">
                             <mat-icon class="pdf-icon">download</mat-icon>
                         </button>
+
+                        <button *ngIf="userPerfil === 'ADMIN'" class="view-button button-spacing"
+                            (click)="editarReporte(dato)" matTooltip="edigtar registro">
+                            <mat-icon class="icon-custom">edit</mat-icon>
+                        </button>
+
+
                     </td>
                 </ng-container>
 

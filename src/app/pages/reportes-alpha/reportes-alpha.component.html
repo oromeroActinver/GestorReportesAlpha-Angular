@@ -121,15 +121,17 @@
                                     (click)="$event.stopPropagation()" />
                             </div>
                         </th>
-
                         <td mat-cell *matCellDef="let dato">{{ dato.contrato }}</td>
                     </ng-container>
 
-                    <!-- Cliente -->
+                    <!-- Cliente-->
                     <ng-container matColumnDef="cliente">
                         <th mat-header-cell *matHeaderCellDef mat-sort-header>
-                            Cliente
-                            <input type="text" [(ngModel)]="filters.cliente" (input)="applyFilters()" />
+                            <div class="header-with-input">
+                                <span>Cliente</span>
+                                <input type="text" [(ngModel)]="filters.cliente" (input)="applyFilters()"
+                                    (click)="$event.stopPropagation()" />
+                            </div>
                         </th>
                         <td mat-cell *matCellDef="let dato">{{ dato.cliente }}</td>
                     </ng-container>
@@ -137,8 +139,11 @@
                     <!-- Correo -->
                     <ng-container matColumnDef="correo">
                         <th mat-header-cell *matHeaderCellDef mat-sort-header>
-                            Correo
-                            <input type="text" [(ngModel)]="filters.correo" (input)="applyFilters()" />
+                            <div class="header-with-input">
+                                <span>Correo</span>
+                                <input type="text" [(ngModel)]="filters.correo" (input)="applyFilters()"
+                                    (click)="$event.stopPropagation()" />
+                            </div>
                         </th>
                         <td mat-cell *matCellDef="let dato">{{ dato.correo }}</td>
                     </ng-container>
@@ -164,7 +169,7 @@
                         <th mat-header-cell *matHeaderCellDef>Año</th>
                         <td mat-cell *matCellDef="let dato">{{ dato.anual }}</td>
                     </ng-container>
-                    
+
                     <!-- Reporte -->
                     <ng-container matColumnDef="reporte">
                         <th mat-header-cell *matHeaderCellDef>Reporte</th>

@@ -24,7 +24,7 @@
         <mat-icon>assessment</mat-icon>
         <span>{{contracAlpha}}</span>
       </button>
-      <button mat-menu-item *ngIf="userPerfil === 'ADMIN'" (click)="navigate('/DispercionAlpha')">
+      <button mat-menu-item *ngIf="userPerfil === 'ADMIN' || userPerfil === 'ASESOR'" (click)="navigate('/DispercionAlpha')">
         <mat-icon>send</mat-icon>
         <span>{{dispersionAlphaButton}}</span>
       </button>

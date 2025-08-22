@@ -73,19 +73,6 @@
   }
   
   
-  /*.send-button {
-    position: absolute;
-    bottom: -50px;
-    right: 20;
-    padding: 8px 14px;
-    border-radius: 15px;
-    color: white;
-    border: 1px solid #ccc;
-    background-color: #041e42;
-    cursor: pointer;
-  }*/
-  
-  
   .search-button:hover, .send-button:hover, .view-button:hover {
     background-color: #b4a46c;
   }
@@ -254,7 +241,7 @@
 /* Inputs y selects mejorados */
 input[type="text"],
 select {
-  padding: 12px 15px;
+  padding: 8px 15px;
   border: 1px solid #ddd;
   border-radius: 8px;
   font-size: 14px;
@@ -588,5 +575,25 @@ mat-paginator {
 
 ::ng-deep .mat-paginator-page-size {
   color: #041e42;
+}
+
+.estado-btn {
+  background-color: #041e42;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.estado-btn:hover {
+  background-color: #b4a46c;
+  color: #041e42;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
   

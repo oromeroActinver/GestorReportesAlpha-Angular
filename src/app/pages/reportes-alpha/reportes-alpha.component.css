@@ -83,7 +83,7 @@
 /* Inputs y selects mejorados */
 input[type="text"],
 select {
-  padding: 12px 15px;
+  padding: 8px 15px;
   border: 1px solid #ddd;
   border-radius: 8px;
   font-size: 14px;
@@ -184,7 +184,6 @@ input::placeholder {
   margin-right: 8px; /* Puedes ajustar el valor según lo que necesites */
 }
 
-
 /* Tercer bloque - formulario horizontal */
 .third-block .form-container {
   padding: 20px;
@@ -220,26 +219,6 @@ table {
   border-collapse: separate;
   border-spacing: 0;
   margin-bottom: 20px;
-}
-
-th,
-td {
-  padding: 14px 12px;
-  text-align: center;
-  border-bottom: 1px solid #eee;
-}
-
-th {
-  /*background-color: #041e42;*/
-  background-color: #b4a46c;
-  color: #041e42;
-  position: sticky;
-  top: 0;
-  font-weight: 500;
-}
-
-tr:hover td {
-  background-color: #f8f8f8;
 }
 
 .record-count {
@@ -310,11 +289,7 @@ mat-paginator {
     padding: 15px;
   }
 
-  th,
-  td {
-    padding: 10px 8px;
-    font-size: 0.85rem;
-  }
+ 
 }
 
 @media (max-width: 480px) {
@@ -391,22 +366,35 @@ mat-paginator {
   overflow: hidden;
 }
 
+.custom-table th,
+.custom-table td {
+  padding: 10px 8px;
+  font-size: 0.85rem;
+  border-bottom: 1px solid #eee;
+  text-align: center;
+}
+
 .custom-table th {
   background-color: #b4a46c !important;
   color: #041e42 !important;
   font-weight: 500;
-  text-align: center;
+  position: sticky;
+  top: 0;
 }
 
-.custom-table td {
-  text-align: center;
-  border-bottom: 1px solid #eee;
+.custom-table td.mat-cell,
+.custom-table th.mat-header-cell {
+  text-align: center !important;
+  vertical-align: middle !important;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
 }
 
 .custom-table tr:hover td {
   background-color: #f8f8f8;
 }
-
 
 ::ng-deep .mat-paginator {
   background-color: #f9f9f9;
@@ -420,7 +408,7 @@ mat-paginator {
 }
 
 .header-with-input {
-  display: flex;
+ /* display: flex;*/
   flex-direction: column;
-  gap: 6px; /* Ajusta según lo que necesites */
+  gap: 10px; /* Ajusta según lo que necesites */
 }

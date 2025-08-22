@@ -34,6 +34,7 @@ export enum UploadMethod {
 export class ReportesAlphaComponent {
   displayedColumns: string[] = ['contrato', 'cliente', 'correo', 'estrategia', 'mes', 'anual', 'reporte'];
   @ViewChild(MatSort) sort!: MatSort;
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
   // Variables primer bloque (Búsqueda por contrato)
   contrato: string = '';
   nombreCliente = '';
@@ -71,9 +72,11 @@ export class ReportesAlphaComponent {
   isLoading = false;
   token = localStorage.getItem('token');
   years: number[] = [];
+  userEmail: string = ''
+  userPerfil: string = 'VIST'; // o 'ASESOR', 'VIST'
 
   // Variables para tabla y paginación
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
+
   datos: any[] = [];
   paginatedDatos: any[] = [];
   dataSource = new MatTableDataSource<any>();
@@ -98,6 +101,8 @@ export class ReportesAlphaComponent {
   }
 
   ngOnInit(): void {
+    this.userEmail = localStorage.getItem('userEmail') || '';
+    this.userPerfil = localStorage.getItem('perfil') || '';
     this.loadStrategies();
     this.loadGenerateYears();
     this.loadFilesYears();
@@ -108,6 +113,13 @@ export class ReportesAlphaComponent {
       return;
     }
   }
+
+  ngAfterViewInit() {
+  this.paginator.pageSize = this.paginator.pageSize || 5;
+  this.dataSource.paginator = this.paginator;
+  this.dataSource.sort = this.sort;
+  this.paginatedDatos = this.datos.slice(0, this.paginator.pageSize);
+}
 
   loadStrategies(): void {
     const token = localStorage.getItem('token');
@@ -129,12 +141,6 @@ export class ReportesAlphaComponent {
         }
       });
     }
-  }
-
-
-  private loadSearchYears(): void {
-    const currentYear = new Date().getFullYear();
-    this.searchYears = Array.from({ length: 10 }, (_, i) => currentYear - i);
   }
 
   private loadGenerateYears(): void {
@@ -287,6 +293,12 @@ export class ReportesAlphaComponent {
     this.http.get<string[]>(url, { headers, params }).subscribe({
       next: (months) => {
         this.monthsStrategy = months || [];
+
+        if (this.monthsStrategy.length > 0) {
+        this.generateMonth = this.monthsStrategy[0];
+      } else {
+        this.generateMonth = null;
+      }
       },
       error: (error) => {
         console.error('Error al cargar meses para generación:', error);
@@ -296,23 +308,32 @@ export class ReportesAlphaComponent {
   }
 
   private loadAvailableMonthsForFiles(year: number): void {
-    const token = localStorage.getItem('token');
-    if (!token) return;
+  const token = localStorage.getItem('token');
+  if (!token) return;
 
-    const url = `${this.apiUrl}/reportesAlpha/getMonthsForFiles`;
-    const params = { year: year.toString() };
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+  const url = `${this.apiUrl}/reportesAlpha/getMonthsForFiles`;
+  const params = { year: year.toString() };
+  const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
 
-    this.http.get<string[]>(url, { headers, params }).subscribe({
-      next: (months) => {
-        this.monthsFiles = months || [];
-      },
-      error: (error) => {
-        console.error('Error al cargar meses para archivos:', error);
-        this.monthsFiles = [];
+  this.http.get<string[]>(url, { headers, params }).subscribe({
+    next: (months) => {
+      this.monthsFiles = months || [];
+
+      // ✅ Seleccionar automáticamente el primer mes si existe
+      if (this.monthsFiles.length > 0) {
+        this.filesMonth = this.monthsFiles[0];
+      } else {
+        this.filesMonth = null;
       }
-    });
-  }
+    },
+    error: (error) => {
+      console.error('Error al cargar meses para archivos:', error);
+      this.monthsFiles = [];
+      this.filesMonth = null;
+    }
+  });
+}
+
 
 
   todosLosCamposLlenos(): boolean {
@@ -339,7 +360,8 @@ export class ReportesAlphaComponent {
     const body = {
       contrato: this.contrato!,
       year: this.searchYear!,
-      month: this.obtenerNumeroMes(this.searchMonth)
+      month: this.obtenerNumeroMes(this.searchMonth),
+      userEmail: this.userEmail
     };
 
     this.isLoading = true;
@@ -384,7 +406,8 @@ export class ReportesAlphaComponent {
     const params = {
       year: this.generateYear.toString(),
       month: monthIndex.toString(),
-      strategy: this.generateStrategy
+      strategy: this.generateStrategy,
+      userEmail: this.userEmail
     };
 
     const headers = this.token
@@ -467,58 +490,6 @@ export class ReportesAlphaComponent {
     });
 
   }
-
-/*  updateAnySelected() {
-    this.anySelected = this.datos.some(dato => dato.selected);
-  }*/
-
-/*  sendFiles() {
-    if (!this.anySelected) {
-      this.showDialog('MESSAGE', 'No hay archivos seleccionados para enviar.');
-      return;
-    }
-
-    this.isLoading = true;
-    const selectedFiles = this.datos
-      .filter(dato => dato.selected)
-      .map(dato => ({
-        contrato: dato.contrato,
-        mes: this.months.findIndex(m => m.toLowerCase().trim() === dato.mes.toLowerCase().trim()) + 1,
-        anual: dato.anual
-      }));
-
-    const url = `${this.apiUrl}/dispercion/reportes`;
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${this.token}`);
-
-    this.http.post(url, selectedFiles, { headers }).subscribe({
-      next: (response: any) => {
-        this.isLoading = false;
-        this.anySelected = false;
-
-        switch (response.status) {
-          case 'SUCCESS':
-            this.showDialog('SUCCESS', response.message, response.details);
-            this.clearSelections();
-            break;
-          case 'FAILED':
-            this.showDialog('FAILED', response.message, response.details);
-            this.clearSelections();
-            break;
-          case 'PARTIAL_SUCCESS':
-            this.showDialog('PARTIAL SUCCESS', response.message, response.details);
-            this.clearSelections();
-            break;
-          default:
-            this.showDialog('MESSAGE', 'Estado de respuesta desconocido');
-        }
-      },
-      error: (error) => {
-        this.isLoading = false;
-        this.showDialog('MESSAGE', 'Error al enviar archivos.', error.message);
-        console.log(error.message);
-      }
-    });
-  }*/
 
   downloadPDF(contrato: number, estrategia: string, nombreArchivo: string): void {
   if (!this.filesYear || !this.filesMonth) {
@@ -609,20 +580,6 @@ export class ReportesAlphaComponent {
       this.paginator.firstPage();
     }
   }
-
-  ngAfterViewInit() {
-    this.paginator.pageSize = this.paginator.pageSize || 5;
-    this.dataSource.paginator = this.paginator;
-    this.paginatedDatos = this.datos.slice(0, this.paginator.pageSize);
-  }
-
-  /*toggleSelectAll(event: any) {
-    const checked = event.checked ?? event.target?.checked;
-    this.allSelected = checked;
-
-    this.dataSource.data.forEach(dato => dato.selected = checked);
-    this.updateAnySelected();
-  }*/
 
 
   clearSelections() {

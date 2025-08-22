@@ -81,6 +81,7 @@ export class DispercionAlphaComponent {
   paginatedDatos: any[] = [];
   dataSource = new MatTableDataSource<any>();
   allSelected: boolean = false;
+  userPerfil: string = 'VIST'; // o 'ASESOR', 'VIST'
 
   // Variables para tabla y paginación
 
@@ -109,35 +110,29 @@ export class DispercionAlphaComponent {
     }
   }
 
-
-
-
-
-
-
-
-  showDialog(title: string, content: string, details?: string[]): void {
-    this.dialog.open(MessageDetailsDialogComponent, {
-      width: '300px',
-      data: { messageTitle: title, messageContent: content, details: details }
-    });
-  }
-
-
-
-  /*---------------------------------------------------------------------------------------------------------------------------------------------------- */
-
-
   ngOnInit(): void {
     this.loadStrategies();
     this.loadGenerateYears();
     this.loadFilesYears();
     const token = localStorage.getItem('token');
+    this.userPerfil = localStorage.getItem('perfil') || '';
     if (!token) {
       this.showDialog('FAILED', 'Usuario no autenticado.');
       this.router.navigate(['/']);
       return;
     }
+
+    this.displayedColumns = ['select', 'contrato', 'cliente', 'correo', 'estrategia', 'mes', 'anual', 'reporte'];
+    if (this.userPerfil === 'ADMIN') {
+      this.displayedColumns.push('estatus');
+    }
+  }
+
+  ngAfterViewInit() {
+    this.paginator.pageSize = this.paginator.pageSize || 5;
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+    this.paginatedDatos = this.datos.slice(0, this.paginator.pageSize);
   }
 
   loadStrategies(): void {
@@ -330,17 +325,28 @@ export class DispercionAlphaComponent {
         this.lengRegister = data.length;
 
         if (data && data.length > 0) {
-          this.datos = data.map(item => ({
-            selected: false,
-            contrato: item.id.contrato,
-            cliente: item.nombreCliente || 'N/A',
-            correo: item.email || 'N/A',
-            estrategia: item.estrategia || 'N/A',
-            mes: this.months[item.id.mes - 1],
-            anual: item.id.anual,
-            nombrePdf: item.archivoPDF,
-            visualizador: 'description',
-          }));
+          this.datos = data.map(item => {
+            const fechaOriginal = item.fechaEnvio ? new Date(item.fechaEnvio) : null;
+            const fechaFormateada = fechaOriginal
+              ? `${fechaOriginal.getDate().toString().padStart(2, '0')}-${(fechaOriginal.getMonth() + 1).toString().padStart(2, '0')}-${fechaOriginal.getFullYear()} ${fechaOriginal.getHours().toString().padStart(2, '0')}:${fechaOriginal.getMinutes().toString().padStart(2, '0')}:${fechaOriginal.getSeconds().toString().padStart(2, '0')}`
+              : 'PROCESS';
+
+            return {
+              selected: false,
+              contrato: item.id.contrato,
+              cliente: item.nombreCliente || 'N/A',
+              correo: item.email || 'N/A',
+              estrategia: item.estrategia || 'N/A',
+              mes: this.months[item.id.mes - 1],
+              anual: item.id.anual,
+              nombrePdf: item.archivoPDF,
+              estatus: item.estatus || 'PROCESS',
+              descripcion: item.descripcion,
+              fechaEnvio: fechaFormateada,
+              visualizador: 'description',
+            };
+          });
+
 
           this.dataSource.data = this.datos;
           this.paginator.firstPage();
@@ -484,7 +490,6 @@ export class DispercionAlphaComponent {
 
   }
 
-
   onPageChange(event: PageEvent): void {
     this.paginator.pageSize = event.pageSize;
     const startIndex = event.pageIndex * event.pageSize;
@@ -505,16 +510,9 @@ export class DispercionAlphaComponent {
       return contratoMatch && clienteMatch && correoMatch && estrategiaMatch;
     };
 
-
     if (this.paginator) {
       this.paginator.firstPage();
     }
-  }
-
-  ngAfterViewInit() {
-    this.paginator.pageSize = this.paginator.pageSize || 5;
-    this.dataSource.paginator = this.paginator;
-    this.paginatedDatos = this.datos.slice(0, this.paginator.pageSize);
   }
 
   toggleSelectAll(event: any) {
@@ -525,11 +523,31 @@ export class DispercionAlphaComponent {
     this.updateAnySelected();
   }
 
-
   clearSelections() {
     this.dataSource.data.forEach(dato => dato.selected = false);
     this.allSelected = false;
     this.anySelected = false;
+  }
+
+  openEstatus(dato: any): void {
+    if (!dato.estatus || dato.estatus === 'null' || dato.estatus.trim() === '') {
+      this.showDialog('Estatus', 'Sin Estatus');
+    } else {
+      {
+        let estado: string[] = [dato.descripcion];
+        if (!dato.fechaEnvio || dato.fechaEnvio === 'null' || dato.fechaEnvio.trim() === '') {
+          estado.push('Sin fecha de Envio');
+        } else {
+          estado.push(dato.fechaEnvio);
+        }
+        this.showDialog('Estatus', dato.estatus, estado);
+      }
+
+    }
+  }
+
+  editarReporte(dato: any): void {
+    //en construcion 
   }
 
   obtenerNumeroMes(nombreMes: string | null): string {
@@ -553,4 +571,10 @@ export class DispercionAlphaComponent {
     return mapaMeses[nombreMes] || '01';
   }
 
+  showDialog(title: string, content: string, details?: string[]): void {
+    this.dialog.open(MessageDetailsDialogComponent, {
+      width: '300px',
+      data: { messageTitle: title, messageContent: content, details: details }
+    });
+  }
 }
