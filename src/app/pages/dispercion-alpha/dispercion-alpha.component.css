@@ -57,8 +57,8 @@
   
   
   .view-button {
-    padding: 5px 10px;
-    border-radius: 15px;
+    padding: 5px 5px;
+    border-radius: 10px;
     color: white;
     border: 1px solid #ccc;
     background-color: #041e42;
@@ -380,6 +380,7 @@ table {
   margin-bottom: 20px;
 }
 
+/*
 th,
 td {
   padding: 14px 12px;
@@ -388,7 +389,6 @@ td {
 }
 
 th {
-  /*background-color: #041e42;*/
   background-color: #b4a46c;
   color: #041e42;
   position: sticky;
@@ -398,7 +398,7 @@ th {
 
 tr:hover td {
   background-color: #f8f8f8;
-}
+}*/
 
 .record-count {
   margin-bottom: 15px;
@@ -468,11 +468,11 @@ mat-paginator {
     padding: 15px;
   }
 
-  th,
+ /* th,
   td {
     padding: 10px 8px;
     font-size: 0.85rem;
-  }
+  }*/
 }
 
 @media (max-width: 480px) {
@@ -549,6 +549,7 @@ mat-paginator {
   overflow: hidden;
 }
 
+
 .custom-table th {
   background-color: #b4a46c !important;
   color: #041e42 !important;
@@ -560,6 +561,14 @@ mat-paginator {
   text-align: center;
   border-bottom: 1px solid #eee;
 }
+/*
+.custom-table th,
+.custom-table td {
+  padding: 10px 8px;
+  font-size: 0.85rem;
+  border-bottom: 1px solid #eee;
+  text-align: center;
+}*/
 
 .custom-table tr:hover td {
   background-color: #f8f8f8;
