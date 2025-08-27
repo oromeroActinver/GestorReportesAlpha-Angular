@@ -17,12 +17,19 @@ import { MatSort } from '@angular/material/sort';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatTableModule } from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort';
+import { TemplateRef } from '@angular/core';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+
 
 
 @Component({
   selector: 'app-dispercion-alpha',
   standalone: true,
-  imports: [CommonModule, FormsModule, MatIconModule, MatPaginatorModule, MatTooltipModule, MatCheckboxModule, MatTableModule, MatSortModule],
+  imports: [CommonModule, FormsModule, MatIconModule, MatPaginatorModule, MatTooltipModule, MatCheckboxModule, MatTableModule, MatSortModule,
+    MatDialogModule, MatFormFieldModule, MatInputModule, MatButtonModule],
   templateUrl: './dispercion-alpha.component.html',
   styleUrl: './dispercion-alpha.component.css'
 })
@@ -31,6 +38,7 @@ export class DispercionAlphaComponent {
 
   displayedColumns: string[] = ['select', 'contrato', 'cliente', 'correo', 'estrategia', 'mes', 'anual', 'reporte'];
   @ViewChild(MatSort) sort!: MatSort;
+  @ViewChild('dialogTemplate') dialogTemplate!: TemplateRef<any>;
   // Variables primer bloque (Búsqueda por contrato)
   contrato: string = '';
   nombreCliente = '';
@@ -75,6 +83,7 @@ export class DispercionAlphaComponent {
   pdfSrc: string | null = null;
   mes: number | null = null;
   anual: number | null = null;
+  datoEditando: any;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   datos: any[] = [];
@@ -82,9 +91,14 @@ export class DispercionAlphaComponent {
   dataSource = new MatTableDataSource<any>();
   allSelected: boolean = false;
   userPerfil: string = 'VIST'; // o 'ASESOR', 'VIST'
+  userEmail = localStorage.getItem('userEmail') || '';
+
+  // Variables para controlar el diálogo
+  showConfirmation = false;
+  alreadySentContracts: any[] = [];
+  selectedFilesBackup: any[] = [];
 
   // Variables para tabla y paginación
-
   filters = {
     contrato: '',
     cliente: '',
@@ -391,13 +405,63 @@ export class DispercionAlphaComponent {
       .map(dato => ({
         contrato: dato.contrato,
         mes: this.months.findIndex(m => m.toLowerCase().trim() === dato.mes.toLowerCase().trim()) + 1,
-        anual: dato.anual
+        anual: dato.anual,
+        estatus: dato.estatus,
+        nombreCliente: dato.nombreCliente
       }));
 
+    // Validar si hay contratos ya enviados
+    const alreadySentContracts = selectedFiles.filter(file =>
+      file.estatus && file.estatus.includes('Reporte Enviado')
+    );
+
+    // Si hay contratos ya enviados, mostrar diálogo de confirmación
+    if (alreadySentContracts.length > 0) {
+      this.isLoading = false;
+      this.alreadySentContracts = alreadySentContracts;
+      this.selectedFilesBackup = selectedFiles;
+      this.showConfirmation = true;
+      return;
+    }
+
+    // Si no hay contratos ya enviados, proceder con el envío normal
+    this.executeSendFiles(selectedFiles);
+  }
+
+  // Método para confirmar el reenvío
+  confirmResend() {
+    this.showConfirmation = false;
+    this.executeSendFiles(this.selectedFilesBackup);
+  }
+
+  // Método para cancelar el reenvío
+  cancelResend() {
+    this.showConfirmation = false;
+    // Deseleccionar los contratos ya enviados
+    this.datos.forEach(dato => {
+      if (this.alreadySentContracts.some(c => c.contrato === dato.contrato)) {
+        dato.selected = false;
+      }
+    });
+    this.anySelected = this.datos.some(dato => dato.selected);
+    //this.showDialog('MESSAGE', 'Se han deseleccionado los contratos ya enviados.');
+  }
+
+  // Método para ejecutar el envío de archivos
+  executeSendFiles(selectedFiles: any[]) {
+    this.isLoading = true;
     const url = `${this.apiUrl}/dispercion/reportes`;
     const headers = new HttpHeaders().set('Authorization', `Bearer ${this.token}`);
 
-    this.http.post(url, selectedFiles, { headers }).subscribe({
+    // Preparar datos para enviar (sin información adicional)
+    const filesToSend = selectedFiles.map(file => ({
+      contrato: file.contrato,
+      mes: file.mes,
+      anual: file.anual,
+      userEmail: this.userEmail
+    }));
+
+    this.http.post(url, filesToSend, { headers }).subscribe({
       next: (response: any) => {
         this.isLoading = false;
         this.anySelected = false;
@@ -406,26 +470,32 @@ export class DispercionAlphaComponent {
           case 'SUCCESS':
             this.showDialog('SUCCESS', response.message, response.details);
             this.clearSelections();
+            this.searchFiles();
             break;
           case 'FAILED':
             this.showDialog('FAILED', response.message, response.details);
             this.clearSelections();
+            this.searchFiles();
             break;
           case 'PARTIAL_SUCCESS':
             this.showDialog('PARTIAL SUCCESS', response.message, response.details);
             this.clearSelections();
+            this.searchFiles();
             break;
           default:
             this.showDialog('MESSAGE', 'Estado de respuesta desconocido');
+            this.searchFiles();
         }
       },
       error: (error) => {
         this.isLoading = false;
+        this.searchFiles();
         this.showDialog('MESSAGE', 'Error al enviar archivos.', error.message);
         console.log(error.message);
       }
     });
   }
+
 
   downloadPDF(contrato: number, estrategia: string, nombreArchivo: string): void {
     if (!this.filesYear || !this.filesMonth) {
@@ -547,7 +617,70 @@ export class DispercionAlphaComponent {
   }
 
   editarReporte(dato: any): void {
-    //en construcion 
+    this.datoEditando = { ...dato }; // Copia para editar sin afectar el original
+    this.dialog.open(this.dialogTemplate, {
+      data: this.datoEditando
+    });
+  }
+
+  guardarCambios(data: any): void {
+    const correoRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!correoRegex.test(data.correo)) {
+      this.showDialog('FAILED', 'Correo inválido Por favor ingresa un correo válido.',);
+      return;
+    }
+
+    this.isLoading = true;
+    const mesInt = this.months.findIndex(m => m.toLowerCase().trim() === data.mes.toLowerCase().trim()) + 1;
+    const mesStr = mesInt.toString().padStart(2, '0');
+
+    const payload = {
+      contrato: String(data.contrato),
+      anual: String(data.anual),
+      mes: mesStr,
+      cliente: data.cliente,
+      correo: data.correo,
+      usuario: this.userEmail
+    };
+
+    const url = `${this.apiUrl}/dispercion/editar-cliente`;
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${this.token}`);
+
+    this.http.post(url, payload, { headers }).subscribe({
+      next: (response: any) => {
+        this.isLoading = false;
+        switch (response.status) {
+          case 'SUCCESS':
+            this.showDialog('SUCCESS', response.message, response.details);
+            this.actualizarTabla(data);
+            break;
+          case 'FAILED':
+            this.showDialog('FAILED', response.message, response.details);
+            break;
+          case 'PARTIAL_SUCCESS':
+            this.showDialog('PARTIAL SUCCESS', response.message, response.details);
+            this.actualizarTabla(data);
+            break;
+          default:
+            this.showDialog('MESSAGE', 'Estado de respuesta desconocido');
+        }
+        this.dialog.closeAll();
+      },
+      error: (error) => {
+        this.isLoading = false;
+        this.showDialog('MESSAGE', 'Error al guardar cambios.', error.message);
+        console.error(error);
+      }
+    });
+  }
+
+  actualizarTabla(data: any): void {
+    const index = this.dataSource.data.findIndex(d => d.contrato === data.contrato);
+    if (index !== -1) {
+      this.dataSource.data[index].cliente = data.cliente;
+      this.dataSource.data[index].correo = data.correo;
+      this.dataSource._updateChangeSubscription(); // Refresca la tabla
+    }
   }
 
   obtenerNumeroMes(nombreMes: string | null): string {
