@@ -56,6 +56,7 @@ export class BenchmarkComponent {
   modoDialogo: 'editar' | 'eliminar' | null = null;
   elementoSeleccionado: any = null;
   userPerfil: string = 'VIST'; // o 'ASESOR', 'VIST'
+  userEmail = localStorage.getItem('userEmail') || '';
   dialogRef!: MatDialogRef<any>;
 
   constructor(
@@ -147,6 +148,7 @@ export class BenchmarkComponent {
     }
     const formData: FormData = new FormData();
     formData.append('file', this.selectedFile, this.selectedFile.name);
+    formData.append('email', this.userEmail);
 
     const url = `${environment.API_URL}/Bench/upload`;
     const token = localStorage.getItem('token');

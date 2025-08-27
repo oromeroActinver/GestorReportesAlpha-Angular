@@ -274,3 +274,68 @@ tr:hover {
   width: 100%;
   max-width: 400px;
 }
+
+.file-upload {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.file-label {
+  background-color: #b4a46c;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-bottom: 10px;
+}
+
+.file-label:hover {
+  background-color: #041e42;
+}
+
+.file-input {
+  display: none;
+}
+
+
+/* Spinner de carga */
+.loading-spinner {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 9999;
+}
+
+.spinner {
+  border: 12px solid #b4a46c;
+  border-top: 12px solid #041e42;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.3);
+  /* Fondo semitransparente */
+  z-index: 9998;
+  /* Debajo del spinner pero encima de todo lo demás */
+}

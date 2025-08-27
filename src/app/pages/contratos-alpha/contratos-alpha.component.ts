@@ -36,10 +36,12 @@ export class ContratosAlphaComponent {
   dataSource = new MatTableDataSource<any>();
   estrategiasDisponibles: string[] = [];
   strategies: string[] = [];
-
+  userPerfil: string = 'VIST'; // o 'ASESOR', 'VIST'
+  userEmail = localStorage.getItem('userEmail') || '';
 
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
+
 
   ngAfterViewInit() {
     this.dataSource.sort = this.sort;
@@ -53,7 +55,6 @@ export class ContratosAlphaComponent {
       return item[property];
     };
   }
-
 
 
   lengRegister: number | null = null;
@@ -84,13 +85,23 @@ export class ContratosAlphaComponent {
 
   ngOnInit(): void {
     const token = localStorage.getItem('token');
-    this.loadContratos();
-    this.loadStrategies();
+    this.userPerfil = localStorage.getItem('perfil') || '';
+    this.userEmail = localStorage.getItem('userEmail') || '';
+
+    // Configurar columnas visibles según el perfil
+    this.displayedColumns = ['contrato', 'cliente', 'estrategia', 'fechaIniAlpha', 'estado'];
+    if (this.userPerfil === 'ADMIN') {
+      this.displayedColumns.push('observaciones');
+    }
+
     if (!token) {
       this.showDialog('FAILED', 'Usuario no autenticado.');
       this.router.navigate(['/']);
       return;
     }
+
+    this.loadContratos();
+    this.loadStrategies();
   }
 
 
@@ -116,7 +127,8 @@ export class ContratosAlphaComponent {
             cliente: item.nombreCliente || 'N/A',
             estrategia: item.estrategia || 'N/A',
             fechaIniAlpha: item.fechaIniAlpha,
-            estado: item.estado ? 'Habilitado' : 'Deshabilitado'
+            estado: item.estado ? 'Habilitado' : 'Deshabilitado',
+            observaciones: item.observaciones
           }));
 
           this.dataSource.data = this.datos;
@@ -183,23 +195,41 @@ export class ContratosAlphaComponent {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if (result === true) {
-        this.cambiarEstadoContrato(dato.contrato, nuevoEstado === 'Habilitado');
+      if (result?.confirmado && result.observaciones) {
+        this.cambiarEstadoContrato(dato.contrato, nuevoEstado === 'Habilitado', result.observaciones);
       }
     });
   }
 
-  cambiarEstadoContrato(contratoId: string, estado: boolean): void {
+  openObservaciones(dato: any): void {
+    if (!dato.observaciones || dato.observaciones === 'null' || dato.observaciones.trim() === '') {
+      this.showDialog('Observaciones', 'Sin observaciones');
+    } else {
+      {
+        this.showDialog('Observaciones', dato.observaciones);
+      }
+
+    }
+  }
+
+
+
+  cambiarEstadoContrato(contratoId: string, estado: boolean, observaciones: string): void {
+    const userEmail = localStorage.getItem('userEmail') || '';
     const url = `${this.apiUrl}/contrac/updateEstado`;
-    const body = { contrato: contratoId, estado: estado };
+    const body = {
+      contrato: contratoId,
+      estado: estado,
+      observaciones: observaciones,
+      usuario: userEmail
+    };
     const headers = new HttpHeaders().set('Authorization', `Bearer ${this.token}`);
 
     this.http.post(url, body, { headers }).subscribe({
-
       next: (response: any) => {
         if (response.status === 'SUCCESS') {
           this.loadContratos();
-          this.showDialog('SUCCESS', 'Contrato Acualizado');
+          this.showDialog('SUCCESS', 'Contrato actualizado');
         } else {
           this.showDialog('FAILED', response.message);
         }
@@ -209,8 +239,8 @@ export class ContratosAlphaComponent {
         this.showDialog('FAILED', 'No se pudo actualizar el estado del contrato.');
       }
     });
-
   }
+
 
   applyFilters() {
     this.dataSource.filterPredicate = (dato, filtroTexto) => {

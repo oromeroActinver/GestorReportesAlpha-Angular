@@ -1,87 +1,216 @@
-<p>dispercion-alpha works!</p>
+<!-- TERCER BLOQUE - Abajo -->
+<div class="third-block">
+    <div class="form-container card-form">
+        <div class="horizontal-form-group">
+            <div class="form-group">
+                <label for="filesYear">Año:</label>
+                <select id="filesYear" [(ngModel)]="filesYear" (change)="onFilesYearChange(filesYear)">
+                    <option *ngFor="let year of filesYears" [value]="year">{{ year }}</option>
+                </select>
+            </div>
 
-<div class="form-container">
-    <div class="form-group">
-        <label for="year">Año:</label>
-        <select id="year" class="custom-select" [(ngModel)]="selectedYear">
-            <option *ngFor="let year of years" [value]="year">{{ year }}</option>
-        </select>
-    </div>
-    <div class="form-group">
-        <label for="month">Mes:</label>
-        <select id="month" class="custom-select" [(ngModel)]="selectedMonth">
-            <option *ngFor="let month of months" [value]="month">{{ month }}</option>
-        </select>
-    </div>
-    <div class="form-group">
-        <label for="strategy">Estrategia:</label>
-        <select id="strategy" class="custom-select" [(ngModel)]="selectedStrategy">
-            <option *ngFor="let strategy of strategies" [value]="strategy">{{ strategy }}</option>
-        </select>
-    </div>
-    <div class="form-group">
-        <div class="button-container">
-            <button mat-raised-button color="primary" class="search-button" (click)="searchFiles()" matTooltip="Buscar">
-                <mat-icon>search</mat-icon>
-            </button>
+            <div class="form-group">
+                <label for="filesMonth">Mes:</label>
+                <select id="filesMonth" [(ngModel)]="filesMonth">
+                    <option *ngFor="let month of monthsFiles" [value]="month">{{ month }}</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="filesStrategy">Estrategia:</label>
+                <select id="filesStrategy" [(ngModel)]="filesStrategy">
+                    <option *ngFor="let strategy of strategies" [value]="strategy">{{ strategy }}</option>
+                </select>
+            </div>
+
+            <div class="form-item">
+                <button class="search-button" (click)="searchFiles()">
+                    <mat-icon>search</mat-icon> Buscar
+                </button>
+            </div>
         </div>
     </div>
-</div>
 
-<div class="table-container">
-    <div *ngIf="lengRegister !== null" class="record-count">
-        {{ lengRegister }} registros
-    </div>
-    <table>
-        <thead>
-            <tr>
-                <th class="upload-title select-all">
-                    <input type="checkbox" (change)="toggleSelectAll($event)" [checked]="allSelected" />
-                    
+    <!-- Tabla Angular Material -->
+    <div class="table-container">
+        <div *ngIf="lengRegister !== null" class="upload-title select-all">
+            {{ lengRegister }} registros
+        </div>
+
+        <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8 custom-table">
+
+            <!-- Checkbox de selección -->
+            <ng-container matColumnDef="select">
+                <th class="upload-title select-all" mat-header-cell *matHeaderCellDef>
+                    <mat-checkbox (change)="toggleSelectAll($event)" [checked]="allSelected"></mat-checkbox>
                 </th>
-                <th class="upload-title">
-                    Contrato
-                    <input type="text" class="contract-filter" [(ngModel)]="filters.contrato" (input)="applyFilters()" />
-                </th>
-                <th class="upload-title">Cliente</th>
-                <th class="upload-title">Correo</th>
-                <th class="upload-title">Estrategia</th>
-                <th class="upload-title">Mes</th>
-                <th class="upload-title">Año</th>
-                <th class="upload-title">Reporte</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr *ngFor="let dato of paginatedDatos">
-                <td>
-                    <input type="checkbox" [(ngModel)]="dato.selected" (change)="updateAnySelected()" />
+                <td mat-cell *matCellDef="let dato">
+                    <mat-checkbox [(ngModel)]="dato.selected" (change)="updateAnySelected()"></mat-checkbox>
                 </td>
-                <td>{{ dato.contrato }}</td>
-                <td>{{ dato.cliente }}</td>
-                <td>{{ dato.correo }}</td>
-                <td>{{ dato.estrategia }}</td>
-                <td>{{ dato.mes }}</td>
-                <td>{{ dato.anual }}</td>
-                <!--<td>
-                    <mat-icon>{{ dato.visualizador }}</mat-icon>
-                    {{ dato.nombrePdf }}
-                </td>-->
-                <td>
-                    
-                    <button class="view-button" (click)="viewPDF(dato.contrato, dato.estrategia)" matTooltip="{{dato.nombrePdf}}">
-                        <mat-icon class="pdf-icon">{{ dato.visualizador }}</mat-icon>
+            </ng-container>
+
+            <!-- Contrato -->
+            <ng-container matColumnDef="contrato">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                    Contrato
+                    <input type="text" [(ngModel)]="filters.contrato" (input)="applyFilters()"
+                        (click)="$event.stopPropagation()" />
+                </th>
+                <td mat-cell *matCellDef="let dato">{{ dato.contrato }}</td>
+            </ng-container>
+
+            <!-- Cliente -->
+            <ng-container matColumnDef="cliente">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                    Cliente
+                    <input type="text" [(ngModel)]="filters.cliente" (input)="applyFilters()"
+                    (click)="$event.stopPropagation()" />
+                </th>
+                <td mat-cell *matCellDef="let dato">{{ dato.cliente }}</td>
+            </ng-container>
+
+            <!-- Correo -->
+            <ng-container matColumnDef="correo">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                    Correo
+                    <input type="text" [(ngModel)]="filters.correo" (input)="applyFilters()"
+                    (click)="$event.stopPropagation()" />
+                </th>
+                <td mat-cell *matCellDef="let dato">{{ dato.correo }}</td>
+            </ng-container>
+
+            <!-- Estrategia -->
+            <ng-container matColumnDef="estrategia">
+                <th mat-header-cell *matHeaderCellDef>
+                    Estrategia
+                </th>
+                <td mat-cell *matCellDef="let dato">{{ dato.estrategia }}</td>
+            </ng-container>
+
+            <!-- Mes -->
+            <ng-container matColumnDef="mes">
+                <th mat-header-cell *matHeaderCellDef>Mes</th>
+                <td mat-cell *matCellDef="let dato">{{ dato.mes }}</td>
+            </ng-container>
+
+            <!-- Año -->
+            <ng-container matColumnDef="anual">
+                <th mat-header-cell *matHeaderCellDef>Año</th>
+                <td mat-cell *matCellDef="let dato">{{ dato.anual }}</td>
+            </ng-container>
+
+
+            <!-- Estatus solo si es ADMIN -->
+            <ng-container *ngIf="userPerfil === 'ADMIN'" matColumnDef="estatus">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Estatus</th>
+                <td mat-cell *matCellDef="let dato">
+                    <button (click)="openEstatus(dato)" class="estado-btn">
+                        {{ dato.estatus }}
                     </button>
                 </td>
-            </tr>
-        </tbody>
-    </table>
-    
-     <mat-paginator [length]="dataSource.data.length" [pageSize]="10" [pageSizeOptions]="[5, 10, 20]"
-        (page)="onPageChange($event)">
-     </mat-paginator>
+            </ng-container>
 
-    <button class="send-button" (click)="sendFiles()" [disabled]="!anySelected">{{sendfiles}}</button>
+            <!-- Reporte -->
+            <ng-container matColumnDef="reporte">
+                <th mat-header-cell *matHeaderCellDef>Reporte</th>
+                <td mat-cell *matCellDef="let dato">
+                    <!-- Ver PDF -->
+                    <button class="view-button button-spacing" (click)="viewPDF(dato.contrato, dato.estrategia)"
+                        matTooltip="{{dato.nombrePdf}}">
+                        <mat-icon class="pdf-icon">description</mat-icon>
+                    </button>
 
+                    <!-- Descargar PDF -->
+                    <button class="view-button button-spacing"
+                        (click)="downloadPDF(dato.contrato, dato.estrategia, dato.nombrePdf)"
+                        matTooltip="Descargar PDF">
+                        <mat-icon class="pdf-icon">download</mat-icon>
+                    </button>
+
+                    <!-- Edit cliente -->
+                    <button *ngIf="userPerfil === 'ADMIN'" class="view-button button-spacing"
+                        (click)="editarReporte(dato)" matTooltip="edigtar registro">
+                        <mat-icon class="icon-custom">edit</mat-icon>
+                    </button>
+                </td>
+            </ng-container>
+
+            <!-- Declaración de filas -->
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+    </div>
+
+
+    <mat-paginator [length]="dataSource.data.length" [pageSize]="10" [pageSizeOptions]="[5, 10, 20, 50]"
+        [showFirstLastButtons]="true" (page)="onPageChange($event)">
+    </mat-paginator>
+    <div class="send-button-container">
+        <button class="send-button" (click)="sendFiles()" [disabled]="!anySelected">
+            {{ sendfiles }}
+        </button>
+    </div>
+
+</div>
+
+<ng-template #dialogTemplate>
+    <div class="dialog-containerEdit">
+        <h4 class="dialog-title">Datos Cliente</h4>
+
+        <div class="form-row">
+            <label for="cliente" class="form-label">Cliente:</label>
+            <input id="cliente" matInput [(ngModel)]="datoEditando.cliente" class="form-input">
+        </div>
+
+        <div class="form-row">
+            <label for="correo" class="form-label">Correo:</label>
+            <input id="correo" matInput [(ngModel)]="datoEditando.correo" class="form-input">
+        </div>
+
+        <div class="button-container">
+            <button mat-dialog-close class="send-button-update button-spacing">Cancelar</button>
+            <button (click)="guardarCambios(datoEditando)" class="send-button">Guardar</button>
+        </div>
+    </div>
+</ng-template>
+
+
+<!-- Diálogo de confirmación para contratos ya enviados -->
+<div class="dialog-overlay" *ngIf="showConfirmation">
+  <div class="dialog-container">
+    <div class="dialog-header" style="background-color: #fff3cd; padding: 15px; border-top-left-radius: 8px; border-top-right-radius: 8px;">
+      <h5 class="modal-title m-0" style="color: #856404; font-weight: bold;">
+        <mat-icon style="vertical-align: middle; margin-right: 8px;">warning</mat-icon>
+        Contratos Ya Enviados
+      </h5>
+    </div>
+    <div class="dialog-body" style="padding: 20px;">
+      <p style="margin-bottom: 15px;">Los siguientes contratos ya han sido enviados anteriormente:</p>
+      
+      <div class="contract-list">
+        <div *ngFor="let contract of alreadySentContracts" class="contract-item highlight">
+          <strong>Contrato:</strong> {{contract.contrato}} - {{contract.nombreCliente}}
+        </div>
+      </div>
+      
+      <p class="fw-bold" style="margin-top: 15px;">¿Desea volver a enviarlos?</p>
+    </div>
+    <div class="dialog-footer" style="padding: 15px; background-color: #f8f9fa; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px; display: flex; justify-content: flex-end;">
+      <button type="button" class="btn btn-outline-secondary me-2 button-spacing" (click)="cancelResend()" style="padding: 8px 16px;">
+        Deseleccionar y Cancelar
+      </button>
+      <button type="button" class="send-button" (click)="confirmResend()">
+        Sí, Enviar de Todos Modos
+      </button>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="isLoading" class="loading-overlay"></div>
+
+
+<!-- Spinner de carga con overlay -->
+<div *ngIf="isLoading" class="loading-overlay">
     <div class="loading-spinner" *ngIf="isLoading">
         <div class="spinner"></div>
     </div>

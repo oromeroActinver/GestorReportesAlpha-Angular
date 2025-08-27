@@ -11,7 +11,7 @@
 /* Inputs y selects mejorados */
 input[type="text"],
 select {
-  padding: 12px 15px;
+  padding: 8px 15px;
   border: 1px solid #ddd;
   border-radius: 8px;
   font-size: 14px;
@@ -166,6 +166,7 @@ tr:hover td {
   font-weight: 600;
   color: #041e42;
   font-size: 0.9rem;
+  overflow-x: auto;
 }
 
 .contract-filter {
@@ -218,15 +219,13 @@ mat-paginator {
     justify-content: center;
   }
 
-  .table-container {
-    padding: 15px;
-  }
 
-  th,
+
+ /* th,
   td {
     padding: 10px 8px;
     font-size: 0.85rem;
-  }
+  }*/
 }
 
 @media (max-width: 480px) {

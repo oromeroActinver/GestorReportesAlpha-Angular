@@ -3,12 +3,13 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { CommonModule } from '@angular/common';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
+import { FormsModule } from '@angular/forms';
 
 @Component({
-    selector: 'app-confirm-dialog',
-    standalone: true,
-    imports: [CommonModule, MatDialogModule, MatButtonModule],
-    styles: [`
+  selector: 'app-confirm-dialog',
+  standalone: true,
+  imports: [CommonModule, MatDialogModule, MatButtonModule, FormsModule],
+  styles: [`
     .dialog-title {
       font-size: 1.5em;
       margin-bottom: 20px;
@@ -44,11 +45,30 @@ import { MatButtonModule } from '@angular/material/button';
       background-color: #041e42;
       color: white;
     }
+
+    textarea {
+      width: 100%;
+      min-height: 80px;
+      margin-top: 10px;
+      padding: 10px;
+      font-size: 1em;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+
+    .error {
+      color: red;
+      font-size: 0.9em;
+      margin-top: 5px;
+    }
   `],
-    template: `
+  template: `
     <h2 class="dialog-title">Confirmar cambio</h2>
     <mat-dialog-content class="dialog-content">
       <p>{{ data.mensaje }}</p>
+      <label for="observaciones">Observaciones (obligatorio):</label>
+      <textarea [(ngModel)]="observaciones" id="observaciones" placeholder="Explica por qué habilitas o deshabilitas el contrato..."></textarea>
+      <div *ngIf="mostrarError" class="error">Las observaciones son obligatorias.</div>
     </mat-dialog-content>
     <mat-dialog-actions class="dialog-actions">
       <button mat-button class="upload-button" (click)="onCancel()">Cancelar</button>
@@ -57,16 +77,23 @@ import { MatButtonModule } from '@angular/material/button';
   `
 })
 export class ConfirmDialogComponent {
-    constructor(
-        public dialogRef: MatDialogRef<ConfirmDialogComponent>,
-        @Inject(MAT_DIALOG_DATA) public data: any
-    ) { }
+  observaciones: string = '';
+  mostrarError: boolean = false;
 
-    onConfirm(): void {
-        this.dialogRef.close(true);
-    }
+  constructor(
+    public dialogRef: MatDialogRef<ConfirmDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any
+  ) {}
 
-    onCancel(): void {
-        this.dialogRef.close(false);
+  onConfirm(): void {
+    if (!this.observaciones.trim()) {
+      this.mostrarError = true;
+      return;
     }
+    this.dialogRef.close({ confirmado: true, observaciones: this.observaciones });
+  }
+
+  onCancel(): void {
+    this.dialogRef.close({ confirmado: false });
+  }
 }

@@ -66,7 +66,7 @@ export class CalculaRendimientosComponent implements OnInit, AfterViewInit {
   fechas: string = 'Calcular por fechas';
   calcular: string = 'Calcular';
   inputSelestPath = 'Seleccionar Archivos';
-  uploadButton = 'Cargar Reportes';
+  uploadButton = 'Cargar Reportes 1';
   saveFiles = 'Guardar';
   uploadMethod = 'file';
   isLoading = false;
@@ -149,12 +149,6 @@ export class CalculaRendimientosComponent implements OnInit, AfterViewInit {
         this.showDialog('MESSAGE', 'Algunos archivos no son PDF y fueron ignorados.');
       }
     }
-  }
-
-  clearSelectedFiles(): void {
-    this.files = [];
-    const fileInput = document.getElementById('fileInput') as HTMLInputElement;
-    if (fileInput) fileInput.value = '';
   }
 
   uploadFiles(): void {
@@ -448,7 +442,7 @@ export class CalculaRendimientosComponent implements OnInit, AfterViewInit {
     const formData: FormData = new FormData();
     formData.append('file', this.selectedFile, this.selectedFile.name);
 
-    const url = `${environment.API_URL}/Bench/upload`;
+    const url = `${environment.API_URL}/Rend/upload`;
     const token = localStorage.getItem('token');
 
     if (token) {
@@ -511,6 +505,15 @@ export class CalculaRendimientosComponent implements OnInit, AfterViewInit {
 
   setUploadMethod(method: string): void {
     this.uploadMethod = method;
+  }
+
+  clearSelectedFiles(): void {
+    this.files = [];
+    this.selectedFile = null;
+    const fileInput = document.getElementById('fileInput') as HTMLInputElement;
+    if (fileInput) {
+      fileInput.value = '';
+    }
   }
 
 }

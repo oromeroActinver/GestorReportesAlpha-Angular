@@ -47,7 +47,14 @@
         </div>
     </div>
 
-    <div class="loading-spinner" *ngIf="isLoading">
-        <div class="spinner"></div>
+    <div *ngIf="isLoading" class="loading-overlay"></div>
+
+
+    <!-- Spinner de carga con overlay -->
+    <div *ngIf="isLoading" class="loading-overlay">
+        <div class="loading-spinner" *ngIf="isLoading">
+            <div class="spinner"></div>
+        </div>
     </div>
+    
 </div>
