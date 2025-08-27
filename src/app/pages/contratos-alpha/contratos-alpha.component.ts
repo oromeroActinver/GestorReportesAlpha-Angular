@@ -36,8 +36,8 @@ export class ContratosAlphaComponent {
   dataSource = new MatTableDataSource<any>();
   estrategiasDisponibles: string[] = [];
   strategies: string[] = [];
-  userEmail: string = ''
   userPerfil: string = 'VIST'; // o 'ASESOR', 'VIST'
+  userEmail = localStorage.getItem('userEmail') || '';
 
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatPaginator) paginator!: MatPaginator;

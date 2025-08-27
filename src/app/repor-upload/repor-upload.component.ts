@@ -25,7 +25,7 @@ export class ReporUploadComponent {
   section = 'Carga de Reportes';
   inputSelestPath = 'Seleccionar Archivos';
   apiUrl = environment.API_URL;
-  uploadButton = 'Cargar Reportes';
+  uploadButton = 'Cargar Reportes 2';
   saveFiles = 'Guardar';
   selectedFiles: FileList | null = null;
   isLoading: boolean = false;
@@ -143,7 +143,7 @@ export class ReporUploadComponent {
       }
 
       this.isLoading = true;
-      const url = `${environment.API_URL}/files/pathfiles`;
+      const url = `${environment.API_URL}/reportesAlpha/pathfiles`;
       const token = localStorage.getItem('token');
       const headers = new HttpHeaders({
         'Content-Type': 'application/json',

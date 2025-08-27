@@ -66,7 +66,7 @@ export class CalculaRendimientosComponent implements OnInit, AfterViewInit {
   fechas: string = 'Calcular por fechas';
   calcular: string = 'Calcular';
   inputSelestPath = 'Seleccionar Archivos';
-  uploadButton = 'Cargar Reportes';
+  uploadButton = 'Cargar Reportes 1';
   saveFiles = 'Guardar';
   uploadMethod = 'file';
   isLoading = false;

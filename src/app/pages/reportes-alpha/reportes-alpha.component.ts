@@ -72,11 +72,10 @@ export class ReportesAlphaComponent {
   isLoading = false;
   token = localStorage.getItem('token');
   years: number[] = [];
-  userEmail: string = ''
   userPerfil: string = 'VIST'; // o 'ASESOR', 'VIST'
+  userEmail = localStorage.getItem('userEmail') || '';
 
   // Variables para tabla y paginación
-
   datos: any[] = [];
   paginatedDatos: any[] = [];
   dataSource = new MatTableDataSource<any>();
@@ -293,7 +292,6 @@ export class ReportesAlphaComponent {
     this.http.get<string[]>(url, { headers, params }).subscribe({
       next: (months) => {
         this.monthsStrategy = months || [];
-
         if (this.monthsStrategy.length > 0) {
         this.generateMonth = this.monthsStrategy[0];
       } else {
@@ -432,7 +430,8 @@ export class ReportesAlphaComponent {
     }
 
     this.isLoading = true;
-    const monthIndex = this.monthsFiles.indexOf(this.filesMonth) + 1;
+    const monthIndex = this.obtenerNumeroMes(this.filesMonth);
+
     const url = `${this.apiUrl}/dispercion/getReportes`;
     const params = {
       year: this.filesYear.toString(),
